@@ -178,13 +178,17 @@ export default function AdminShopsIndex({ shops, filters }: Props) {
                                                         <img
                                                             src={shop.logo}
                                                             alt={shop.name}
+                                                            onError={(e) => {
+                                                                e.currentTarget.style.display = 'none';
+                                                                const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                                                if (fallback) fallback.style.display = 'flex';
+                                                            }}
                                                             className="h-10 w-10 shrink-0 rounded-xl object-cover ring-1 ring-border shadow-2xs"
                                                         />
-                                                    ) : (
-                                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary font-bold text-white shadow-2xs">
-                                                            <Store className="h-5 w-5" />
-                                                        </div>
-                                                    )}
+                                                    ) : null}
+                                                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary font-bold text-white shadow-2xs ${shop.logo ? 'hidden' : 'flex'}`}>
+                                                        <Store className="h-5 w-5" />
+                                                    </div>
                                                     <div className="min-w-0">
                                                         <div className="font-bold text-foreground text-sm truncate max-w-[180px]">
                                                             {shop.name}
@@ -207,14 +211,14 @@ export default function AdminShopsIndex({ shops, filters }: Props) {
                                                 {shop.owner ? (
                                                     <div className="flex items-center gap-2.5">
                                                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-bold text-xs text-primary ring-1 ring-primary/20">
-                                                            {shop.owner.name.substring(0, 2).toUpperCase()}
+                                                            {(shop.owner.name || '??').substring(0, 2).toUpperCase()}
                                                         </div>
                                                         <div className="min-w-0">
                                                             <div className="font-semibold text-foreground whitespace-nowrap truncate max-w-[140px]">
-                                                                {shop.owner.name}
+                                                                {shop.owner.name || 'Unnamed'}
                                                             </div>
                                                             <div className="text-[11px] text-muted-foreground whitespace-nowrap truncate max-w-[140px]">
-                                                                {shop.owner.email}
+                                                                {shop.owner.email || 'No email'}
                                                             </div>
                                                         </div>
                                                     </div>

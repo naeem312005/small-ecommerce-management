@@ -1,5 +1,5 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Layers, Package, Save, Sparkles, Store } from 'lucide-react';
+import { ArrowLeft, Layers, Package, RotateCw, Save, Sparkles, Store } from 'lucide-react';
 import React, { useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, Shop } from '@/types';
@@ -40,6 +40,15 @@ export default function ShopOwnerCatalogCreate({ shop, suggestedSku, categories 
     });
 
     const [preview, setPreview] = useState<string | null>(null);
+
+    const generateRandomSku = () => {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let code = '';
+        for (let i = 0; i < 6; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        setData('sku', `PRD-${code}`);
+    };
 
     const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -112,17 +121,41 @@ export default function ShopOwnerCatalogCreate({ shop, suggestedSku, categories 
                         {/* SKU & Category */}
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div>
-                                <label className="block text-xs font-semibold text-foreground">
-                                    Catalog SKU *
-                                </label>
-                                <input
-                                    type="text"
-                                    value={data.sku}
-                                    onChange={(e) => setData('sku', e.target.value.toUpperCase())}
-                                    placeholder="PRD-XXXX"
-                                    className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                                    required
-                                />
+                                <div className="flex items-center justify-between">
+                                    <label className="block text-xs font-semibold text-foreground">
+                                        Catalog SKU *
+                                    </label>
+                                    <button
+                                        type="button"
+                                        onClick={generateRandomSku}
+                                        className="inline-flex items-center gap-1 text-[11px] font-bold text-primary hover:text-primary/80 transition-colors"
+                                        title="Generate a new unique SKU"
+                                    >
+                                        <Sparkles className="h-3 w-3" />
+                                        <span>Auto Generate</span>
+                                    </button>
+                                </div>
+                                <div className="relative mt-1.5">
+                                    <input
+                                        type="text"
+                                        value={data.sku}
+                                        onChange={(e) => setData('sku', e.target.value.toUpperCase())}
+                                        placeholder="PRD-XXXXXX"
+                                        className="w-full rounded-xl border border-input bg-background py-2.5 pl-3 pr-10 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary uppercase"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={generateRandomSku}
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                                        title="Regenerate SKU"
+                                    >
+                                        <RotateCw className="h-3.5 w-3.5" />
+                                    </button>
+                                </div>
+                                <p className="mt-1 text-[11px] text-muted-foreground">
+                                    Auto-generated unique identifier. You can also customize or type your own SKU.
+                                </p>
                                 {errors.sku && (
                                     <p className="mt-1 text-xs text-destructive">{errors.sku}</p>
                                 )}
