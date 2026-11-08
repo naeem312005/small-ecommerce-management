@@ -106,16 +106,16 @@ export default function ShopOwnerProductsIndex({
                 {/* Filter and Search Bar */}
                 <form
                     onSubmit={handleFilter}
-                    className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900"
+                    className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-xs sm:flex-row sm:items-center sm:justify-between"
                 >
                     <div className="relative flex-1">
-                        <Search className="absolute left-3.5 h-4 w-4 text-slate-400 top-1/2 -translate-y-1/2" />
+                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <input
                             type="text"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Search by custom title, product name, or SKU..."
-                            className="w-full rounded-xl border border-slate-300 py-2 pl-10 pr-4 text-xs dark:border-slate-700 dark:bg-slate-800"
+                            className="w-full rounded-xl border border-input bg-background py-2 pl-10 pr-4 text-xs text-foreground placeholder-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                         />
                     </div>
 
@@ -123,7 +123,7 @@ export default function ShopOwnerProductsIndex({
                         <select
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
-                            className="rounded-xl border border-slate-300 py-2 pl-3 pr-8 text-xs dark:border-slate-700 dark:bg-slate-800"
+                            className="rounded-xl border border-input bg-background py-2 pl-3 pr-8 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                         >
                             <option value="">All Availability</option>
                             <option value="1">Available in Shop</option>
@@ -132,7 +132,7 @@ export default function ShopOwnerProductsIndex({
 
                         <button
                             type="submit"
-                            className="rounded-xl bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:bg-indigo-600 dark:bg-slate-800"
+                            className="rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90 shadow-2xs"
                         >
                             Filter
                         </button>
@@ -140,149 +140,151 @@ export default function ShopOwnerProductsIndex({
                 </form>
 
                 {/* Table */}
-                <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                    <table className="w-full text-left text-xs">
-                        <thead className="border-b border-slate-200 bg-slate-50 font-semibold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-800/50">
-                            <tr>
-                                <th className="py-3 px-4">Listed Product</th>
-                                <th className="py-3 px-4">Catalog SKU</th>
-                                <th className="py-3 px-4 text-right">Shop Price</th>
-                                <th className="py-3 px-4 text-right">Catalog Base</th>
-                                <th className="py-3 px-4 text-center">Stock</th>
-                                <th className="py-3 px-4 text-center">Store Status</th>
-                                <th className="py-3 px-4 text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                            {shopProducts.data.length === 0 ? (
+                <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left text-xs min-w-[950px]">
+                            <thead className="border-b border-border bg-muted/50 font-semibold uppercase tracking-wider text-muted-foreground text-[11px]">
                                 <tr>
-                                    <td colSpan={7} className="py-10 text-center text-slate-500">
-                                        No products listed in your shop matching this filter.{' '}
-                                        <Link href="/shop-owner/catalog" className="font-semibold text-indigo-600 hover:underline">
-                                            Browse the shared catalog
-                                        </Link>{' '}
-                                        to add items.
-                                    </td>
+                                    <th className="w-[300px] py-3.5 px-4">Listed Product</th>
+                                    <th className="w-[140px] py-3.5 px-4">Catalog SKU</th>
+                                    <th className="w-[120px] py-3.5 px-4 text-right">Shop Price</th>
+                                    <th className="w-[120px] py-3.5 px-4 text-right">Catalog Base</th>
+                                    <th className="w-[90px] py-3.5 px-4 text-center">Stock</th>
+                                    <th className="w-[130px] py-3.5 px-4 text-center">Store Status</th>
+                                    <th className="w-[120px] py-3.5 px-4 text-right">Actions</th>
                                 </tr>
-                            ) : (
-                                shopProducts.data.map((item) => {
-                                    const title = item.display_title || item.product?.name || 'Untitled';
-                                    const thumbnail = item.display_thumbnail || item.product?.thumbnail;
-                                    const isPriceOverridden =
-                                        item.product && Number(item.price) !== Number(item.product.base_price);
+                            </thead>
+                            <tbody className="divide-y divide-border/60">
+                                {shopProducts.data.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={7} className="py-10 text-center text-muted-foreground">
+                                            No products listed in your shop matching this filter.{' '}
+                                            <Link href="/shop-owner/catalog" className="font-semibold text-primary hover:underline">
+                                                Browse the shared catalog
+                                            </Link>{' '}
+                                            to add items.
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    shopProducts.data.map((item) => {
+                                        const title = item.display_title || item.product?.name || 'Untitled';
+                                        const thumbnail = item.display_thumbnail || item.product?.thumbnail;
+                                        const isPriceOverridden =
+                                            item.product && Number(item.price) !== Number(item.product.base_price);
 
-                                    return (
-                                        <tr key={item.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                                            <td className="py-3.5 px-4">
-                                                <div className="flex items-center gap-3">
-                                                    {thumbnail ? (
-                                                        <img
-                                                            src={thumbnail}
-                                                            alt={title}
-                                                            className="h-10 w-10 rounded-xl object-cover ring-1 ring-slate-200"
-                                                        />
-                                                    ) : (
-                                                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-400">
-                                                            <Package className="h-5 w-5" />
-                                                        </div>
-                                                    )}
-                                                    <div>
-                                                        <span className="font-bold text-slate-900 dark:text-white line-clamp-1">
-                                                            {title}
-                                                        </span>
-                                                        <div className="flex items-center gap-1.5 text-[10px]">
-                                                            {item.custom_title && (
-                                                                <span className="text-indigo-600 dark:text-indigo-400 font-semibold">
-                                                                    Custom Title
-                                                                </span>
-                                                            )}
-                                                            {item.custom_thumbnail && (
-                                                                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                                                                    • Custom Image
-                                                                </span>
-                                                            )}
-                                                            {item.custom_description && (
-                                                                <span className="text-violet-600 dark:text-violet-400 font-semibold">
-                                                                    • Custom Description
-                                                                </span>
-                                                            )}
+                                        return (
+                                            <tr key={item.id} className="transition-colors hover:bg-muted/40">
+                                                <td className="py-3.5 px-4">
+                                                    <div className="flex items-center gap-3 min-w-0">
+                                                        {thumbnail ? (
+                                                            <img
+                                                                src={thumbnail}
+                                                                alt={title}
+                                                                className="h-10 w-10 shrink-0 rounded-xl object-cover ring-1 ring-border shadow-2xs"
+                                                            />
+                                                        ) : (
+                                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted text-muted-foreground">
+                                                                <Package className="h-5 w-5" />
+                                                            </div>
+                                                        )}
+                                                        <div className="min-w-0">
+                                                            <span className="font-bold text-foreground block truncate max-w-[200px]">
+                                                                {title}
+                                                            </span>
+                                                            <div className="flex items-center gap-1.5 text-[10px] whitespace-nowrap">
+                                                                {item.custom_title && (
+                                                                    <span className="text-primary font-semibold">
+                                                                        Custom Title
+                                                                    </span>
+                                                                )}
+                                                                {item.custom_thumbnail && (
+                                                                    <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
+                                                                        • Custom Image
+                                                                    </span>
+                                                                )}
+                                                                {item.custom_description && (
+                                                                    <span className="text-violet-600 dark:text-violet-400 font-semibold">
+                                                                        • Custom Description
+                                                                    </span>
+                                                                )}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td className="py-3.5 px-4 font-mono text-[11px] text-slate-500">
-                                                {item.product?.sku}
-                                            </td>
-                                            <td className="py-3.5 px-4 text-right">
-                                                <span className="font-black text-slate-900 dark:text-white">
-                                                    ${Number(item.price).toFixed(2)}
-                                                </span>
-                                                {isPriceOverridden && (
-                                                    <span className="block text-[10px] font-semibold text-emerald-600">
-                                                        Overridden
+                                                </td>
+                                                <td className="py-3.5 px-4 font-mono text-[11px] text-muted-foreground whitespace-nowrap">
+                                                    {item.product?.sku}
+                                                </td>
+                                                <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                                                    <span className="font-black text-foreground">
+                                                        ${Number(item.price).toFixed(2)}
                                                     </span>
-                                                )}
-                                            </td>
-                                            <td className="py-3.5 px-4 text-right text-slate-400 font-mono text-[11px]">
-                                                ${Number(item.product?.base_price ?? 0).toFixed(2)}
-                                            </td>
-                                            <td className="py-3.5 px-4 text-center font-bold">
-                                                {item.stock > 0 ? (
-                                                    <span className="text-slate-800 dark:text-slate-200">{item.stock}</span>
-                                                ) : (
-                                                    <span className="text-rose-500">0</span>
-                                                )}
-                                            </td>
-                                            <td className="py-3.5 px-4 text-center">
-                                                {item.is_available ? (
-                                                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-                                                        <CheckCircle2 className="h-3 w-3" /> Live in Store
-                                                    </span>
-                                                ) : (
-                                                    <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-semibold text-rose-700 dark:bg-rose-950 dark:text-rose-300">
-                                                        <XCircle className="h-3 w-3" /> Hidden
-                                                    </span>
-                                                )}
-                                            </td>
-                                            <td className="py-3.5 px-4 text-right">
-                                                <div className="flex items-center justify-end gap-2">
-                                                    <a
-                                                        href={`/shops/${shop.slug}/products/${item.id}`}
-                                                        target="_blank"
-                                                        rel="noreferrer"
-                                                        title="Preview in Storefront"
-                                                        className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-indigo-600 dark:hover:bg-slate-800"
-                                                    >
-                                                        <ExternalLink className="h-4 w-4" />
-                                                    </a>
-                                                    <Link
-                                                        href={`/shop-owner/products/${item.id}/edit`}
-                                                        title="Customize Price, Details & Thumbnail"
-                                                        className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-indigo-600 dark:hover:bg-slate-800"
-                                                    >
-                                                        <Edit2 className="h-4 w-4" />
-                                                    </Link>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleRemove(item)}
-                                                        title="Remove from my shop"
-                                                        className="rounded-lg p-1.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950"
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    );
-                                })
-                            )}
-                        </tbody>
-                    </table>
+                                                    {isPriceOverridden && (
+                                                        <span className="block text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                                                            Custom Price
+                                                        </span>
+                                                    )}
+                                                </td>
+                                                <td className="py-3.5 px-4 text-right text-muted-foreground font-mono text-[11px] whitespace-nowrap">
+                                                    ${Number(item.product?.base_price ?? 0).toFixed(2)}
+                                                </td>
+                                                <td className="py-3.5 px-4 text-center font-bold whitespace-nowrap">
+                                                    {item.stock > 0 ? (
+                                                        <span className="text-foreground">{item.stock}</span>
+                                                    ) : (
+                                                        <span className="text-destructive">0</span>
+                                                    )}
+                                                </td>
+                                                <td className="py-3.5 px-4 text-center whitespace-nowrap">
+                                                    {item.is_available ? (
+                                                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                                                            <CheckCircle2 className="h-3 w-3" /> Live in Store
+                                                        </span>
+                                                    ) : (
+                                                        <span className="inline-flex items-center gap-1 rounded-full bg-destructive/10 px-2.5 py-0.5 text-[10px] font-semibold text-destructive border border-destructive/20">
+                                                            <XCircle className="h-3 w-3" /> Hidden
+                                                        </span>
+                                                    )}
+                                                </td>
+                                                <td className="py-3.5 px-4 text-right">
+                                                    <div className="whitespace-nowrap inline-flex items-center justify-end gap-1.5">
+                                                        <a
+                                                            href={`/shops/${shop.slug}/products/${item.id}`}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            title="Preview in Storefront"
+                                                            className="rounded-xl border border-border bg-card p-2 text-muted-foreground transition hover:border-primary hover:text-primary shadow-2xs"
+                                                        >
+                                                            <ExternalLink className="h-3.5 w-3.5" />
+                                                        </a>
+                                                        <Link
+                                                            href={`/shop-owner/products/${item.id}/edit`}
+                                                            title="Customize Price, Details & Thumbnail"
+                                                            className="rounded-xl border border-border bg-card p-2 text-muted-foreground transition hover:border-primary hover:text-primary shadow-2xs"
+                                                        >
+                                                            <Edit2 className="h-3.5 w-3.5" />
+                                                        </Link>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleRemove(item)}
+                                                            title="Remove from Shop"
+                                                            className="rounded-xl border border-border bg-card p-2 text-muted-foreground transition hover:border-destructive hover:bg-destructive/10 hover:text-destructive shadow-2xs"
+                                                        >
+                                                            <Trash2 className="h-3.5 w-3.5" />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
 
                     {/* Pagination */}
                     {shopProducts.links && shopProducts.links.length > 3 && (
-                        <div className="flex items-center justify-between border-t border-slate-200 p-4 text-xs dark:border-slate-800">
-                            <span className="text-slate-500">
+                        <div className="flex flex-col items-center justify-between gap-3 border-t border-border p-4 sm:flex-row text-xs">
+                            <span className="text-muted-foreground">
                                 Showing {shopProducts.from ?? 0} to {shopProducts.to ?? 0} of {shopProducts.total} shop products
                             </span>
                             <div className="flex items-center gap-1">
@@ -291,12 +293,12 @@ export default function ShopOwnerProductsIndex({
                                         key={idx}
                                         href={link.url || '#'}
                                         dangerouslySetInnerHTML={{ __html: link.label }}
-                                        className={`rounded-lg px-2.5 py-1 text-xs font-semibold ${
+                                        className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition ${
                                             link.active
-                                                ? 'bg-indigo-600 text-white'
+                                                ? 'bg-primary text-primary-foreground shadow-xs'
                                                 : !link.url
-                                                  ? 'cursor-not-allowed text-slate-400'
-                                                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
+                                                  ? 'cursor-not-allowed text-muted-foreground/40'
+                                                  : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
                                         }`}
                                     />
                                 ))}
