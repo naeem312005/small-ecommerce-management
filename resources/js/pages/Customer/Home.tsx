@@ -475,13 +475,20 @@ export default function CustomerHome({
                                             <img
                                                 src={thumbnail}
                                                 alt={title}
+                                                onError={(e) => {
+                                                    e.currentTarget.style.display = 'none';
+                                                    const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                                    if (fallback) fallback.style.display = 'flex';
+                                                }}
                                                 className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                                             />
-                                        ) : (
-                                            <div className="flex h-full w-full items-center justify-center text-[#64748B]">
-                                                <Package className="h-12 w-12" />
-                                            </div>
-                                        )}
+                                        ) : null}
+
+                                        <div
+                                            className={`h-full w-full items-center justify-center text-[#64748B] ${thumbnail ? 'hidden' : 'flex'}`}
+                                        >
+                                            <Package className="h-12 w-12" />
+                                        </div>
 
                                         {/* Boutique badge tag */}
                                         <div className="absolute top-3 left-3">

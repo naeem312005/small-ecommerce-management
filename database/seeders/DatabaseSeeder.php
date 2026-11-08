@@ -228,7 +228,7 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'magcharge-3-in-1-foldable-magnetic-charging-hub',
                 'category' => 'Electronics',
                 'base_price' => 49.99,
-                'thumbnail' => 'https://images.unsplash.com/photo-1622445262464-84b1456045b6?auto=format&fit=crop&w=800&q=80',
+                'thumbnail' => 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=800&q=80',
                 'description' => 'Simultaneously charge phone, smartwatch, and wireless earbuds with 15W Qi-certified rapid charging in aluminum alloy housing.',
                 'is_active' => true,
             ]

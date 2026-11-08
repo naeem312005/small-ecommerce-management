@@ -194,34 +194,38 @@ export default function ShopOwnerCatalogIndex({
                                 return (
                                     <div
                                         key={product.id}
-                                        className={`group flex flex-col justify-between overflow-hidden rounded-2xl border bg-card shadow-xs transition hover:shadow-lg ${
-                                            isAdded
-                                                ? 'border-emerald-500/40 ring-1 ring-emerald-500/20'
-                                                : 'border-border'
-                                        }`}
+                                        className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card shadow-xs transition hover:border-primary/40 hover:shadow-md"
                                     >
                                         {/* Image */}
-                                        <div className="relative aspect-square w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                                        <div className="relative aspect-square w-full overflow-hidden bg-muted/60">
                                             {product.thumbnail ? (
                                                 <img
                                                     src={product.thumbnail}
                                                     alt={product.name}
+                                                    onError={(e) => {
+                                                        e.currentTarget.style.display = 'none';
+                                                        const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                                        if (fallback) fallback.style.display = 'flex';
+                                                    }}
                                                     className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                                                 />
-                                            ) : (
-                                                <div className="flex h-full w-full items-center justify-center text-slate-400">
-                                                    <Package className="h-12 w-12" />
-                                                </div>
-                                            )}
+                                            ) : null}
+
+                                            {/* Fallback Icon when no thumbnail or on load error */}
+                                            <div
+                                                className={`h-full w-full items-center justify-center text-muted-foreground ${product.thumbnail ? 'hidden' : 'flex'}`}
+                                            >
+                                                <Package className="h-12 w-12 text-muted-foreground/60" />
+                                            </div>
 
                                             {/* Category Tag */}
-                                            <span className="absolute top-3 left-3 rounded-md bg-white/90 px-2 py-1 text-[10px] font-bold text-slate-800 shadow-sm backdrop-blur-sm dark:bg-slate-900/90 dark:text-slate-200">
+                                            <span className="absolute top-3 left-3 rounded-md border border-border/80 bg-white/95 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-foreground shadow-2xs backdrop-blur-xs dark:bg-slate-900/95">
                                                 {product.category}
                                             </span>
 
                                             {/* Status Badge */}
                                             {isAdded && (
-                                                <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-md bg-emerald-600 px-2 py-1 text-[10px] font-bold text-white shadow-md">
+                                                <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-[#16A34A] shadow-xs dark:border-emerald-800 dark:bg-emerald-950/80">
                                                     <CheckCircle2 className="h-3 w-3" /> In Your Shop
                                                 </span>
                                             )}
@@ -229,36 +233,36 @@ export default function ShopOwnerCatalogIndex({
 
                                         {/* Body */}
                                         <div className="flex flex-1 flex-col p-4">
-                                            <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
+                                            <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
                                                 {isAuthorShopOwner ? (
-                                                    <Store className="h-3 w-3 text-emerald-600" />
+                                                    <Store className="h-3 w-3 text-primary" />
                                                 ) : (
                                                     <Shield className="h-3 w-3 text-primary" />
                                                 )}
                                                 <span>
-                                                    Authored by: <strong>{product.creator?.name ?? 'Admin'}</strong>
+                                                    Authored by: <strong className="text-foreground">{product.creator?.name ?? 'Admin'}</strong>
                                                 </span>
                                             </div>
 
-                                            <h3 className="mt-1 text-sm font-bold text-slate-900 dark:text-white line-clamp-1">
+                                            <h3 className="mt-1.5 text-sm font-bold tracking-tight text-foreground line-clamp-2 min-h-[2.5rem]">
                                                 {product.name}
                                             </h3>
 
-                                            <span className="font-mono text-[11px] text-slate-400">
+                                            <span className="mt-1 font-mono text-[11px] text-muted-foreground">
                                                 SKU: {product.sku}
                                             </span>
 
-                                            <p className="mt-2 text-xs text-slate-500 line-clamp-2 flex-1">
+                                            <p className="mt-2 text-xs text-muted-foreground line-clamp-2 flex-1">
                                                 {product.description || 'Master catalog product.'}
                                             </p>
 
                                             {/* Price & Action */}
-                                            <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 dark:border-slate-800">
+                                            <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
                                                 <div>
-                                                    <span className="block text-[10px] uppercase font-semibold text-slate-400">
+                                                    <span className="block text-[10px] uppercase font-semibold text-muted-foreground">
                                                         MSRP Base
                                                     </span>
-                                                    <span className="text-base font-extrabold text-slate-900 dark:text-white">
+                                                    <span className="text-base font-extrabold text-foreground">
                                                         ${Number(product.base_price).toFixed(2)}
                                                     </span>
                                                 </div>
@@ -266,15 +270,16 @@ export default function ShopOwnerCatalogIndex({
                                                 {isAdded ? (
                                                     <Link
                                                         href="/shop-owner/products"
-                                                        className="inline-flex items-center gap-1 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-300"
+                                                        className="inline-flex items-center gap-1.5 rounded-xl border border-input bg-card px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-muted hover:border-primary transition-colors shadow-2xs"
                                                     >
+                                                        <Store className="h-3.5 w-3.5 text-primary" />
                                                         <span>Manage in Shop</span>
                                                     </Link>
                                                 ) : (
                                                     <button
                                                         type="button"
                                                         onClick={() => openAddModal(product)}
-                                                        className="inline-flex items-center gap-1 rounded-xl bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground shadow-xs transition hover:opacity-90"
+                                                        className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground hover:bg-[#1D4ED8] transition-colors shadow-2xs"
                                                     >
                                                         <Plus className="h-3.5 w-3.5" />
                                                         <span>Add to Shop</span>
