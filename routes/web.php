@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ShopController as AdminShopController;
 use App\Http\Controllers\Admin\ShopOwnerController as AdminShopOwnerController;
+use App\Http\Controllers\Auth\RegistrationOtpController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\ShopOwner\CreateCatalogProductController;
 use App\Http\Controllers\ShopOwner\SharedCatalogController;
@@ -26,6 +27,15 @@ Route::get('/shops/{slug}', [CustomerController::class, 'shopShow'])->name('cust
 Route::get('/shops/{slug}/products/{productId}', [CustomerController::class, 'productShow'])->name('customer.product.show');
 Route::get('/cart', [CustomerController::class, 'cart'])->name('customer.cart');
 Route::get('/checkout', [CustomerController::class, 'checkout'])->name('customer.checkout');
+
+/*
+|--------------------------------------------------------------------------
+| Registration OTP Dispatch
+|--------------------------------------------------------------------------
+*/
+Route::post('/register/send-otp', [RegistrationOtpController::class, 'sendOtp'])
+    ->middleware('guest')
+    ->name('register.send-otp');
 
 /*
 |--------------------------------------------------------------------------
