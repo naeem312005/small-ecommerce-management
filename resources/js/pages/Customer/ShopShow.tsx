@@ -17,6 +17,7 @@ import {
 import React, { useState } from 'react';
 import { useCart } from '@/context/cart-context';
 import CustomerLayout from '@/layouts/customer-layout';
+import { notify } from '@/lib/alert';
 import type { PaginatedData, Shop, ShopProduct } from '@/types';
 
 type Props = {
@@ -80,6 +81,8 @@ export default function CustomerShopShow({
             stock: sp.stock,
             quantity: 1,
         });
+
+        notify.success(`Added to bag!`, `${title} (${shop.name})`);
 
         setAddedId(sp.id);
         setTimeout(() => setAddedId(null), 1500);

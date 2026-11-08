@@ -1,4 +1,5 @@
 import { createInertiaApp } from '@inertiajs/react';
+import FlashToaster from '@/components/flash-toaster';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { CartProvider } from '@/context/cart-context';
@@ -30,7 +31,8 @@ void createInertiaApp({
             <TooltipProvider delayDuration={0}>
                 <CartProvider>
                     {app}
-                    <Toaster />
+                    <FlashToaster />
+                    <Toaster position="top-right" richColors closeButton />
                 </CartProvider>
             </TooltipProvider>
         );

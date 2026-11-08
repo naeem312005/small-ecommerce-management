@@ -23,6 +23,7 @@ import {
 import React, { useState } from 'react';
 import { useCart } from '@/context/cart-context';
 import CustomerLayout from '@/layouts/customer-layout';
+import { notify } from '@/lib/alert';
 import type { Shop, ShopProduct } from '@/types';
 
 type Props = {
@@ -61,6 +62,7 @@ export default function CustomerProductShow({
             stock: shopProduct.stock,
             quantity,
         });
+        notify.success(`Added ${quantity}x "${title}" to your bag!`);
         setAdded(true);
         setTimeout(() => setAdded(false), 2000);
     };
