@@ -20,6 +20,7 @@ use Illuminate\Support\Str;
  * @property int|null $category_id
  * @property string $category
  * @property string $base_price
+ * @property string|null $compare_at_price
  * @property string|null $thumbnail
  * @property string|null $description
  * @property bool $is_active
@@ -39,6 +40,7 @@ class Product extends Model
         'category_id',
         'category',
         'base_price',
+        'compare_at_price',
         'thumbnail',
         'description',
         'is_active',
@@ -46,6 +48,7 @@ class Product extends Model
 
     protected $casts = [
         'base_price' => 'decimal:2',
+        'compare_at_price' => 'decimal:2',
         'is_active' => 'boolean',
     ];
 

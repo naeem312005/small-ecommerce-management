@@ -31,6 +31,7 @@ export default function AdminProductsCreate({ suggestedSku, categories = default
         sku: suggestedSku || '',
         category: categoryOptions[0] || 'Electronics',
         base_price: '',
+        compare_at_price: '',
         description: '',
         is_active: true,
         thumbnail: null as File | null,
@@ -134,27 +135,50 @@ export default function AdminProductsCreate({ suggestedSku, categories = default
                             </div>
                         </div>
 
-                        {/* Base Price */}
-                        <div>
-                            <label className="block text-xs font-bold text-foreground">
-                                Master Catalog Base Price ($) *
-                            </label>
-                            <input
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                value={data.base_price}
-                                onChange={(e) => setData('base_price', e.target.value)}
-                                placeholder="0.00"
-                                className="mt-1.5 w-full rounded-xl border border-input bg-background py-2.5 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
-                                required
-                            />
-                            <p className="mt-1 text-[11px] text-muted-foreground">
-                                Suggested MSRP. Individual shop owners can set their own shop-specific prices when listing this item.
-                            </p>
-                            {errors.base_price && (
-                                <p className="mt-1 text-xs text-destructive">{errors.base_price}</p>
-                            )}
+                        {/* Base Price & Compare-At Price */}
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                                <label className="block text-xs font-bold text-foreground">
+                                    Master Catalog Base Price ($) *
+                                </label>
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    value={data.base_price}
+                                    onChange={(e) => setData('base_price', e.target.value)}
+                                    placeholder="0.00"
+                                    className="mt-1.5 w-full rounded-xl border border-input bg-background py-2.5 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary font-mono"
+                                    required
+                                />
+                                <p className="mt-1 text-[11px] text-muted-foreground">
+                                    Suggested base selling price for merchants.
+                                </p>
+                                {errors.base_price && (
+                                    <p className="mt-1 text-xs text-destructive">{errors.base_price}</p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-bold text-foreground">
+                                    Compare-At / Regular MSRP ($)
+                                </label>
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    value={data.compare_at_price}
+                                    onChange={(e) => setData('compare_at_price', e.target.value)}
+                                    placeholder="e.g. 499.00"
+                                    className="mt-1.5 w-full rounded-xl border border-input bg-background py-2.5 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary font-mono"
+                                />
+                                <p className="mt-1 text-[11px] text-muted-foreground">
+                                    Original retail price before discount (optional).
+                                </p>
+                                {errors.compare_at_price && (
+                                    <p className="mt-1 text-xs text-destructive">{errors.compare_at_price}</p>
+                                )}
+                            </div>
                         </div>
 
                         {/* Description */}

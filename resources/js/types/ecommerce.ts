@@ -39,6 +39,7 @@ export type Product = {
     category_id?: number | null;
     category: string;
     base_price: string | number;
+    compare_at_price?: string | number | null;
     thumbnail: string | null;
     description: string | null;
     is_active: boolean;
@@ -57,6 +58,10 @@ export type ShopProduct = {
     shop_id: number;
     product_id: number;
     price: string | number;
+    compare_at_price?: string | number | null;
+    effective_compare_at_price?: string | null;
+    has_discount?: boolean;
+    discount_percent?: number | null;
     custom_title: string | null;
     custom_description: string | null;
     custom_thumbnail: string | null;

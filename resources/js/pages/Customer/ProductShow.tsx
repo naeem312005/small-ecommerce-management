@@ -43,9 +43,19 @@ export default function CustomerProductShow({
     const title = shopProduct.display_title || shopProduct.product?.name || 'Untitled';
     const thumbnail = shopProduct.display_thumbnail || shopProduct.product?.thumbnail;
     const description = shopProduct.display_description || shopProduct.product?.description;
-    const isCustomPrice =
-        shopProduct.product && Number(shopProduct.price) !== Number(shopProduct.product.base_price);
     const price = Number(shopProduct.price);
+    const compareAtPrice = shopProduct.effective_compare_at_price
+        ? Number(shopProduct.effective_compare_at_price)
+        : (shopProduct.compare_at_price ? Number(shopProduct.compare_at_price) : null);
+    const hasDiscount = Boolean(
+        shopProduct.has_discount || (compareAtPrice && compareAtPrice > price)
+    );
+    const discountPercent =
+        shopProduct.discount_percent ??
+        (hasDiscount && compareAtPrice
+            ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
+            : null);
+    const savings = hasDiscount && compareAtPrice ? compareAtPrice - price : 0;
     const installment = (price / 4).toFixed(2);
 
     const handleAddToCart = () => {
@@ -129,6 +139,15 @@ export default function CustomerProductShow({
                                     <span>{shop.name}</span>
                                 </span>
                             </div>
+
+                            {/* Promotional Discount Badge */}
+                            {hasDiscount && discountPercent && discountPercent > 0 && (
+                                <div className="absolute top-4 right-4">
+                                    <span className="rounded-xl bg-[#DC2626] px-3 py-1 text-xs font-black text-white shadow-md">
+                                        -{discountPercent}% OFF
+                                    </span>
+                                </div>
+                            )}
                         </div>
 
                         {/* Guarantee Badges */}
@@ -197,17 +216,20 @@ export default function CustomerProductShow({
 
                         {/* Price Display */}
                         <div className="mt-6 rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] p-6 shadow-xs dark:border-[#334155] dark:bg-[#1E293B]">
-                            <div className="flex items-baseline gap-3">
+                            <div className="flex flex-wrap items-baseline gap-3">
                                 <span className="text-4xl font-black text-[#0F172A] dark:text-[#F8FAFC]">
                                     ${price.toFixed(2)}
                                 </span>
-                                {isCustomPrice && shopProduct.product && (
+                                {hasDiscount && compareAtPrice && (
                                     <div className="flex items-center gap-2 text-xs">
-                                        <span className="line-through text-[#64748B]">
-                                            ${Number(shopProduct.product.base_price).toFixed(2)}
+                                        <span className="line-through text-[#64748B] text-base font-mono">
+                                            ${compareAtPrice.toFixed(2)}
                                         </span>
-                                        <span className="rounded-lg bg-[#EFF6FF] px-2 py-0.5 font-bold text-[#2563EB]">
-                                            Boutique Pricing
+                                        <span className="rounded-lg bg-[#DC2626] px-2.5 py-1 text-xs font-black text-white shadow-xs">
+                                            -{discountPercent}% OFF
+                                        </span>
+                                        <span className="font-semibold text-[#16A34A]">
+                                            Save ${savings.toFixed(2)}
                                         </span>
                                     </div>
                                 )}

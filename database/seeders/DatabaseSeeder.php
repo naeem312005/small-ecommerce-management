@@ -386,7 +386,8 @@ class DatabaseSeeder extends Seeder
         ShopProduct::firstOrCreate(
             ['shop_id' => $shopTech->id, 'product_id' => $prodHeadphones->id],
             [
-                'price' => 189.99, // TechNova offers a $10 discount!
+                'price' => 169.99,
+                'compare_at_price' => 199.99, // 15% Promotional Discount
                 'custom_title' => 'TechNova Audio Elite - Wireless ANC Headphones (Black)',
                 'custom_description' => 'Curated by TechNova audio engineers: Includes free protective hard case and custom EQ sound presets for audiophiles.',
                 'custom_thumbnail' => 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80',
@@ -398,7 +399,8 @@ class DatabaseSeeder extends Seeder
         ShopProduct::firstOrCreate(
             ['shop_id' => $shopTech->id, 'product_id' => $prodMonitor->id],
             [
-                'price' => 439.00, // Custom shop price
+                'price' => 389.00,
+                'compare_at_price' => 449.00, // 13% Promotional Discount
                 'custom_title' => 'TechNova 27" ProCreator 4K Monitor Bundle',
                 'custom_description' => 'Zero dead pixel guarantee with high-speed 8K HDMI cable included.',
                 'custom_thumbnail' => null, // Falls back to master thumbnail
@@ -411,6 +413,7 @@ class DatabaseSeeder extends Seeder
             ['shop_id' => $shopTech->id, 'product_id' => $prodKeyboard->id],
             [
                 'price' => 95.00,
+                'compare_at_price' => null,
                 'custom_title' => null,
                 'custom_description' => 'Equipped with custom Gateron Oil King linear switches and PBT dye-sub caps.',
                 'custom_thumbnail' => null,
@@ -423,6 +426,7 @@ class DatabaseSeeder extends Seeder
             ['shop_id' => $shopTech->id, 'product_id' => $prodMagCharge->id],
             [
                 'price' => 49.99,
+                'compare_at_price' => null,
                 'custom_title' => null,
                 'custom_description' => null,
                 'custom_thumbnail' => null,
@@ -437,6 +441,7 @@ class DatabaseSeeder extends Seeder
             ['shop_id' => $shopFashion->id, 'product_id' => $prodHeadphones->id],
             [
                 'price' => 219.00, // Higher price boutique bundle
+                'compare_at_price' => null,
                 'custom_title' => 'Aura Studio Edition Matte Black Wireless Headphones',
                 'custom_description' => 'Fashion meets acoustic perfection. Shipped in signature embossed Aura luxury gift packaging with soft vegan suede travel pouch.',
                 'custom_thumbnail' => 'https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=800&q=80',
@@ -448,7 +453,8 @@ class DatabaseSeeder extends Seeder
         ShopProduct::firstOrCreate(
             ['shop_id' => $shopFashion->id, 'product_id' => $prodHoodie->id],
             [
-                'price' => 62.00,
+                'price' => 52.00,
+                'compare_at_price' => 65.00, // 20% Promotional Discount
                 'custom_title' => 'Aura Essential Organic Brushed Cotton Hoodie',
                 'custom_description' => 'Everyday luxury streetwear. Ethically manufactured with zero chemical dyes in natural oatmeal and coal grey.',
                 'custom_thumbnail' => null,
@@ -522,6 +528,7 @@ class DatabaseSeeder extends Seeder
             ['shop_id' => $shopLiving->id, 'product_id' => $prodLamp->id],
             [
                 'price' => 75.00,
+                'compare_at_price' => 89.00, // 16% Promotional Discount
                 'custom_title' => 'Nordic Scandi Amber Glow Bedside Sphere Lamp',
                 'custom_description' => 'Warm 2700K ambient LED warm glow with braided fabric cable.',
                 'custom_thumbnail' => null,

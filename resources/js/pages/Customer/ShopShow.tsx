@@ -276,8 +276,18 @@ export default function CustomerShopShow({
                         {shopProducts.data.map((sp) => {
                             const title = sp.display_title || sp.product?.name || 'Untitled';
                             const thumbnail = sp.display_thumbnail || sp.product?.thumbnail;
-                            const isCustomPrice =
-                                sp.product && Number(sp.price) !== Number(sp.product.base_price);
+                            const price = Number(sp.price);
+                            const compareAtPrice = sp.effective_compare_at_price
+                                ? Number(sp.effective_compare_at_price)
+                                : (sp.compare_at_price ? Number(sp.compare_at_price) : null);
+                            const hasDiscount = Boolean(
+                                sp.has_discount || (compareAtPrice && compareAtPrice > price)
+                            );
+                            const discountPercent =
+                                sp.discount_percent ??
+                                (hasDiscount && compareAtPrice
+                                    ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
+                                    : null);
 
                             return (
                                 <div
@@ -306,6 +316,15 @@ export default function CustomerShopShow({
                                         >
                                             <Package className="h-12 w-12" />
                                         </div>
+
+                                        {/* Dynamic Discount badge */}
+                                        {hasDiscount && discountPercent && discountPercent > 0 && (
+                                            <div className="absolute top-3 right-3">
+                                                <span className="rounded-lg bg-[#DC2626] px-2 py-1 text-[10px] font-black text-white shadow-xs">
+                                                    -{discountPercent}% OFF
+                                                </span>
+                                            </div>
+                                        )}
                                     </Link>
 
                                     <div className="flex flex-1 flex-col p-5">
@@ -330,11 +349,11 @@ export default function CustomerShopShow({
                                         <div className="mt-4 flex items-baseline justify-between">
                                             <div className="flex items-baseline gap-2">
                                                 <span className="text-lg font-black text-[#0F172A] dark:text-white">
-                                                    ${Number(sp.price).toFixed(2)}
+                                                    ${price.toFixed(2)}
                                                 </span>
-                                                {isCustomPrice && sp.product && (
-                                                    <span className="text-xs text-[#64748B] line-through">
-                                                        ${Number(sp.product.base_price).toFixed(2)}
+                                                {hasDiscount && compareAtPrice && (
+                                                    <span className="text-xs text-[#64748B] line-through font-mono">
+                                                        ${compareAtPrice.toFixed(2)}
                                                     </span>
                                                 )}
                                             </div>

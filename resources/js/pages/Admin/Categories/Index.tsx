@@ -381,3 +381,4 @@ export default function AdminCategoriesIndex({ categories, metrics, filters }: P
         </AppLayout>
     );
 }
+

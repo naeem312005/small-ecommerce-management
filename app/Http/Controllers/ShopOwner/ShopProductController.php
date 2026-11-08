@@ -102,6 +102,7 @@ class ShopProductController extends Controller
 
         $validated = $request->validate([
             'price' => ['required', 'numeric', 'min:0'],
+            'compare_at_price' => ['nullable', 'numeric', 'min:0'],
             'custom_title' => ['nullable', 'string', 'max:255'],
             'custom_description' => ['nullable', 'string'],
             'stock' => ['required', 'integer', 'min:0'],
@@ -126,6 +127,9 @@ class ShopProductController extends Controller
         }
 
         $shopProduct->price = $validated['price'];
+        $shopProduct->compare_at_price = isset($validated['compare_at_price']) && $validated['compare_at_price'] !== ''
+            ? $validated['compare_at_price']
+            : null;
         $shopProduct->custom_title = ! empty($validated['custom_title']) ? $validated['custom_title'] : null;
         $shopProduct->custom_description = ! empty($validated['custom_description']) ? $validated['custom_description'] : null;
         $shopProduct->stock = $validated['stock'];

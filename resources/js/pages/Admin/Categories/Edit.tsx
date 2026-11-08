@@ -234,3 +234,4 @@ export default function AdminCategoriesEdit({ category }: Props) {
         </AppLayout>
     );
 }
+

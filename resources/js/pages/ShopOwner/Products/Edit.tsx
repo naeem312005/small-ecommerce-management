@@ -5,9 +5,11 @@ import {
     Image as ImageIcon,
     Layers,
     Package,
+    Percent,
     RotateCcw,
     Save,
     Sparkles,
+    Tag,
 } from 'lucide-react';
 import React, { useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
@@ -23,6 +25,7 @@ export default function ShopOwnerProductsEdit({ shopProduct }: Props) {
 
     const { data, setData, processing, errors } = useForm({
         price: String(shopProduct.price),
+        compare_at_price: shopProduct.compare_at_price ? String(shopProduct.compare_at_price) : '',
         custom_title: shopProduct.custom_title || '',
         custom_description: shopProduct.custom_description || '',
         stock: shopProduct.stock,
@@ -30,6 +33,36 @@ export default function ShopOwnerProductsEdit({ shopProduct }: Props) {
         custom_thumbnail: null as File | null,
         remove_custom_thumbnail: false,
     });
+
+    const currentPrice = parseFloat(data.price) || 0;
+    const currentCompareAt = parseFloat(data.compare_at_price) || 0;
+    const hasActiveDiscount = currentCompareAt > currentPrice && currentPrice > 0;
+    const liveDiscountPercent = hasActiveDiscount
+        ? Math.round(((currentCompareAt - currentPrice) / currentCompareAt) * 100)
+        : 0;
+    const liveSavings = hasActiveDiscount ? currentCompareAt - currentPrice : 0;
+
+    const applyDiscountPercent = (percent: number) => {
+        const referencePrice = currentCompareAt > 0
+            ? currentCompareAt
+            : (product ? parseFloat(String(product.base_price)) : (currentPrice > 0 ? currentPrice : 100));
+
+        const newCompareAt = referencePrice.toFixed(2);
+        const newPrice = (referencePrice * (1 - percent / 100)).toFixed(2);
+
+        setData((prev) => ({
+            ...prev,
+            compare_at_price: newCompareAt,
+            price: newPrice,
+        }));
+    };
+
+    const clearDiscount = () => {
+        setData((prev) => ({
+            ...prev,
+            compare_at_price: '',
+        }));
+    };
 
     const [preview, setPreview] = useState<string | null>(
         shopProduct.custom_thumbnail || null
@@ -133,43 +166,111 @@ export default function ShopOwnerProductsEdit({ shopProduct }: Props) {
                 {/* Customization Form */}
                 <div className="max-w-3xl rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Shop Price & Stock */}
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                            <div>
-                                <label className="block text-xs font-semibold text-foreground">
-                                    Shop Specific Price ($) *
-                                </label>
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    min="0"
-                                    value={data.price}
-                                    onChange={(e) => setData('price', e.target.value)}
-                                    className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                                    required
-                                />
-                                <p className="mt-1 text-[11px] text-muted-foreground">
-                                    Your store's selling price. Can be higher or lower than the master MSRP.
-                                </p>
-                                {errors.price && (
-                                    <p className="mt-1 text-xs text-destructive">{errors.price}</p>
+                        {/* Pricing, Discount & Inventory */}
+                        <div className="rounded-xl border border-border/80 bg-muted/20 p-4 space-y-4">
+                            <div className="flex items-center justify-between">
+                                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                                    <Percent className="h-3.5 w-3.5 text-primary" />
+                                    Pricing, Promotional Discount & Stock
+                                </span>
+                                {hasActiveDiscount && (
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-red-500/10 border border-red-500/20 px-2.5 py-0.5 text-xs font-bold text-red-600">
+                                        -{liveDiscountPercent}% OFF (Saves ${liveSavings.toFixed(2)})
+                                    </span>
                                 )}
                             </div>
 
-                            <div>
-                                <label className="block text-xs font-semibold text-foreground">
-                                    Inventory Stock in Shop *
-                                </label>
-                                <input
-                                    type="number"
-                                    min="0"
-                                    value={data.stock}
-                                    onChange={(e) => setData('stock', parseInt(e.target.value) || 0)}
-                                    className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                                    required
-                                />
-                                {errors.stock && (
-                                    <p className="mt-1 text-xs text-destructive">{errors.stock}</p>
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                                <div>
+                                    <label className="block text-xs font-semibold text-foreground">
+                                        Selling Price ($) *
+                                    </label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        value={data.price}
+                                        onChange={(e) => setData('price', e.target.value)}
+                                        className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary font-mono font-bold"
+                                        required
+                                    />
+                                    <p className="mt-1 text-[11px] text-muted-foreground">
+                                        Customer checkout price.
+                                    </p>
+                                    {errors.price && (
+                                        <p className="mt-1 text-xs text-destructive">{errors.price}</p>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-semibold text-foreground">
+                                        Compare-At / Regular Price ($)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        value={data.compare_at_price}
+                                        onChange={(e) => setData('compare_at_price', e.target.value)}
+                                        placeholder="e.g. 499.00"
+                                        className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary font-mono"
+                                    />
+                                    <p className="mt-1 text-[11px] text-muted-foreground">
+                                        Original crossed-out price (shows discount badge).
+                                    </p>
+                                    {errors.compare_at_price && (
+                                        <p className="mt-1 text-xs text-destructive">{errors.compare_at_price}</p>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-semibold text-foreground">
+                                        Inventory Stock in Shop *
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        value={data.stock}
+                                        onChange={(e) => setData('stock', parseInt(e.target.value) || 0)}
+                                        className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary font-mono"
+                                        required
+                                    />
+                                    <p className="mt-1 text-[11px] text-muted-foreground">
+                                        Units available to purchase.
+                                    </p>
+                                    {errors.stock && (
+                                        <p className="mt-1 text-xs text-destructive">{errors.stock}</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Quick Discount Calculator Buttons */}
+                            <div className="pt-2 border-t border-border/60 flex flex-wrap items-center gap-2">
+                                <span className="text-[11px] text-muted-foreground font-semibold">
+                                    Quick Discount:
+                                </span>
+                                {[5, 10, 15, 20, 25].map((pct) => (
+                                    <button
+                                        key={pct}
+                                        type="button"
+                                        onClick={() => applyDiscountPercent(pct)}
+                                        className={`rounded-lg px-2 py-1 text-[11px] font-bold border transition ${
+                                            liveDiscountPercent === pct
+                                                ? 'bg-primary text-primary-foreground border-primary'
+                                                : 'border-border bg-background text-foreground hover:bg-muted'
+                                        }`}
+                                    >
+                                        {pct}% OFF
+                                    </button>
+                                ))}
+                                {data.compare_at_price && (
+                                    <button
+                                        type="button"
+                                        onClick={clearDiscount}
+                                        className="rounded-lg px-2 py-1 text-[11px] font-bold border border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive/20 transition"
+                                    >
+                                        Clear Discount
+                                    </button>
                                 )}
                             </div>
                         </div>

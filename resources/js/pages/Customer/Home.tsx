@@ -450,16 +450,18 @@ export default function CustomerHome({
                         {shopProducts.data.map((sp) => {
                             const title = sp.display_title || sp.product?.name || 'Untitled Product';
                             const thumbnail = sp.display_thumbnail || sp.product?.thumbnail;
-                            const isCustomPrice =
-                                sp.product && Number(sp.price) !== Number(sp.product.base_price);
+                            const price = Number(sp.price);
+                            const compareAtPrice = sp.effective_compare_at_price
+                                ? Number(sp.effective_compare_at_price)
+                                : (sp.compare_at_price ? Number(sp.compare_at_price) : null);
+                            const hasDiscount = Boolean(
+                                sp.has_discount || (compareAtPrice && compareAtPrice > price)
+                            );
                             const discountPercent =
-                                sp.product && Number(sp.product.base_price) > Number(sp.price)
-                                    ? Math.round(
-                                          ((Number(sp.product.base_price) - Number(sp.price)) /
-                                              Number(sp.product.base_price)) *
-                                              100
-                                      )
-                                    : null;
+                                sp.discount_percent ??
+                                (hasDiscount && compareAtPrice
+                                    ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
+                                    : null);
 
                             return (
                                 <div
@@ -498,8 +500,8 @@ export default function CustomerHome({
                                             </span>
                                         </div>
 
-                                        {/* Discount badge if customized */}
-                                        {discountPercent && discountPercent > 0 && (
+                                        {/* Dynamic Discount badge if active */}
+                                        {hasDiscount && discountPercent && discountPercent > 0 && (
                                             <div className="absolute top-3 right-3">
                                                 <span className="rounded-lg bg-[#DC2626] px-2 py-1 text-[10px] font-black text-white shadow-xs">
                                                     -{discountPercent}% OFF
@@ -536,11 +538,11 @@ export default function CustomerHome({
                                         <div className="mt-4 flex items-baseline justify-between">
                                             <div className="flex items-baseline gap-2">
                                                 <span className="text-lg font-black text-[#0F172A] dark:text-[#F8FAFC]">
-                                                    ${Number(sp.price).toFixed(2)}
+                                                    ${price.toFixed(2)}
                                                 </span>
-                                                {isCustomPrice && sp.product && (
-                                                    <span className="text-xs text-[#64748B] line-through">
-                                                        ${Number(sp.product.base_price).toFixed(2)}
+                                                {hasDiscount && compareAtPrice && (
+                                                    <span className="text-xs text-[#64748B] line-through font-mono">
+                                                        ${compareAtPrice.toFixed(2)}
                                                     </span>
                                                 )}
                                             </div>

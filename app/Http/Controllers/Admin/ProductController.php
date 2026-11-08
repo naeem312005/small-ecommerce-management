@@ -78,6 +78,7 @@ class ProductController extends Controller
             'sku' => ['required', 'string', 'max:100', 'unique:products,sku'],
             'category' => ['required', 'string', 'max:100'],
             'base_price' => ['required', 'numeric', 'min:0'],
+            'compare_at_price' => ['nullable', 'numeric', 'min:0'],
             'description' => ['nullable', 'string'],
             'is_active' => ['boolean'],
             'thumbnail' => ['nullable', 'image', 'max:3072'],
@@ -100,6 +101,9 @@ class ProductController extends Controller
             'category_id' => $categoryModel?->id,
             'category' => $validated['category'],
             'base_price' => $validated['base_price'],
+            'compare_at_price' => isset($validated['compare_at_price']) && $validated['compare_at_price'] !== ''
+                ? $validated['compare_at_price']
+                : null,
             'description' => $validated['description'] ?? null,
             'is_active' => $validated['is_active'] ?? true,
             'thumbnail' => $thumbnailPath,
@@ -131,6 +135,7 @@ class ProductController extends Controller
             'sku' => ['required', 'string', 'max:100', 'unique:products,sku,'.$product->id],
             'category' => ['required', 'string', 'max:100'],
             'base_price' => ['required', 'numeric', 'min:0'],
+            'compare_at_price' => ['nullable', 'numeric', 'min:0'],
             'description' => ['nullable', 'string'],
             'is_active' => ['boolean'],
             'thumbnail' => ['nullable', 'image', 'max:3072'],
@@ -155,6 +160,9 @@ class ProductController extends Controller
         $product->category_id = $categoryModel?->id;
         $product->category = $validated['category'];
         $product->base_price = $validated['base_price'];
+        $product->compare_at_price = isset($validated['compare_at_price']) && $validated['compare_at_price'] !== ''
+            ? $validated['compare_at_price']
+            : null;
         $product->description = $validated['description'] ?? null;
         $product->is_active = $validated['is_active'] ?? $product->is_active;
         $product->save();

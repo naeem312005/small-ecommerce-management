@@ -30,7 +30,7 @@ class CustomerController extends Controller
             ->whereHas('product', function ($q) {
                 $q->where('is_active', true);
             })
-            ->with(['shop:id,name,slug,logo,phone,address', 'product:id,name,sku,category,base_price,thumbnail,description']);
+            ->with(['shop:id,name,slug,logo,phone,address', 'product:id,name,sku,category,base_price,compare_at_price,thumbnail,description']);
 
         if ($selectedShopSlug) {
             $query->whereHas('shop', fn ($q) => $q->where('slug', $selectedShopSlug));
@@ -122,7 +122,7 @@ class CustomerController extends Controller
         $productsQuery = $shop->shopProducts()
             ->where('is_available', true)
             ->whereHas('product', fn ($q) => $q->where('is_active', true))
-            ->with('product:id,name,sku,category,base_price,thumbnail,description');
+            ->with('product:id,name,sku,category,base_price,compare_at_price,thumbnail,description');
 
         if ($selectedCategory) {
             $productsQuery->whereHas('product', fn ($q) => $q->where('category', $selectedCategory));
@@ -177,7 +177,7 @@ class CustomerController extends Controller
             ->where('id', '!=', $shopProduct->id)
             ->where('is_available', true)
             ->whereHas('product', fn ($q) => $q->where('is_active', true))
-            ->with(['product:id,name,category,base_price,thumbnail'])
+            ->with(['product:id,name,category,base_price,compare_at_price,thumbnail'])
             ->inRandomOrder()
             ->take(4)
             ->get();
