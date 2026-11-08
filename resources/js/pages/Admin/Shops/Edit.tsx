@@ -275,3 +275,4 @@ export default function AdminShopsEdit({ shop, shopOwners }: Props) {
         </AppLayout>
     );
 }
+

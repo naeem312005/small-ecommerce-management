@@ -237,3 +237,4 @@ export default function AdminShopOwnersIndex({ shopOwners, filters }: Props) {
         </AppLayout>
     );
 }
+

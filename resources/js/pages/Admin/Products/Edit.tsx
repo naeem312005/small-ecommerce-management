@@ -226,3 +226,4 @@ export default function AdminProductsEdit({ product }: Props) {
         </AppLayout>
     );
 }
+

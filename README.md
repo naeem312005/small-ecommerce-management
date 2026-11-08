@@ -34,6 +34,8 @@ The platform is designed around a **Central Shared Product Catalog** paradigm:
 | **Shop Owners Create Own Products** | Shop owners can publish new products directly to the shared catalog and optionally list them immediately in their own store. | ✅ Complete |
 | **Shop-Specific Customizations** | Shop owners can override and customize product prices, marketing descriptions, stock inventory, and upload shop-specific thumbnails. | ✅ Complete |
 | **Customer Storefront Isolation** | Customers only see products assigned to active shops. Unassigned products (e.g. `PRD-UNASSIGNED-01`) are strictly excluded from customer views. | ✅ Complete |
+| **Commercial Shopping Cart Drawer** | Client-side interactive shopping bag with slide-over drawer, quantity controls, free express shipping progress bar, and instant checkout simulation. | ✅ Complete |
+| **Instant Evaluation Role Switcher** | Floating bottom-right 1-click persona switcher to seamlessly test Admin, TechNova Shop Owner, Aura Apparel Shop Owner, and Customer roles. | ✅ Complete |
 | **Automated Testing & Code Quality** | **48 Automated PHPUnit Feature Tests (206 assertions)**, **PHPStan Level 7 (0 errors)**, **TypeScript `tsc` Check (0 errors)**, **Laravel Pint** PSR-12 code style. | ✅ Complete |
 | **Database Export Included** | Standalone SQL dump included at project root (`ecommerce.sql`) and `database/ecommerce.sql` for instant manual import. | ✅ Complete |
 
@@ -209,8 +211,8 @@ All demo accounts use the standard password: `password123`
 - Requirement: *"Customers should only see products assigned to a shop. Products that are not assigned to any shop must not be visible to customers."*
 - Our queries strictly join or filter through the `ShopProduct` relationship of active shops.
 - In our seed data, we intentionally created two master catalog products that have **never been assigned to any shop**:
-  1. `PRD-UNASSIGNED-01`: *Prototype Autonomous 8K Cinematic Drone* ($1299.00)
-  2. `PRD-UNASSIGNED-02`: *Limited Edition Italian Cashmere Overcoat* ($590.00)
+  1. `PRD-UNASSIGNED-01`: *DJI Inspire 3 Pro Autonomous 8K Cinema Drone* ($1299.00)
+  2. `PRD-UNASSIGNED-02`: *Italian Double-Faced Pure Cashmere Overcoat* ($590.00)
 - You can verify in the Admin Panel (`/admin/products`) that these products exist in the catalog with status *"Unassigned (Hidden)"*.
 - In the public customer views (`/` and `/shops/{slug}`), **neither of these unassigned products will ever appear**. Direct attempts to load them via `/shops/{slug}/products/{unassigned_id}` return a clean `404 Not Found`.
 
@@ -298,3 +300,4 @@ small-ecommerce-management/
 - **Email:** [naimulhasan312005@gmail.com](mailto:naimulhasan312005@gmail.com)
 - **Application Sent To:** [career@csnbangladesh.com](mailto:career@csnbangladesh.com)
 - **Task Submission Date:** 08 November, 2026
+

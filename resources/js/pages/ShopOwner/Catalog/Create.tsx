@@ -282,3 +282,4 @@ export default function ShopOwnerCatalogCreate({ shop, suggestedSku }: Props) {
         </AppLayout>
     );
 }
+

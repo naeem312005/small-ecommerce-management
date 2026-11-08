@@ -292,18 +292,18 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // E. UNASSIGNED PRODUCTS IN CATALOG (Critical Requirement Verification!)
-        // Requirement: "Products that are not assigned to any shop must not be visible to customers."
+        // E. UNASSIGNED PRODUCTS IN SHARED CATALOG (Isolation Requirement)
+        // Products in the shared catalog that are NOT assigned to any shop must not be visible to customers.
         Product::firstOrCreate(
             ['sku' => 'PRD-UNASSIGNED-01'],
             [
                 'created_by' => $admin->id,
-                'name' => '[UNASSIGNED CATALOG ITEM] Prototype Autonomous 8K Cinematic Drone',
-                'slug' => 'prototype-autonomous-8k-cinematic-drone',
+                'name' => 'DJI Inspire 3 Pro Autonomous 8K Cinema Drone',
+                'slug' => 'dji-inspire-3-pro-autonomous-8k-cinema-drone',
                 'category' => 'Electronics',
                 'base_price' => 1299.00,
                 'thumbnail' => 'https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=800&q=80',
-                'description' => 'This product exists in the shared master catalog but has intentionally NOT been assigned to any shop. It must NEVER be visible in customer storefronts.',
+                'description' => 'Flagship cinema drone system featuring full-frame 8K ProRes RAW recording, centimeter-level RTK positioning, and omnidirectional obstacle sensing. Available in master catalog.',
                 'is_active' => true,
             ]
         );
@@ -312,12 +312,12 @@ class DatabaseSeeder extends Seeder
             ['sku' => 'PRD-UNASSIGNED-02'],
             [
                 'created_by' => $ownerSophia->id,
-                'name' => '[UNASSIGNED CATALOG ITEM] Limited Edition Italian Cashmere Overcoat',
-                'slug' => 'limited-edition-italian-cashmere-overcoat',
+                'name' => 'Italian Double-Faced Pure Cashmere Overcoat',
+                'slug' => 'italian-double-faced-pure-cashmere-overcoat',
                 'category' => 'Fashion',
                 'base_price' => 590.00,
                 'thumbnail' => 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80',
-                'description' => 'Created by Sophia Bennett in catalog but not yet assigned to any shop. Proves catalog isolation.',
+                'description' => 'Tailored in Milan from 100% Mongolian baby cashmere. Hand-sewn unlined construction with horn buttons and tailored notch lapels.',
                 'is_active' => true,
             ]
         );

@@ -72,3 +72,4 @@ export type PaginatedData<T> = {
         active: boolean;
     }[];
 };
+

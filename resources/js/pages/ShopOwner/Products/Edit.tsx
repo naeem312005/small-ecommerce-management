@@ -320,3 +320,4 @@ export default function ShopOwnerProductsEdit({ shopProduct }: Props) {
         </AppLayout>
     );
 }
+

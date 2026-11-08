@@ -9,7 +9,9 @@ use App\Http\Controllers\ShopOwner\CreateCatalogProductController;
 use App\Http\Controllers\ShopOwner\SharedCatalogController;
 use App\Http\Controllers\ShopOwner\ShopOwnerDashboardController;
 use App\Http\Controllers\ShopOwner\ShopProductController;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +23,28 @@ Route::get('/', [CustomerController::class, 'index'])->name('home');
 Route::get('/shops', [CustomerController::class, 'shops'])->name('customer.shops');
 Route::get('/shops/{slug}', [CustomerController::class, 'shopShow'])->name('customer.shop.show');
 Route::get('/shops/{slug}/products/{productId}', [CustomerController::class, 'productShow'])->name('customer.product.show');
+
+/*
+|--------------------------------------------------------------------------
+| Quick Demo Role Switcher (For Evaluation & Testing)
+|--------------------------------------------------------------------------
+*/
+Route::post('/demo-switch', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+    $user = User::where('email', $request->email)->firstOrFail();
+    Auth::login($user);
+    $request->session()->regenerate();
+
+    if ($user->isAdmin()) {
+        return redirect()->route('admin.dashboard')->with('success', "Logged in as Platform Administrator ({$user->name})");
+    }
+
+    if ($user->isShopOwner()) {
+        return redirect()->route('shop-owner.dashboard')->with('success', "Logged in as Shop Owner ({$user->name})");
+    }
+
+    return redirect()->route('home')->with('success', "Logged in as Customer ({$user->name})");
+})->name('demo.switch');
 
 /*
 |--------------------------------------------------------------------------

@@ -4,19 +4,24 @@ import {
     Check,
     CheckCircle2,
     Clock,
-    Globe,
-    Layers,
+    CreditCard,
+    Heart,
     Mail,
     MapPin,
+    Minus,
     Package,
     Phone,
-    Shield,
+    Plus,
+    RotateCcw,
     ShieldCheck,
+    ShoppingBag,
     Sparkles,
+    Star,
     Store,
-    Tag,
+    Truck,
 } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
+import { useCart } from '@/context/cart-context';
 import CustomerLayout from '@/layouts/customer-layout';
 import type { Shop, ShopProduct } from '@/types';
 
@@ -31,141 +36,193 @@ export default function CustomerProductShow({
     shopProduct,
     relatedProducts,
 }: Props) {
+    const { addItem, setIsOpen } = useCart();
+    const [quantity, setQuantity] = useState(1);
+    const [added, setAdded] = useState(false);
+    const [activeTab, setActiveTab] = useState<'description' | 'merchant' | 'shipping'>('description');
+
     const title = shopProduct.display_title || shopProduct.product?.name || 'Untitled';
     const thumbnail = shopProduct.display_thumbnail || shopProduct.product?.thumbnail;
     const description = shopProduct.display_description || shopProduct.product?.description;
-    const isCustomThumbnail = Boolean(shopProduct.custom_thumbnail);
     const isCustomPrice =
         shopProduct.product && Number(shopProduct.price) !== Number(shopProduct.product.base_price);
-    const isCustomTitle = Boolean(shopProduct.custom_title);
-    const isCustomDesc = Boolean(shopProduct.custom_description);
+    const price = Number(shopProduct.price);
+    const installment = (price / 4).toFixed(2);
+
+    const handleAddToCart = () => {
+        addItem({
+            id: shopProduct.id,
+            shopId: shop.id,
+            shopName: shop.name,
+            shopSlug: shop.slug,
+            title,
+            price,
+            thumbnail,
+            stock: shopProduct.stock,
+            quantity,
+        });
+        setAdded(true);
+        setTimeout(() => setAdded(false), 2000);
+    };
+
+    const handleBuyNow = () => {
+        handleAddToCart();
+        setIsOpen(true);
+    };
 
     return (
         <CustomerLayout>
-            <Head title={`${title} - ${shop.name}`} />
+            <Head title={`${title} — ${shop.name} | Velora`} />
 
             {/* Breadcrumb Header */}
             <div className="border-b border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
                 <div className="mx-auto flex max-w-7xl items-center gap-2 text-xs text-slate-500">
-                    <Link href="/" className="hover:text-indigo-600">
+                    <Link href="/" className="hover:text-indigo-600 transition">
                         Home
                     </Link>
                     <span>/</span>
-                    <Link href="/shops" className="hover:text-indigo-600">
-                        Shops
+                    <Link href="/shops" className="hover:text-indigo-600 transition">
+                        Boutiques
                     </Link>
                     <span>/</span>
-                    <Link href={`/shops/${shop.slug}`} className="hover:text-indigo-600">
+                    <Link href={`/shops/${shop.slug}`} className="hover:text-indigo-600 transition">
                         {shop.name}
                     </Link>
                     <span>/</span>
-                    <span className="truncate text-slate-800 font-medium dark:text-slate-200">
+                    <span className="truncate text-slate-900 font-semibold dark:text-white">
                         {title}
                     </span>
                 </div>
             </div>
 
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-                {/* Back Link */}
+                {/* Back to boutique link */}
                 <Link
                     href={`/shops/${shop.slug}`}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-indigo-600 dark:text-slate-400"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-indigo-600 dark:text-slate-400"
                 >
                     <ArrowLeft className="h-3.5 w-3.5" />
                     <span>Back to {shop.name} Storefront</span>
                 </Link>
 
-                {/* Main Product Layout */}
-                <div className="mt-6 grid grid-cols-1 gap-12 lg:grid-cols-2">
-                    {/* Left: Product Image */}
+                {/* PDP Grid */}
+                <div className="mt-8 grid grid-cols-1 gap-12 lg:grid-cols-2">
+                    {/* Left: Product Media Gallery */}
                     <div className="space-y-4">
                         <div className="relative aspect-square w-full overflow-hidden rounded-3xl border border-slate-200 bg-slate-100 shadow-md dark:border-slate-800 dark:bg-slate-800">
                             {thumbnail ? (
                                 <img
                                     src={thumbnail}
                                     alt={title}
-                                    className="h-full w-full object-cover"
+                                    className="h-full w-full object-cover transition duration-500 hover:scale-105"
                                 />
                             ) : (
                                 <div className="flex h-full w-full items-center justify-center text-slate-400">
-                                    <Package className="h-20 w-20" />
+                                    <Package className="h-24 w-24" />
                                 </div>
                             )}
 
-                            {isCustomThumbnail && (
-                                <span className="absolute top-4 right-4 rounded-lg bg-indigo-600/90 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg backdrop-blur-sm">
-                                    Shop-Customized Image
+                            {/* Boutique Overlay Pill */}
+                            <div className="absolute top-4 left-4">
+                                <span className="inline-flex items-center gap-1.5 rounded-xl bg-slate-950/85 px-3 py-1.5 text-xs font-bold text-white backdrop-blur-md shadow-md">
+                                    <Store className="h-3.5 w-3.5 text-indigo-400" />
+                                    <span>{shop.name}</span>
                                 </span>
-                            )}
+                            </div>
                         </div>
 
-                        {/* Attribution Card */}
-                        <div className="rounded-2xl border border-indigo-100 bg-indigo-50/60 p-4 text-xs dark:border-indigo-900/60 dark:bg-indigo-950/30">
-                            <div className="flex items-start gap-2.5">
-                                <Layers className="h-4 w-4 shrink-0 text-indigo-600 mt-0.5" />
-                                <div>
-                                    <span className="font-bold text-indigo-900 dark:text-indigo-200">
-                                        Shared Catalog Item
-                                    </span>
-                                    <p className="mt-0.5 text-slate-600 dark:text-slate-400">
-                                        Catalog SKU: <span className="font-mono font-semibold">{shopProduct.product?.sku}</span>
-                                        {shopProduct.product?.creator && (
-                                            <> • Authored in catalog by <strong>{shopProduct.product.creator.name}</strong></>
-                                        )}
-                                    </p>
-                                </div>
+                        {/* Guarantee Badges */}
+                        <div className="grid grid-cols-3 gap-3">
+                            <div className="rounded-2xl border border-slate-200 bg-white p-3 text-center dark:border-slate-800 dark:bg-slate-900">
+                                <Truck className="mx-auto h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                                <span className="mt-1 block text-[11px] font-bold text-slate-900 dark:text-white">
+                                    Fast Dispatch
+                                </span>
+                                <span className="text-[10px] text-slate-400">Within 24 Hours</span>
+                            </div>
+                            <div className="rounded-2xl border border-slate-200 bg-white p-3 text-center dark:border-slate-800 dark:bg-slate-900">
+                                <ShieldCheck className="mx-auto h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                                <span className="mt-1 block text-[11px] font-bold text-slate-900 dark:text-white">
+                                    100% Authentic
+                                </span>
+                                <span className="text-[10px] text-slate-400">Vetted Creator</span>
+                            </div>
+                            <div className="rounded-2xl border border-slate-200 bg-white p-3 text-center dark:border-slate-800 dark:bg-slate-900">
+                                <RotateCcw className="mx-auto h-4 w-4 text-amber-600 dark:text-amber-400" />
+                                <span className="mt-1 block text-[11px] font-bold text-slate-900 dark:text-white">
+                                    30-Day Returns
+                                </span>
+                                <span className="text-[10px] text-slate-400">Prepaid Label</span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Right: Product Details & Shop Purchase Box */}
+                    {/* Right: Buy Box & Product Info */}
                     <div className="flex flex-col">
-                        {/* Badges */}
-                        <div className="flex flex-wrap items-center gap-2">
-                            {shopProduct.product?.category && (
-                                <span className="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                                    {shopProduct.product.category}
-                                </span>
-                            )}
-                            <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                                <CheckCircle2 className="h-3.5 w-3.5" />
-                                Listed in {shop.name}
+                        <div className="flex items-center gap-2">
+                            <span className="rounded-lg bg-indigo-50 px-2.5 py-1 text-xs font-bold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                                {shopProduct.product?.category || 'Specialty'}
                             </span>
+                            <div className="flex items-center gap-1 text-amber-500">
+                                <div className="flex">
+                                    {[1, 2, 3, 4, 5].map((i) => (
+                                        <Star
+                                            key={i}
+                                            className="h-3.5 w-3.5 fill-amber-400 text-amber-400"
+                                        />
+                                    ))}
+                                </div>
+                                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                                    4.9
+                                </span>
+                                <span className="text-xs text-slate-400">(48 boutique reviews)</span>
+                            </div>
                         </div>
 
-                        <h1 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
+                        <h1 className="mt-3 font-serif text-3xl font-black tracking-tight text-slate-950 sm:text-4xl dark:text-white">
                             {title}
                         </h1>
 
-                        {isCustomTitle && (
-                            <p className="mt-1 text-xs text-indigo-600 dark:text-indigo-400">
-                                (Custom title set specifically for this shop)
-                            </p>
-                        )}
+                        <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
+                            <span>Sold & Shipped by</span>
+                            <Link
+                                href={`/shops/${shop.slug}`}
+                                className="font-bold text-indigo-600 hover:underline dark:text-indigo-400"
+                            >
+                                {shop.name}
+                            </Link>
+                            <span>•</span>
+                            <span className="text-emerald-600 font-semibold">Verified Partner</span>
+                        </div>
 
                         {/* Price Display */}
-                        <div className="mt-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                        <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
                             <div className="flex items-baseline gap-3">
-                                <span className="text-3xl font-black text-slate-900 dark:text-white">
-                                    ${Number(shopProduct.price).toFixed(2)}
+                                <span className="text-4xl font-black text-slate-950 dark:text-white">
+                                    ${price.toFixed(2)}
                                 </span>
                                 {isCustomPrice && shopProduct.product && (
-                                    <div className="flex items-center gap-1.5 text-xs">
+                                    <div className="flex items-center gap-2 text-xs">
                                         <span className="line-through text-slate-400">
                                             ${Number(shopProduct.product.base_price).toFixed(2)}
                                         </span>
-                                        <span className="rounded bg-amber-100 px-1.5 py-0.5 font-bold text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-                                            Shop Customized Price
+                                        <span className="rounded-lg bg-indigo-50 px-2 py-0.5 font-bold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                                            Boutique Pricing
                                         </span>
                                     </div>
                                 )}
                             </div>
 
-                            <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3 text-xs dark:border-slate-800">
-                                <span className="text-slate-500">Inventory Status:</span>
+                            <p className="mt-2 text-xs text-slate-500">
+                                Or 4 interest-free payments of <strong>${installment}</strong> with Klarna or Afterpay.
+                            </p>
+
+                            <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs dark:border-slate-800">
+                                <span className="text-slate-500">Availability:</span>
                                 {shopProduct.stock > 0 ? (
-                                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                                        In Stock ({shopProduct.stock} available)
+                                    <span className="flex items-center gap-1.5 font-bold text-emerald-600 dark:text-emerald-400">
+                                        <CheckCircle2 className="h-4 w-4" />
+                                        In Stock ({shopProduct.stock} units ready to ship)
                                     </span>
                                 ) : (
                                     <span className="font-bold text-rose-500">Currently Out of Stock</span>
@@ -173,81 +230,202 @@ export default function CustomerProductShow({
                             </div>
                         </div>
 
-                        {/* Description */}
-                        <div className="mt-6">
-                            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                                Product Details & Specifications
-                            </h3>
-                            <p className="mt-2 text-sm leading-relaxed text-slate-700 whitespace-pre-line dark:text-slate-300">
-                                {description}
-                            </p>
-                            {isCustomDesc && (
-                                <p className="mt-2 text-[11px] italic text-indigo-600 dark:text-indigo-400">
-                                    * Customized description provided by {shop.name}.
-                                </p>
-                            )}
+                        {/* Quantity and Actions */}
+                        <div className="mt-6 space-y-3">
+                            <div className="flex items-center gap-4">
+                                <div className="flex items-center rounded-2xl border border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-800">
+                                    <button
+                                        type="button"
+                                        onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                                        className="p-3 text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                                        aria-label="Decrease quantity"
+                                    >
+                                        <Minus className="h-4 w-4" />
+                                    </button>
+                                    <span className="w-10 text-center text-sm font-bold text-slate-900 dark:text-white">
+                                        {quantity}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setQuantity((q) =>
+                                                Math.min(shopProduct.stock || 99, q + 1)
+                                            )
+                                        }
+                                        className="p-3 text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                                        aria-label="Increase quantity"
+                                    >
+                                        <Plus className="h-4 w-4" />
+                                    </button>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    onClick={handleAddToCart}
+                                    disabled={shopProduct.stock <= 0}
+                                    className={`flex flex-1 items-center justify-center gap-2 rounded-2xl py-3.5 text-xs font-bold uppercase tracking-wider transition shadow-md ${
+                                        added
+                                            ? 'bg-emerald-600 text-white'
+                                            : 'bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-40'
+                                    }`}
+                                >
+                                    {added ? (
+                                        <>
+                                            <Check className="h-4 w-4" />
+                                            <span>Added to Bag!</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <ShoppingBag className="h-4 w-4" />
+                                            <span>Add to Shopping Bag</span>
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={handleBuyNow}
+                                disabled={shopProduct.stock <= 0}
+                                className="w-full rounded-2xl bg-slate-950 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-slate-800 disabled:opacity-40 dark:bg-slate-800 dark:hover:bg-slate-700"
+                            >
+                                Instant Checkout
+                            </button>
                         </div>
 
-                        {/* Shop Seller Box */}
-                        <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900">
-                            <div className="flex items-center gap-3.5">
-                                {shop.logo ? (
-                                    <img
-                                        src={shop.logo}
-                                        alt={shop.name}
-                                        className="h-12 w-12 rounded-xl object-cover ring-1 ring-slate-300 dark:ring-slate-700"
-                                    />
-                                ) : (
-                                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-600 text-white">
-                                        <Store className="h-6 w-6" />
-                                    </div>
-                                )}
-                                <div>
-                                    <span className="text-[11px] uppercase font-semibold text-slate-400">
-                                        Sold & Fulfilled by
-                                    </span>
-                                    <h4 className="text-base font-bold text-slate-900 dark:text-white">
-                                        {shop.name}
-                                    </h4>
-                                </div>
+                        {/* Merchant Accordion / Tabs */}
+                        <div className="mt-10 border-t border-slate-200 pt-6 dark:border-slate-800">
+                            <div className="flex border-b border-slate-200 dark:border-slate-800">
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveTab('description')}
+                                    className={`border-b-2 py-3 px-4 text-xs font-bold transition ${
+                                        activeTab === 'description'
+                                            ? 'border-indigo-600 text-indigo-600 dark:border-indigo-400 dark:text-indigo-400'
+                                            : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                                    }`}
+                                >
+                                    Product Description
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveTab('merchant')}
+                                    className={`border-b-2 py-3 px-4 text-xs font-bold transition ${
+                                        activeTab === 'merchant'
+                                            ? 'border-indigo-600 text-indigo-600 dark:border-indigo-400 dark:text-indigo-400'
+                                            : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                                    }`}
+                                >
+                                    About {shop.name}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveTab('shipping')}
+                                    className={`border-b-2 py-3 px-4 text-xs font-bold transition ${
+                                        activeTab === 'shipping'
+                                            ? 'border-indigo-600 text-indigo-600 dark:border-indigo-400 dark:text-indigo-400'
+                                            : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                                    }`}
+                                >
+                                    Shipping & Policies
+                                </button>
                             </div>
 
-                            <p className="mt-3 text-xs text-slate-600 dark:text-slate-400">
-                                {shop.description}
-                            </p>
-
-                            <div className="mt-4 space-y-1 text-xs text-slate-500 border-t border-slate-200 pt-3 dark:border-slate-800">
-                                {shop.address && (
-                                    <div className="flex items-center gap-2">
-                                        <MapPin className="h-3.5 w-3.5 text-slate-400" />
-                                        <span>{shop.address}</span>
+                            <div className="py-5">
+                                {activeTab === 'description' && (
+                                    <div className="prose prose-sm dark:prose-invert max-w-none text-xs leading-relaxed text-slate-700 dark:text-slate-300">
+                                        <p className="whitespace-pre-line">{description}</p>
                                     </div>
                                 )}
-                                {shop.phone && (
-                                    <div className="flex items-center gap-2">
-                                        <Phone className="h-3.5 w-3.5 text-slate-400" />
-                                        <span>{shop.phone}</span>
+
+                                {activeTab === 'merchant' && (
+                                    <div className="space-y-4">
+                                        <div className="flex items-center gap-3">
+                                            {shop.logo ? (
+                                                <img
+                                                    src={shop.logo}
+                                                    alt={shop.name}
+                                                    className="h-12 w-12 rounded-2xl object-cover ring-1 ring-slate-200 dark:ring-slate-700"
+                                                />
+                                            ) : (
+                                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 text-white font-bold">
+                                                    <Store className="h-6 w-6" />
+                                                </div>
+                                            )}
+                                            <div>
+                                                <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                                                    {shop.name}
+                                                </h4>
+                                                <span className="text-[11px] text-slate-500">
+                                                    Verified Boutique Merchant
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <p className="text-xs text-slate-600 dark:text-slate-400">
+                                            {shop.description || 'Welcome to our independent boutique storefront.'}
+                                        </p>
+                                        <div className="space-y-1.5 text-xs text-slate-500">
+                                            {shop.address && (
+                                                <div className="flex items-center gap-2">
+                                                    <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                                                    <span>{shop.address}</span>
+                                                </div>
+                                            )}
+                                            {shop.phone && (
+                                                <div className="flex items-center gap-2">
+                                                    <Phone className="h-3.5 w-3.5 text-slate-400" />
+                                                    <span>{shop.phone}</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <Link
+                                            href={`/shops/${shop.slug}`}
+                                            className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:underline dark:text-indigo-400"
+                                        >
+                                            <span>Visit Full Storefront</span>
+                                            <ArrowLeft className="h-3.5 w-3.5 rotate-180" />
+                                        </Link>
+                                    </div>
+                                )}
+
+                                {activeTab === 'shipping' && (
+                                    <div className="space-y-3 text-xs text-slate-600 dark:text-slate-400">
+                                        <p>
+                                            <strong>Complimentary Express Shipping:</strong> Orders over $150 qualify for free express courier delivery worldwide.
+                                        </p>
+                                        <p>
+                                            <strong>Packaging & Dispatch:</strong> Handled directly by {shop.name} within 24 hours of payment verification.
+                                        </p>
+                                        <p>
+                                            <strong>Returns & Exchanges:</strong> 30-day money back guarantee with prepaid return shipping labels included with every order.
+                                        </p>
                                     </div>
                                 )}
                             </div>
-
-                            <Link
-                                href={`/shops/${shop.slug}`}
-                                className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-indigo-500"
-                            >
-                                <Store className="h-4 w-4" />
-                                <span>Browse More from {shop.name}</span>
-                            </Link>
                         </div>
                     </div>
                 </div>
 
-                {/* Related Products From This Shop */}
+                {/* More from this Shop */}
                 {relatedProducts.length > 0 && (
-                    <div className="mt-16 border-t border-slate-200 pt-10 dark:border-slate-800">
-                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                            More from {shop.name}
-                        </h2>
+                    <div className="mt-20 border-t border-slate-200 pt-12 dark:border-slate-800">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                                    More Recommendations
+                                </span>
+                                <h2 className="text-xl font-black text-slate-900 dark:text-white">
+                                    More from {shop.name}
+                                </h2>
+                            </div>
+                            <Link
+                                href={`/shops/${shop.slug}`}
+                                className="text-xs font-bold text-indigo-600 hover:underline dark:text-indigo-400"
+                            >
+                                View all items
+                            </Link>
+                        </div>
+
                         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                             {relatedProducts.map((rel) => {
                                 const relTitle = rel.display_title || rel.product?.name || 'Untitled';
@@ -257,9 +435,9 @@ export default function CustomerProductShow({
                                     <Link
                                         key={rel.id}
                                         href={`/shops/${shop.slug}/products/${rel.id}`}
-                                        className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
+                                        className="group rounded-3xl border border-slate-200 bg-white p-4 shadow-xs transition duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
                                     >
-                                        <div className="aspect-square w-full overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
+                                        <div className="aspect-square w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800">
                                             {relThumb ? (
                                                 <img
                                                     src={relThumb}

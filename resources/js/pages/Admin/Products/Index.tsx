@@ -314,3 +314,4 @@ export default function AdminProductsIndex({ products, categories, filters }: Pr
         </AppLayout>
     );
 }
+

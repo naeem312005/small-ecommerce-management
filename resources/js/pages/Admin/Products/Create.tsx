@@ -230,3 +230,4 @@ export default function AdminProductsCreate({ suggestedSku }: Props) {
         </AppLayout>
     );
 }
+

@@ -40,40 +40,36 @@ export default function Login({ status, canResetPassword }: Props) {
 
             <PasskeyVerify />
 
-            {/* Quick Demo Helper Box */}
-            <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50/80 p-3.5 text-xs text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-200">
-                <div className="flex items-center gap-1.5 font-bold mb-2">
-                    <Key className="h-3.5 w-3.5 text-amber-600" />
-                    <span>Quick Demo Credentials (Click to fill):</span>
+            {/* Quick Demo Autofill Bar */}
+            <div className="mb-2 rounded-2xl border border-slate-200 bg-slate-50 p-3 text-xs dark:border-slate-800 dark:bg-slate-900/60">
+                <div className="flex items-center justify-between mb-2">
+                    <span className="font-bold text-[11px] text-slate-700 uppercase tracking-wider dark:text-slate-300">
+                        Demo Account Autofill
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-mono">pass: password123</span>
                 </div>
-                <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-3">
+                <div className="grid grid-cols-3 gap-1.5">
                     <button
                         type="button"
                         onClick={() => fillCredentials('admin@ecommerce.com', 'password123')}
-                        className="flex items-center justify-center gap-1 rounded-lg border border-indigo-200 bg-white py-1.5 px-2 text-[11px] font-semibold text-indigo-700 shadow-xs hover:bg-indigo-50 dark:bg-slate-800 dark:border-slate-700 dark:text-indigo-300"
+                        className="rounded-xl border border-slate-200 bg-white py-1.5 px-2 text-[11px] font-bold text-slate-800 shadow-xs hover:border-indigo-400 hover:text-indigo-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200"
                     >
-                        <Shield className="h-3 w-3" />
-                        <span>Admin</span>
+                        Admin
                     </button>
                     <button
                         type="button"
                         onClick={() => fillCredentials('tech@ecommerce.com', 'password123')}
-                        className="flex items-center justify-center gap-1 rounded-lg border border-emerald-200 bg-white py-1.5 px-2 text-[11px] font-semibold text-emerald-700 shadow-xs hover:bg-emerald-50 dark:bg-slate-800 dark:border-slate-700 dark:text-emerald-300"
+                        className="rounded-xl border border-slate-200 bg-white py-1.5 px-2 text-[11px] font-bold text-slate-800 shadow-xs hover:border-indigo-400 hover:text-indigo-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200"
                     >
-                        <Store className="h-3 w-3" />
-                        <span>Tech Shop</span>
+                        TechNova
                     </button>
                     <button
                         type="button"
                         onClick={() => fillCredentials('fashion@ecommerce.com', 'password123')}
-                        className="flex items-center justify-center gap-1 rounded-lg border border-violet-200 bg-white py-1.5 px-2 text-[11px] font-semibold text-violet-700 shadow-xs hover:bg-violet-50 dark:bg-slate-800 dark:border-slate-700 dark:text-violet-300"
+                        className="rounded-xl border border-slate-200 bg-white py-1.5 px-2 text-[11px] font-bold text-slate-800 shadow-xs hover:border-indigo-400 hover:text-indigo-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200"
                     >
-                        <Store className="h-3 w-3" />
-                        <span>Fashion Shop</span>
+                        Aura Apparel
                     </button>
-                </div>
-                <div className="mt-2 text-[10px] text-amber-800 dark:text-amber-300">
-                    Password for all demo accounts: <code className="font-mono font-bold">password123</code>
                 </div>
             </div>
 
