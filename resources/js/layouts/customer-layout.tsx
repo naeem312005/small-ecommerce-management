@@ -21,7 +21,7 @@ import {
 import React, { useState } from 'react';
 import CartDrawer from '@/components/cart-drawer';
 import DemoSwitcher from '@/components/demo-switcher';
-import { CartProvider, useCart } from '@/context/cart-context';
+import { useCart } from '@/context/cart-context';
 import type { User } from '@/types';
 
 function NavbarContent({
@@ -195,8 +195,7 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <CartProvider>
-            <div className="flex min-h-screen flex-col bg-slate-50 font-sans text-slate-900 antialiased selection:bg-indigo-500 selection:text-white dark:bg-slate-950 dark:text-slate-100">
+        <div className="flex min-h-screen flex-col bg-slate-50 font-sans text-slate-900 antialiased selection:bg-indigo-500 selection:text-white dark:bg-slate-950 dark:text-slate-100">
                 {/* Top Announcement Ribbon */}
                 <div className="bg-slate-950 px-4 py-2 text-[11px] font-medium tracking-wide text-slate-300 sm:px-6">
                     <div className="mx-auto flex max-w-7xl items-center justify-between">
@@ -359,6 +358,5 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
                 {/* Floating Demo Persona Switcher */}
                 <DemoSwitcher />
             </div>
-        </CartProvider>
     );
 }

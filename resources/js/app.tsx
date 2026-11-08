@@ -1,6 +1,7 @@
 import { createInertiaApp } from '@inertiajs/react';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { CartProvider } from '@/context/cart-context';
 import { initializeTheme } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
@@ -13,6 +14,7 @@ void createInertiaApp({
     layout: (name) => {
         switch (true) {
             case name === 'welcome':
+            case name.startsWith('Customer/'):
                 return null;
             case name.startsWith('auth/'):
                 return AuthLayout;
@@ -26,8 +28,10 @@ void createInertiaApp({
     withApp(app) {
         return (
             <TooltipProvider delayDuration={0}>
-                {app}
-                <Toaster />
+                <CartProvider>
+                    {app}
+                    <Toaster />
+                </CartProvider>
             </TooltipProvider>
         );
     },
