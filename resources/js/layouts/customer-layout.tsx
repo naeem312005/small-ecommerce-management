@@ -65,60 +65,55 @@ function NavbarContent({
 
     return (
         <header className="sticky top-0 z-40 border-b border-[#E2E8F0] bg-[#FFFFFF]/95 backdrop-blur-md dark:border-[#334155] dark:bg-[#0F172A]/95">
-            <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-                {/* Brand Logo & Core Nav */}
-                <div className="flex items-center gap-6 lg:gap-8 shrink-0">
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 lg:px-8">
+                {/* Brand Logo */}
+                <div className="flex items-center gap-6 shrink-0">
                     <Link href="/" className="group flex items-center gap-2.5 transition">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#2563EB] text-white shadow-sm shadow-blue-500/20 transition group-hover:bg-[#1D4ED8]">
-                            <ShoppingBag className="h-4 w-4" />
+                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#2563EB] text-white shadow-xs transition group-hover:bg-[#1D4ED8]">
+                            <ShoppingBag className="h-4.5 w-4.5" />
                         </div>
                         <div className="flex flex-col">
-                            <div className="flex items-center gap-1.5 leading-none">
-                                <span className="text-base font-extrabold tracking-tight text-[#0F172A] dark:text-[#F8FAFC]">
-                                    VELORA
-                                </span>
-                                <span className="rounded-md bg-[#2563EB] px-1.5 py-0.5 text-[9px] font-bold tracking-wider text-white uppercase">
-                                    MARKET
-                                </span>
-                            </div>
-                            <span className="mt-0.5 text-[9px] font-semibold tracking-wider uppercase text-[#64748B] dark:text-[#94A3B8]">
-                                Curated Commerce
+                            <span className="text-lg font-black tracking-wider text-[#0F172A] leading-none dark:text-[#F8FAFC]">
+                                VELORA
+                            </span>
+                            <span className="mt-1 text-[9px] font-bold tracking-widest text-[#2563EB] uppercase leading-none">
+                                Marketplace
                             </span>
                         </div>
                     </Link>
 
                     {/* Navigation Links */}
-                    <nav className="hidden md:flex items-center gap-5">
+                    <nav className="hidden lg:flex items-center gap-1">
                         <Link
                             href="/"
-                            className="text-xs font-semibold text-[#0F172A] hover:text-[#2563EB] transition dark:text-[#F8FAFC]"
+                            className="rounded-lg px-3 py-1.5 text-xs font-semibold text-[#0F172A] hover:bg-[#F1F5F9] hover:text-[#2563EB] transition dark:text-[#F8FAFC] dark:hover:bg-[#1E293B]"
                         >
                             All Products
                         </Link>
                         <Link
                             href="/shops"
-                            className="flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#2563EB] transition dark:text-[#94A3B8]"
+                            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#2563EB] transition dark:text-[#94A3B8] dark:hover:bg-[#1E293B]"
                         >
                             <Store className="h-3.5 w-3.5 text-[#2563EB]" />
-                            <span>Boutique Directory</span>
+                            <span>Boutiques</span>
                         </Link>
                     </nav>
                 </div>
 
                 {/* Center Search Bar */}
-                <form onSubmit={handleNavSearch} className="hidden md:flex flex-1 max-w-md mx-2">
+                <form onSubmit={handleNavSearch} className="hidden md:flex flex-1 max-w-lg mx-4">
                     <div className="relative w-full flex items-center">
-                        <Search className="absolute left-3.5 h-3.5 w-3.5 text-[#64748B]" />
+                        <Search className="absolute left-3.5 h-4 w-4 text-[#64748B]" />
                         <input
                             type="text"
                             value={navSearch}
                             onChange={(e) => setNavSearch(e.target.value)}
                             placeholder="Search products, brands, or boutiques..."
-                            className="w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] py-2 pl-9 pr-16 text-xs text-[#0F172A] placeholder-[#64748B] transition focus:border-[#2563EB] focus:bg-[#FFFFFF] focus:outline-none focus:ring-1 focus:ring-[#2563EB] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
+                            className="w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] py-2 pl-9 pr-20 text-xs text-[#0F172A] placeholder-[#64748B] transition focus:border-[#2563EB] focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
                         />
                         <button
                             type="submit"
-                            className="absolute right-1.5 rounded-lg bg-[#2563EB] px-2.5 py-1 text-[11px] font-semibold text-white transition hover:bg-[#1D4ED8]"
+                            className="absolute right-1.5 rounded-lg bg-[#2563EB] px-3 py-1 text-xs font-semibold text-white transition hover:bg-[#1D4ED8]"
                         >
                             Search
                         </button>
@@ -132,8 +127,8 @@ function NavbarContent({
                         type="button"
                         onClick={toggleTheme}
                         className="rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] p-2 text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A] transition shadow-2xs dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#94A3B8] dark:hover:text-white"
-                        title="Toggle theme"
-                        aria-label="Toggle theme"
+                        title="Toggle color theme"
+                        aria-label="Toggle color theme"
                     >
                         {resolvedAppearance === 'dark' ? (
                             <Sun className="h-4 w-4 text-[#F59E0B]" />
@@ -146,18 +141,14 @@ function NavbarContent({
                     <button
                         type="button"
                         onClick={() => setIsOpen(true)}
-                        className="relative flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3.5 py-2 text-xs font-semibold text-[#0F172A] shadow-2xs transition hover:border-[#2563EB] hover:bg-[#F8FAFC] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
+                        className="relative flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs font-semibold text-[#0F172A] shadow-2xs transition hover:border-[#2563EB] hover:bg-[#F8FAFC] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
                         aria-label="View shopping bag"
                     >
                         <ShoppingBag className="h-4 w-4 text-[#2563EB]" />
                         <span className="hidden sm:inline">Bag</span>
-                        {totalCount > 0 ? (
-                            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563EB] px-1.5 text-[11px] font-bold text-white shadow-xs">
-                                {totalCount}
-                            </span>
-                        ) : (
-                            <span className="text-[11px] text-[#64748B]">0</span>
-                        )}
+                        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563EB] px-1 text-[10px] font-bold text-white shadow-2xs">
+                            {totalCount}
+                        </span>
                     </button>
 
                     {/* User Authentication Actions */}
@@ -166,16 +157,16 @@ function NavbarContent({
                             <button
                                 type="button"
                                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                                className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] p-1.5 pr-2.5 text-xs font-semibold text-[#0F172A] shadow-2xs transition hover:border-[#2563EB] hover:bg-[#F8FAFC] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
+                                className="flex items-center gap-2.5 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] p-1.5 pr-3 text-xs font-semibold text-[#0F172A] shadow-2xs transition hover:border-[#2563EB] hover:bg-[#F8FAFC] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
                             >
                                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#2563EB] text-xs font-bold text-white uppercase shadow-xs">
                                     {user.name.charAt(0)}
                                 </div>
                                 <div className="hidden sm:block text-left">
-                                    <span className="block text-xs font-bold leading-tight max-w-[110px] truncate">
+                                    <span className="block text-xs font-bold leading-tight text-[#0F172A] dark:text-[#F8FAFC]">
                                         {user.name}
                                     </span>
-                                    <span className="block text-[10px] text-[#64748B] font-semibold leading-none">
+                                    <span className="block text-[10px] text-[#64748B] font-medium leading-none mt-0.5">
                                         {user.role === 'admin'
                                             ? 'Administrator'
                                             : user.role === 'shop_owner'
@@ -188,9 +179,9 @@ function NavbarContent({
 
                             {/* Dropdown Menu */}
                             {userMenuOpen && (
-                                <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] p-1.5 shadow-xl z-50 dark:border-[#334155] dark:bg-[#1E293B]">
-                                    <div className="border-b border-[#E2E8F0] px-3 py-2.5 dark:border-[#334155]">
-                                        <p className="text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC] truncate">
+                                <div className="absolute right-0 mt-2 w-60 rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] p-1.5 shadow-xl z-50 dark:border-[#334155] dark:bg-[#1E293B]">
+                                    <div className="border-b border-[#E2E8F0] px-3.5 py-2.5 dark:border-[#334155]">
+                                        <p className="text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                                             {user.name}
                                         </p>
                                         <p className="text-[11px] text-[#64748B] truncate">
@@ -272,7 +263,7 @@ function NavbarContent({
                                 value={navSearch}
                                 onChange={(e) => setNavSearch(e.target.value)}
                                 placeholder="Search products or shops..."
-                                className="w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] py-2 pl-9 pr-14 text-xs text-[#0F172A] focus:border-[#2563EB] focus:outline-none dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
+                                className="w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] py-2 pl-9 pr-16 text-xs text-[#0F172A] focus:border-[#2563EB] focus:outline-none dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
                             />
                             <button
                                 type="submit"
@@ -345,11 +336,12 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
             {/* Top Announcement Ribbon */}
             <div className="border-b border-[#E2E8F0] bg-[#FFFFFF] px-4 py-2 text-[11px] font-medium text-[#64748B] sm:px-6 dark:border-[#334155] dark:bg-[#0F172A] dark:text-[#94A3B8]">
                 <div className="mx-auto flex max-w-7xl items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <span className="flex h-1.5 w-1.5 rounded-full bg-[#2563EB]" />
+                    <div className="flex items-center gap-1.5 text-xs">
+                        <Truck className="h-3.5 w-3.5 text-[#2563EB]" />
                         <span>Complimentary express delivery on orders over $150</span>
-                        <span className="hidden sm:inline text-slate-300 dark:text-slate-600">•</span>
-                        <span className="hidden sm:inline">100% Verified Merchant Guarantee</span>
+                        <span className="text-slate-300 dark:text-slate-600 mx-2">•</span>
+                        <ShieldCheck className="h-3.5 w-3.5 text-[#16A34A]" />
+                        <span>100% Verified Merchant Guarantee</span>
                     </div>
                     <div className="hidden sm:flex items-center gap-3">
                         <Link href="/shops" className="hover:text-[#2563EB] transition">
