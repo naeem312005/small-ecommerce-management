@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
  * @property string $name
  * @property string $slug
  * @property string $sku
+ * @property int|null $category_id
  * @property string $category
  * @property string $base_price
  * @property string|null $thumbnail
@@ -35,6 +36,7 @@ class Product extends Model
         'name',
         'slug',
         'sku',
+        'category_id',
         'category',
         'base_price',
         'thumbnail',
@@ -68,6 +70,14 @@ class Product extends Model
         } while (static::where('sku', $sku)->exists());
 
         return $sku;
+    }
+
+    /**
+     * @return BelongsTo<Category, $this>
+     */
+    public function categoryRelation(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     /**

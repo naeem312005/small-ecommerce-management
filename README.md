@@ -27,7 +27,8 @@ The platform is designed around a **Central Shared Product Catalog** paradigm:
 | :--- | :--- | :--- |
 | **Admin Authentication** | Secure session authentication with role middleware protection (`EnsureRole:admin`), dashboard analytics, and quick one-click demo login. | ✅ Complete |
 | **Admin Shop Management (CRUD)** | Full CRUD for shops: Name, unique slug, owner assignment (from shop owners), logo & banner upload, contact info, and active/inactive toggle. | ✅ Complete |
-| **Admin Master Product Management (CRUD)** | Central catalog CRUD: Title, SKU, category, suggested base MSRP, thumbnail image upload, detailed specifications, and assigned shop counters. | ✅ Complete |
+| **Admin Master Product Management (CRUD)** | Central catalog CRUD: Title, SKU, dynamic category, suggested base MSRP, thumbnail image upload, detailed specifications, and assigned shop counters. | ✅ Complete |
+| **Admin Category Management (CRUD)** | Full CRUD for product categories: Name, unique slug, semantic icons, rich descriptions, active/inactive toggles, live product count metrics, and safe relationship unlinking. | ✅ Complete |
 | **Manage Shop Owner Accounts (CRUD)** | Full CRUD for merchant accounts (`role = 'shop_owner'`), contact phone, password resets, and shop assignment relationship tracking. | ✅ Complete |
 | **Browse Shared Product Catalog** | Shop owners can search and filter the shared catalog (authored by admin or other shop owners) and add any item to their shop with one click. | ✅ Complete |
 | **Cross-Owner Catalog Availability** | Products authored by the admin or any shop owner are automatically visible in the shared catalog for all other shop owners. | ✅ Complete |
@@ -36,7 +37,7 @@ The platform is designed around a **Central Shared Product Catalog** paradigm:
 | **Customer Storefront Isolation** | Customers only see products assigned to active shops. Unassigned products (e.g. `PRD-UNASSIGNED-01`) are strictly excluded from customer views. | ✅ Complete |
 | **Commercial Shopping Cart Drawer** | Client-side interactive shopping bag with slide-over drawer, quantity controls, free express shipping progress bar, and instant checkout simulation. | ✅ Complete |
 | **Demo Persona Quick Autofill** | One-click pre-filled test credentials on login page to test Admin, TechNova Shop Owner, Aura Apparel Shop Owner, and Customer roles. | ✅ Complete |
-| **Automated Testing & Code Quality** | **48 Automated PHPUnit Feature Tests (206 assertions)**, **PHPStan Level 7 (0 errors)**, **TypeScript `tsc` Check (0 errors)**, **Laravel Pint** PSR-12 code style. | ✅ Complete |
+| **Automated Testing & Code Quality** | **56 Automated PHPUnit Feature Tests (226 assertions)**, **PHPStan Level 7 (0 errors)**, **TypeScript `tsc` Check (0 errors)**, **Laravel Pint** PSR-12 code style. | ✅ Complete |
 | **Database Export Included** | Standalone SQL dump included at project root (`ecommerce.sql`) and `database/ecommerce.sql` for instant manual import. | ✅ Complete |
 
 ---
@@ -47,8 +48,20 @@ The platform is designed around a **Central Shared Product Catalog** paradigm:
 erDiagram
     USERS ||--o{ SHOPS : "owns (as merchant)"
     USERS ||--o{ PRODUCTS : "creates (admin or shop owner)"
+    CATEGORIES ||--o{ PRODUCTS : "categorizes"
     SHOPS ||--o{ SHOP_PRODUCTS : "lists"
     PRODUCTS ||--o{ SHOP_PRODUCTS : "assigned to"
+
+    CATEGORIES {
+        bigint id PK
+        string name UK
+        string slug UK
+        text description
+        string icon
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
 
     USERS {
         bigint id PK
@@ -83,6 +96,7 @@ erDiagram
         string name
         string slug UK
         string sku UK
+        bigint category_id FK "Category"
         string category
         decimal base_price
         string thumbnail

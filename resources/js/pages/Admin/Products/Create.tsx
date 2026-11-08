@@ -6,6 +6,7 @@ import type { BreadcrumbItem } from '@/types';
 
 type Props = {
     suggestedSku: string;
+    categories?: string[];
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -14,11 +15,21 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'New Product', href: '/admin/products/create' },
 ];
 
-export default function AdminProductsCreate({ suggestedSku }: Props) {
+const defaultCategories = [
+    'Electronics',
+    'Fashion',
+    'Home & Living',
+    'Health & Beauty',
+    'Books & Stationery',
+    'Sports & Outdoors',
+];
+
+export default function AdminProductsCreate({ suggestedSku, categories = defaultCategories }: Props) {
+    const categoryOptions = categories.length > 0 ? categories : defaultCategories;
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         sku: suggestedSku || '',
-        category: 'Electronics',
+        category: categoryOptions[0] || 'Electronics',
         base_price: '',
         description: '',
         is_active: true,
@@ -111,12 +122,11 @@ export default function AdminProductsCreate({ suggestedSku }: Props) {
                                     className="mt-1.5 w-full rounded-xl border border-input bg-background py-2.5 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                                     required
                                 >
-                                    <option value="Electronics">Electronics</option>
-                                    <option value="Fashion">Fashion</option>
-                                    <option value="Home & Living">Home & Living</option>
-                                    <option value="Health & Beauty">Health & Beauty</option>
-                                    <option value="Books & Stationery">Books & Stationery</option>
-                                    <option value="Sports & Outdoors">Sports & Outdoors</option>
+                                    {categoryOptions.map((cat) => (
+                                        <option key={cat} value={cat}>
+                                            {cat}
+                                        </option>
+                                    ))}
                                 </select>
                                 {errors.category && (
                                     <p className="mt-1 text-xs text-destructive">{errors.category}</p>

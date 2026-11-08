@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ShopOwner;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\ShopProduct;
@@ -34,10 +35,12 @@ class CreateCatalogProductController extends Controller
     public function create(Request $request): Response
     {
         $shop = $this->getActiveShop($request);
+        $categories = Category::where('is_active', true)->orderBy('name')->pluck('name')->values()->all();
 
         return Inertia::render('ShopOwner/Catalog/Create', [
             'shop' => $shop,
             'suggestedSku' => Product::generateSku(),
+            'categories' => $categories,
         ]);
     }
 
@@ -67,6 +70,7 @@ class CreateCatalogProductController extends Controller
         }
 
         $slug = Product::generateUniqueSlug($validated['name']);
+        $categoryModel = Category::where('name', $validated['category'])->first();
 
         // 1. Create product in shared catalog (created_by = this shop owner)
         $product = Product::create([
@@ -74,6 +78,7 @@ class CreateCatalogProductController extends Controller
             'name' => $validated['name'],
             'slug' => $slug,
             'sku' => strtoupper($validated['sku']),
+            'category_id' => $categoryModel?->id,
             'category' => $validated['category'],
             'base_price' => $validated['base_price'],
             'description' => $validated['description'] ?? null,

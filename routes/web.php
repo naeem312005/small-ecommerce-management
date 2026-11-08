@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ShopController as AdminShopController;
 use App\Http\Controllers\Admin\ShopOwnerController as AdminShopOwnerController;
@@ -85,6 +86,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])
 
         // Product Management (CRUD - Master / Shared Catalog)
         Route::resource('products', AdminProductController::class);
+
+        // Category Management (CRUD)
+        Route::resource('categories', AdminCategoryController::class);
 
         // Shop Owner Accounts Management (CRUD)
         Route::resource('shop-owners', AdminShopOwnerController::class);

@@ -7,7 +7,17 @@ import type { BreadcrumbItem, Shop } from '@/types';
 type Props = {
     shop: Shop | null;
     suggestedSku: string;
+    categories?: string[];
 };
+
+const defaultCategories = [
+    'Electronics',
+    'Fashion',
+    'Home & Living',
+    'Health & Beauty',
+    'Books & Stationery',
+    'Sports & Outdoors',
+];
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Shop Management', href: '/shop-owner/dashboard' },
@@ -15,11 +25,12 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Create Product', href: '/shop-owner/catalog/create' },
 ];
 
-export default function ShopOwnerCatalogCreate({ shop, suggestedSku }: Props) {
+export default function ShopOwnerCatalogCreate({ shop, suggestedSku, categories = defaultCategories }: Props) {
+    const categoryOptions = categories.length > 0 ? categories : defaultCategories;
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         sku: suggestedSku || '',
-        category: 'Electronics',
+        category: categoryOptions[0] || 'Electronics',
         base_price: '',
         description: '',
         thumbnail: null as File | null,
@@ -127,12 +138,11 @@ export default function ShopOwnerCatalogCreate({ shop, suggestedSku }: Props) {
                                     className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-xs text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                                     required
                                 >
-                                    <option value="Electronics">Electronics</option>
-                                    <option value="Fashion">Fashion</option>
-                                    <option value="Home & Living">Home & Living</option>
-                                    <option value="Health & Beauty">Health & Beauty</option>
-                                    <option value="Books & Stationery">Books & Stationery</option>
-                                    <option value="Sports & Outdoors">Sports & Outdoors</option>
+                                    {categoryOptions.map((cat) => (
+                                        <option key={cat} value={cat}>
+                                            {cat}
+                                        </option>
+                                    ))}
                                 </select>
                                 {errors.category && (
                                     <p className="mt-1 text-xs text-destructive">{errors.category}</p>

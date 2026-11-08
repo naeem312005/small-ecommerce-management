@@ -1,5 +1,17 @@
 import type { User } from './auth';
 
+export type Category = {
+    id: number;
+    name: string;
+    slug: string;
+    description: string | null;
+    icon: string | null;
+    is_active: boolean;
+    created_at?: string;
+    updated_at?: string;
+    products_count?: number;
+};
+
 export type Shop = {
     id: number;
     user_id: number;
@@ -24,6 +36,7 @@ export type Product = {
     name: string;
     slug: string;
     sku: string;
+    category_id?: number | null;
     category: string;
     base_price: string | number;
     thumbnail: string | null;

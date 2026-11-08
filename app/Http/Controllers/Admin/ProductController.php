@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -38,7 +39,10 @@ class ProductController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        $categories = Product::distinct()->pluck('category');
+        $categories = Category::where('is_active', true)->orderBy('name')->pluck('name')->values()->all();
+        if (empty($categories)) {
+            $categories = Product::distinct()->pluck('category')->values()->all();
+        }
 
         return Inertia::render('Admin/Products/Index', [
             'products' => $products,
@@ -56,8 +60,11 @@ class ProductController extends Controller
      */
     public function create(): Response
     {
+        $categories = Category::where('is_active', true)->orderBy('name')->pluck('name')->values()->all();
+
         return Inertia::render('Admin/Products/Create', [
             'suggestedSku' => Product::generateSku(),
+            'categories' => $categories,
         ]);
     }
 
@@ -83,12 +90,14 @@ class ProductController extends Controller
         }
 
         $slug = Product::generateUniqueSlug($validated['name']);
+        $categoryModel = Category::where('name', $validated['category'])->first();
 
         Product::create([
             'created_by' => $request->user()->id,
             'name' => $validated['name'],
             'slug' => $slug,
             'sku' => strtoupper($validated['sku']),
+            'category_id' => $categoryModel?->id,
             'category' => $validated['category'],
             'base_price' => $validated['base_price'],
             'description' => $validated['description'] ?? null,
@@ -104,8 +113,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product): Response
     {
+        $categories = Category::where('is_active', true)->orderBy('name')->pluck('name')->values()->all();
+
         return Inertia::render('Admin/Products/Edit', [
             'product' => $product->load('creator:id,name,role'),
+            'categories' => $categories,
         ]);
     }
 
@@ -136,8 +148,11 @@ class ProductController extends Controller
             $product->slug = Product::generateUniqueSlug($validated['name'], $product->id);
         }
 
+        $categoryModel = Category::where('name', $validated['category'])->first();
+
         $product->name = $validated['name'];
         $product->sku = strtoupper($validated['sku']);
+        $product->category_id = $categoryModel?->id;
         $product->category = $validated['category'];
         $product->base_price = $validated['base_price'];
         $product->description = $validated['description'] ?? null;

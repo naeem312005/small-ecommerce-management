@@ -9,6 +9,7 @@ import {
     PackagePlus,
     Shield,
     Store,
+    Tag,
     Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
@@ -49,6 +50,11 @@ export function AppSidebar() {
             title: 'Master Catalog',
             href: '/admin/products',
             icon: Package,
+        },
+        {
+            title: 'Categories',
+            href: '/admin/categories',
+            icon: Tag,
         },
         {
             title: 'Merchant Accounts',

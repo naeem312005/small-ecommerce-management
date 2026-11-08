@@ -6,9 +6,24 @@ import type { BreadcrumbItem, Product } from '@/types';
 
 type Props = {
     product: Product;
+    categories?: string[];
 };
 
-export default function AdminProductsEdit({ product }: Props) {
+const defaultCategories = [
+    'Electronics',
+    'Fashion',
+    'Home & Living',
+    'Health & Beauty',
+    'Books & Stationery',
+    'Sports & Outdoors',
+];
+
+export default function AdminProductsEdit({ product, categories = defaultCategories }: Props) {
+    const categoryOptions = Array.from(new Set([
+        product.category,
+        ...(categories.length > 0 ? categories : defaultCategories),
+    ])).filter(Boolean);
+
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Admin Console', href: '/admin/dashboard' },
         { title: 'Master Catalog', href: '/admin/products' },
@@ -111,12 +126,11 @@ export default function AdminProductsEdit({ product }: Props) {
                                     className="mt-1.5 w-full rounded-xl border border-input bg-background py-2.5 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                                     required
                                 >
-                                    <option value="Electronics">Electronics</option>
-                                    <option value="Fashion">Fashion</option>
-                                    <option value="Home & Living">Home & Living</option>
-                                    <option value="Health & Beauty">Health & Beauty</option>
-                                    <option value="Books & Stationery">Books & Stationery</option>
-                                    <option value="Sports & Outdoors">Sports & Outdoors</option>
+                                    {categoryOptions.map((cat) => (
+                                        <option key={cat} value={cat}>
+                                            {cat}
+                                        </option>
+                                    ))}
                                 </select>
                                 {errors.category && (
                                     <p className="mt-1 text-xs text-destructive">{errors.category}</p>

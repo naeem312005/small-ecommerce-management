@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\ShopProduct;
@@ -19,6 +20,7 @@ class AdminDashboardController extends Controller
             'active_shops' => Shop::where('is_active', true)->count(),
             'total_products' => Product::count(),
             'active_products' => Product::where('is_active', true)->count(),
+            'total_categories' => Category::count(),
             'total_shop_owners' => User::where('role', 'shop_owner')->count(),
             'total_shop_listings' => ShopProduct::count(),
         ];

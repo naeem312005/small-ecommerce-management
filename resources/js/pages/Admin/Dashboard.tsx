@@ -6,6 +6,7 @@ import {
     Plus,
     Shield,
     Store,
+    Tag,
     Users,
 } from 'lucide-react';
 import React from 'react';
@@ -17,6 +18,7 @@ type Stats = {
     active_shops: number;
     total_products: number;
     active_products: number;
+    total_categories?: number;
     total_shop_owners: number;
     total_shop_listings: number;
 };
@@ -73,6 +75,13 @@ export default function AdminDashboard({
                             >
                                 <Plus className="h-3.5 w-3.5" />
                                 <span>New Product</span>
+                            </Link>
+                            <Link
+                                href="/admin/categories"
+                                className="inline-flex items-center gap-1.5 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-white/20"
+                            >
+                                <Tag className="h-3.5 w-3.5" />
+                                <span>Categories ({stats.total_categories ?? 6})</span>
                             </Link>
                             <Link
                                 href="/admin/shop-owners/create"

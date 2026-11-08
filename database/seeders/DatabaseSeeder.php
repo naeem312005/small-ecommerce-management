@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\ShopProduct;
@@ -131,7 +132,59 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 5. Shared Master Product Catalog
+        // 5. Product Categories
+        $categoriesData = [
+            [
+                'name' => 'Electronics',
+                'slug' => 'electronics',
+                'description' => 'Flagship audio gear, cutting-edge monitors, wireless accessories, and tech workspace equipment.',
+                'icon' => 'Laptop',
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Fashion',
+                'slug' => 'fashion',
+                'description' => 'Sustainable modern apparel, organic cotton essentials, tailored jackets, and artisanal totes.',
+                'icon' => 'Shirt',
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Home & Living',
+                'slug' => 'home-living',
+                'description' => 'Handcrafted Scandinavian furniture, minimalist ceramics, ergonomic organizers, and studio lighting.',
+                'icon' => 'Home',
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Health & Beauty',
+                'slug' => 'health-beauty',
+                'description' => 'Clean skincare, botanical wellness products, organic grooming essentials, and personal care.',
+                'icon' => 'Sparkles',
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Books & Stationery',
+                'slug' => 'books-stationery',
+                'description' => 'Curated architectural books, designer journals, fountain pens, and precision desk stationery.',
+                'icon' => 'BookOpen',
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Sports & Outdoors',
+                'slug' => 'sports-outdoors',
+                'description' => 'Performance athletic essentials, vacuum-insulated hydration flasks, and outdoor lifestyle accessories.',
+                'icon' => 'Activity',
+                'is_active' => true,
+            ],
+        ];
+
+        $categoryMap = [];
+        foreach ($categoriesData as $data) {
+            $cat = Category::firstOrCreate(['slug' => $data['slug']], $data);
+            $categoryMap[$data['name']] = $cat->id;
+        }
+
+        // 6. Shared Master Product Catalog
         // Requirement: "The application should support products created by both administrators and shop owners."
         // A. Products created by Admin
         $prodHeadphones = Product::firstOrCreate(
@@ -476,5 +529,12 @@ class DatabaseSeeder extends Seeder
                 'is_available' => true,
             ]
         );
+
+        // Ensure all products have category_id populated
+        foreach (Product::all() as $prod) {
+            if (! $prod->category_id && isset($categoryMap[$prod->category])) {
+                $prod->update(['category_id' => $categoryMap[$prod->category]]);
+            }
+        }
     }
 }
