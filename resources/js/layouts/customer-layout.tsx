@@ -1,20 +1,23 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import {
     ArrowUpRight,
+    ChevronDown,
     CreditCard,
     LayoutDashboard,
     LogIn,
     LogOut,
     Menu,
     Moon,
+    Search,
     ShieldCheck,
     ShoppingBag,
     Store,
     Sun,
     Truck,
+    User as UserIcon,
     X,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CartDrawer from '@/components/cart-drawer';
 import { useCart } from '@/context/cart-context';
 import { useAppearance } from '@/hooks/use-appearance';
@@ -31,62 +34,106 @@ function NavbarContent({
 }) {
     const { totalCount, setIsOpen } = useCart();
     const { resolvedAppearance, updateAppearance } = useAppearance();
+    const [navSearch, setNavSearch] = useState('');
+    const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const userMenuRef = useRef<HTMLDivElement>(null);
 
     const toggleTheme = () => {
         updateAppearance(resolvedAppearance === 'dark' ? 'light' : 'dark');
     };
 
+    const handleNavSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        const trimmed = navSearch.trim();
+        if (trimmed) {
+            router.get('/', { search: trimmed });
+        } else {
+            router.get('/');
+        }
+    };
+
+    // Close user dropdown on outside click
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+                setUserMenuOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
     return (
         <header className="sticky top-0 z-40 border-b border-[#E2E8F0] bg-[#FFFFFF]/95 backdrop-blur-md dark:border-[#334155] dark:bg-[#0F172A]/95">
-            <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
-                {/* Brand Logo */}
-                <div className="flex items-center gap-8">
-                    <Link href="/" className="group flex items-center gap-3 transition">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563EB] text-white shadow-md shadow-blue-500/20 transition group-hover:bg-[#1D4ED8]">
-                            <ShoppingBag className="h-5 w-5" />
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+                {/* Brand Logo & Core Nav */}
+                <div className="flex items-center gap-6 lg:gap-8 shrink-0">
+                    <Link href="/" className="group flex items-center gap-2.5 transition">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#2563EB] text-white shadow-sm shadow-blue-500/20 transition group-hover:bg-[#1D4ED8]">
+                            <ShoppingBag className="h-4 w-4" />
                         </div>
-                        <div>
-                            <div className="flex items-center gap-1.5">
-                                <span className="font-serif text-xl font-black tracking-tight text-[#0F172A] dark:text-[#F8FAFC]">
+                        <div className="flex flex-col">
+                            <div className="flex items-center gap-1.5 leading-none">
+                                <span className="text-base font-extrabold tracking-tight text-[#0F172A] dark:text-[#F8FAFC]">
                                     VELORA
                                 </span>
-                                <span className="rounded-md bg-[#2563EB] px-1.5 py-0.5 text-[9px] font-bold tracking-widest uppercase text-white">
+                                <span className="rounded-md bg-[#2563EB] px-1.5 py-0.5 text-[9px] font-bold tracking-wider text-white uppercase">
                                     MARKET
                                 </span>
                             </div>
-                            <span className="block text-[10px] font-medium tracking-wide text-[#64748B] uppercase dark:text-[#94A3B8]">
-                                Premium Curated Goods
+                            <span className="mt-0.5 text-[9px] font-semibold tracking-wider uppercase text-[#64748B] dark:text-[#94A3B8]">
+                                Curated Commerce
                             </span>
                         </div>
                     </Link>
 
                     {/* Navigation Links */}
-                    <nav className="hidden items-center gap-6 md:flex">
+                    <nav className="hidden md:flex items-center gap-5">
                         <Link
                             href="/"
-                            className="text-xs font-semibold tracking-wide text-[#0F172A] hover:text-[#2563EB] transition dark:text-[#F8FAFC] dark:hover:text-[#3B82F6]"
+                            className="text-xs font-semibold text-[#0F172A] hover:text-[#2563EB] transition dark:text-[#F8FAFC]"
                         >
                             All Products
                         </Link>
                         <Link
                             href="/shops"
-                            className="flex items-center gap-1.5 text-xs font-semibold tracking-wide text-[#64748B] hover:text-[#2563EB] transition dark:text-[#94A3B8] dark:hover:text-[#3B82F6]"
+                            className="flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#2563EB] transition dark:text-[#94A3B8]"
                         >
-                            <Store className="h-3.5 w-3.5" />
+                            <Store className="h-3.5 w-3.5 text-[#2563EB]" />
                             <span>Boutique Directory</span>
                         </Link>
                     </nav>
                 </div>
 
+                {/* Center Search Bar */}
+                <form onSubmit={handleNavSearch} className="hidden md:flex flex-1 max-w-md mx-2">
+                    <div className="relative w-full flex items-center">
+                        <Search className="absolute left-3.5 h-3.5 w-3.5 text-[#64748B]" />
+                        <input
+                            type="text"
+                            value={navSearch}
+                            onChange={(e) => setNavSearch(e.target.value)}
+                            placeholder="Search products, brands, or boutiques..."
+                            className="w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] py-2 pl-9 pr-16 text-xs text-[#0F172A] placeholder-[#64748B] transition focus:border-[#2563EB] focus:bg-[#FFFFFF] focus:outline-none focus:ring-1 focus:ring-[#2563EB] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
+                        />
+                        <button
+                            type="submit"
+                            className="absolute right-1.5 rounded-lg bg-[#2563EB] px-2.5 py-1 text-[11px] font-semibold text-white transition hover:bg-[#1D4ED8]"
+                        >
+                            Search
+                        </button>
+                    </div>
+                </form>
+
                 {/* Right Side Actions */}
-                <div className="flex items-center gap-2.5 sm:gap-3">
+                <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
                     {/* Theme Toggle Button */}
                     <button
                         type="button"
                         onClick={toggleTheme}
-                        className="rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] p-2 text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A] transition shadow-xs dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#94A3B8] dark:hover:text-white"
-                        title="Toggle color theme"
-                        aria-label="Toggle color theme"
+                        className="rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] p-2 text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A] transition shadow-2xs dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#94A3B8] dark:hover:text-white"
+                        title="Toggle theme"
+                        aria-label="Toggle theme"
                     >
                         {resolvedAppearance === 'dark' ? (
                             <Sun className="h-4 w-4 text-[#F59E0B]" />
@@ -99,58 +146,102 @@ function NavbarContent({
                     <button
                         type="button"
                         onClick={() => setIsOpen(true)}
-                        className="relative flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3.5 py-2 text-xs font-semibold text-[#0F172A] shadow-xs transition hover:border-[#2563EB] hover:bg-[#F8FAFC] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
+                        className="relative flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3.5 py-2 text-xs font-semibold text-[#0F172A] shadow-2xs transition hover:border-[#2563EB] hover:bg-[#F8FAFC] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
                         aria-label="View shopping bag"
                     >
                         <ShoppingBag className="h-4 w-4 text-[#2563EB]" />
                         <span className="hidden sm:inline">Bag</span>
-                        {totalCount > 0 && (
+                        {totalCount > 0 ? (
                             <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563EB] px-1.5 text-[11px] font-bold text-white shadow-xs">
                                 {totalCount}
                             </span>
+                        ) : (
+                            <span className="text-[11px] text-[#64748B]">0</span>
                         )}
                     </button>
 
                     {/* User Authentication Actions */}
                     {user ? (
-                        <div className="flex items-center gap-2">
-                            <Link
-                                href="/dashboard"
-                                className="inline-flex items-center gap-1.5 rounded-xl bg-[#2563EB] px-3.5 py-2 text-xs font-bold text-white shadow-xs transition hover:bg-[#1D4ED8]"
+                        <div className="relative" ref={userMenuRef}>
+                            <button
+                                type="button"
+                                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                                className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] p-1.5 pr-2.5 text-xs font-semibold text-[#0F172A] shadow-2xs transition hover:border-[#2563EB] hover:bg-[#F8FAFC] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
                             >
-                                <LayoutDashboard className="h-3.5 w-3.5" />
-                                <span className="hidden sm:inline">
-                                    {user.role === 'admin'
-                                        ? 'Admin Console'
-                                        : user.role === 'shop_owner'
-                                          ? 'Merchant Hub'
-                                          : 'My Dashboard'}
-                                </span>
-                            </Link>
+                                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#2563EB] text-xs font-bold text-white uppercase shadow-xs">
+                                    {user.name.charAt(0)}
+                                </div>
+                                <div className="hidden sm:block text-left">
+                                    <span className="block text-xs font-bold leading-tight max-w-[110px] truncate">
+                                        {user.name}
+                                    </span>
+                                    <span className="block text-[10px] text-[#64748B] font-semibold leading-none">
+                                        {user.role === 'admin'
+                                            ? 'Administrator'
+                                            : user.role === 'shop_owner'
+                                              ? 'Shop Owner'
+                                              : 'Customer'}
+                                    </span>
+                                </div>
+                                <ChevronDown className={`h-3.5 w-3.5 text-[#64748B] transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
+                            </button>
 
-                            <Link
-                                href="/logout"
-                                method="post"
-                                as="button"
-                                className="inline-flex items-center gap-1.5 rounded-xl border border-[#E2E8F0] px-3 py-2 text-xs font-medium text-[#64748B] transition hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:border-[#334155] dark:hover:bg-[#1E293B]"
-                                title="Sign out"
-                            >
-                                <LogOut className="h-3.5 w-3.5" />
-                                <span className="hidden md:inline">Sign Out</span>
-                            </Link>
+                            {/* Dropdown Menu */}
+                            {userMenuOpen && (
+                                <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] p-1.5 shadow-xl z-50 dark:border-[#334155] dark:bg-[#1E293B]">
+                                    <div className="border-b border-[#E2E8F0] px-3 py-2.5 dark:border-[#334155]">
+                                        <p className="text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC] truncate">
+                                            {user.name}
+                                        </p>
+                                        <p className="text-[11px] text-[#64748B] truncate">
+                                            {user.email}
+                                        </p>
+                                    </div>
+
+                                    <div className="py-1">
+                                        <Link
+                                            href="/dashboard"
+                                            onClick={() => setUserMenuOpen(false)}
+                                            className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-[#0F172A] hover:bg-[#EFF6FF] hover:text-[#2563EB] transition dark:text-[#F8FAFC] dark:hover:bg-blue-950/50"
+                                        >
+                                            <LayoutDashboard className="h-4 w-4 text-[#2563EB]" />
+                                            <span>
+                                                {user.role === 'admin'
+                                                    ? 'Admin Console'
+                                                    : user.role === 'shop_owner'
+                                                      ? 'Merchant Hub'
+                                                      : 'My Dashboard'}
+                                            </span>
+                                        </Link>
+                                    </div>
+
+                                    <div className="border-t border-[#E2E8F0] pt-1 dark:border-[#334155]">
+                                        <Link
+                                            href="/logout"
+                                            method="post"
+                                            as="button"
+                                            onClick={() => setUserMenuOpen(false)}
+                                            className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-[#DC2626] hover:bg-red-50 transition dark:hover:bg-red-950/40"
+                                        >
+                                            <LogOut className="h-4 w-4" />
+                                            <span>Sign Out</span>
+                                        </Link>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <div className="flex items-center gap-2">
                             <Link
                                 href="/login"
-                                className="inline-flex items-center gap-1.5 rounded-xl border border-[#E2E8F0] bg-white px-3.5 py-2 text-xs font-semibold text-[#0F172A] shadow-xs transition hover:border-[#2563EB] hover:bg-[#F8FAFC] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
+                                className="inline-flex items-center gap-1.5 rounded-xl border border-[#E2E8F0] bg-white px-3.5 py-2 text-xs font-semibold text-[#0F172A] shadow-2xs transition hover:border-[#2563EB] hover:bg-[#F8FAFC] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
                             >
                                 <LogIn className="h-3.5 w-3.5 text-[#64748B]" />
                                 <span>Sign In</span>
                             </Link>
                             <Link
                                 href="/login"
-                                className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-[#2563EB] px-3.5 py-2 text-xs font-bold text-white shadow-xs transition hover:bg-[#1D4ED8]"
+                                className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-[#2563EB] px-3.5 py-2 text-xs font-bold text-white shadow-2xs transition hover:bg-[#1D4ED8]"
                             >
                                 <span>Merchant Portal</span>
                             </Link>
@@ -172,6 +263,26 @@ function NavbarContent({
             {/* Mobile Nav Drawer */}
             {mobileMenuOpen && (
                 <div className="border-b border-[#E2E8F0] bg-[#FFFFFF] px-4 py-4 md:hidden dark:border-[#334155] dark:bg-[#0F172A]">
+                    {/* Mobile Search */}
+                    <form onSubmit={handleNavSearch} className="mb-4">
+                        <div className="relative w-full flex items-center">
+                            <Search className="absolute left-3.5 h-3.5 w-3.5 text-[#64748B]" />
+                            <input
+                                type="text"
+                                value={navSearch}
+                                onChange={(e) => setNavSearch(e.target.value)}
+                                placeholder="Search products or shops..."
+                                className="w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] py-2 pl-9 pr-14 text-xs text-[#0F172A] focus:border-[#2563EB] focus:outline-none dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
+                            />
+                            <button
+                                type="submit"
+                                className="absolute right-1.5 rounded-lg bg-[#2563EB] px-2.5 py-1 text-[11px] font-semibold text-white"
+                            >
+                                Search
+                            </button>
+                        </div>
+                    </form>
+
                     <div className="space-y-2">
                         <Link
                             href="/"
@@ -187,7 +298,26 @@ function NavbarContent({
                         >
                             Boutiques Directory
                         </Link>
-                        {!user && (
+                        <Link
+                            href="/cart"
+                            className="block rounded-xl px-3 py-2 text-sm font-semibold text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:text-[#94A3B8] dark:hover:bg-[#1E293B]"
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            Shopping Bag ({totalCount})
+                        </Link>
+                        {user ? (
+                            <Link
+                                href="/dashboard"
+                                className="block rounded-xl bg-[#EFF6FF] px-3 py-2 text-sm font-bold text-[#2563EB] hover:bg-blue-100 dark:bg-blue-950/60 dark:text-blue-300"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                {user.role === 'admin'
+                                    ? 'Admin Console'
+                                    : user.role === 'shop_owner'
+                                      ? 'Merchant Hub'
+                                      : 'My Dashboard'}
+                            </Link>
+                        ) : (
                             <Link
                                 href="/login"
                                 className="block rounded-xl bg-[#EFF6FF] px-3 py-2 text-sm font-bold text-[#2563EB] hover:bg-blue-100 dark:bg-blue-950/60 dark:text-blue-300"
@@ -217,15 +347,15 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
                 <div className="mx-auto flex max-w-7xl items-center justify-between">
                     <div className="flex items-center gap-2">
                         <span className="flex h-1.5 w-1.5 rounded-full bg-[#2563EB]" />
-                        <span>
-                            Complimentary express delivery on orders over $150 • 100% Verified Merchant Guarantee
-                        </span>
+                        <span>Complimentary express delivery on orders over $150</span>
+                        <span className="hidden sm:inline text-slate-300 dark:text-slate-600">•</span>
+                        <span className="hidden sm:inline">100% Verified Merchant Guarantee</span>
                     </div>
-                    <div className="hidden sm:flex items-center gap-4">
+                    <div className="hidden sm:flex items-center gap-3">
                         <Link href="/shops" className="hover:text-[#2563EB] transition">
                             Explore Boutiques
                         </Link>
-                        <span>•</span>
+                        <span className="text-slate-300 dark:text-slate-600">•</span>
                         <Link href="/login" className="hover:text-[#2563EB] transition">
                             Sell on Velora
                         </Link>
