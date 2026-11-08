@@ -9,7 +9,7 @@ export default function AppLogo() {
 
     return (
         <div className="flex items-center gap-2.5">
-            <div className="flex aspect-square size-8 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-900 via-indigo-600 to-indigo-500 text-white shadow-md shadow-indigo-600/20">
+            <div className="flex aspect-square size-8 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md shadow-primary/20">
                 <ShoppingBag className="size-4" />
             </div>
             <div className="grid flex-1 text-left leading-none">

@@ -103,21 +103,21 @@ export default function ShopOwnerCatalogIndex({
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <div className="flex items-center gap-2">
-                            <h1 className="text-xl font-bold text-slate-900 dark:text-white">
+                            <h1 className="text-xl font-bold text-foreground">
                                 Shared Product Catalog
                             </h1>
-                            <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-bold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                            <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary border border-primary/20">
                                 Global Master Catalog
                             </span>
                         </div>
-                        <p className="mt-1 text-xs text-slate-500">
+                        <p className="mt-1 text-xs text-muted-foreground">
                             Products created by administrators or fellow shop owners. Select any item to list in {shop?.name ?? 'your shop'}.
                         </p>
                     </div>
 
                     <Link
                         href="/shop-owner/catalog/create"
-                        className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-indigo-500"
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-bold text-primary-foreground shadow-xs transition hover:opacity-90"
                     >
                         <Plus className="h-4 w-4" />
                         <span>Create & Contribute New Product</span>
@@ -233,7 +233,7 @@ export default function ShopOwnerCatalogIndex({
                                                 {isAuthorShopOwner ? (
                                                     <Store className="h-3 w-3 text-emerald-600" />
                                                 ) : (
-                                                    <Shield className="h-3 w-3 text-indigo-600" />
+                                                    <Shield className="h-3 w-3 text-primary" />
                                                 )}
                                                 <span>
                                                     Authored by: <strong>{product.creator?.name ?? 'Admin'}</strong>
@@ -274,7 +274,7 @@ export default function ShopOwnerCatalogIndex({
                                                     <button
                                                         type="button"
                                                         onClick={() => openAddModal(product)}
-                                                        className="inline-flex items-center gap-1 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-indigo-500"
+                                                        className="inline-flex items-center gap-1 rounded-xl bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground shadow-xs transition hover:opacity-90"
                                                     >
                                                         <Plus className="h-3.5 w-3.5" />
                                                         <span>Add to Shop</span>
@@ -302,7 +302,7 @@ export default function ShopOwnerCatalogIndex({
                                         dangerouslySetInnerHTML={{ __html: link.label }}
                                         className={`rounded-lg px-2.5 py-1 text-xs font-semibold ${
                                             link.active
-                                                ? 'bg-indigo-600 text-white'
+                                                ? 'bg-primary text-primary-foreground'
                                                 : !link.url
                                                   ? 'cursor-not-allowed text-slate-400'
                                                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
@@ -439,7 +439,7 @@ export default function ShopOwnerCatalogIndex({
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white hover:bg-indigo-500 disabled:opacity-50"
+                                    className="rounded-xl bg-primary px-4 py-2 text-xs font-bold text-primary-foreground hover:opacity-90 disabled:opacity-50 shadow-xs"
                                 >
                                     {processing ? 'Adding...' : 'Confirm & Add to Shop'}
                                 </button>

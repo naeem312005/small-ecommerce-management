@@ -45,7 +45,6 @@ export default function AdminDashboard({
             <div className="flex flex-1 flex-col gap-6 p-6">
                 {/* Welcome / Header Banner */}
                 <div className="relative overflow-hidden rounded-3xl bg-primary text-primary-foreground p-6 sm:p-8 shadow-xl">
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_-20%,rgba(99,102,241,0.35),rgba(255,255,255,0))]" />
                     <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur-xs">
@@ -70,7 +69,7 @@ export default function AdminDashboard({
                             </Link>
                             <Link
                                 href="/admin/products/create"
-                                className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-bold text-white shadow-md shadow-indigo-600/30 transition hover:bg-indigo-500"
+                                className="inline-flex items-center gap-1.5 rounded-xl bg-white/20 px-4 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-white/30 backdrop-blur-xs"
                             >
                                 <Plus className="h-3.5 w-3.5" />
                                 <span>New Product</span>
@@ -146,7 +145,7 @@ export default function AdminDashboard({
                             <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                                 Merchant Accounts
                             </span>
-                            <div className="rounded-xl bg-violet-500/10 p-2 text-violet-600 dark:text-violet-400">
+                            <div className="rounded-xl bg-primary/10 p-2 text-primary">
                                 <Users className="h-4 w-4" />
                             </div>
                         </div>
@@ -157,7 +156,7 @@ export default function AdminDashboard({
                             <span className="text-muted-foreground">Verified Operators</span>
                             <Link
                                 href="/admin/shop-owners"
-                                className="font-bold text-violet-600 hover:underline dark:text-violet-400"
+                                className="font-bold text-primary hover:underline"
                             >
                                 Manage →
                             </Link>
@@ -222,7 +221,7 @@ export default function AdminDashboard({
                                                 className="h-10 w-10 shrink-0 rounded-2xl object-cover ring-1 ring-border shadow-2xs"
                                             />
                                         ) : (
-                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-indigo-600 text-white font-bold shadow-2xs">
+                                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-primary text-white font-bold shadow-2xs">
                                                 <Store className="h-4 w-4" />
                                             </div>
                                         )}

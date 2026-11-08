@@ -6,8 +6,6 @@ import {
     Clock,
     CreditCard,
     Eye,
-    Filter,
-    Heart,
     Package,
     Search,
     ShieldCheck,
@@ -15,7 +13,6 @@ import {
     Sparkles,
     Star,
     Store,
-    Tag,
     Truck,
     X,
 } from 'lucide-react';
@@ -104,219 +101,213 @@ export default function CustomerHome({
             quantity: 1,
         });
 
-        notify.success(`Added to bag!`, `${title} (${sp.shop?.name})`);
-
+        notify.success(`Added "${title}" to your bag!`);
         setAddedId(sp.id);
-        setTimeout(() => setAddedId(null), 1500);
+        setTimeout(() => setAddedId(null), 1800);
     };
 
-    const hasActiveFilters = Boolean(filters.category || filters.shop || filters.search);
+    const hasActiveFilters = Boolean(filters.search || filters.category || filters.shop);
 
     return (
         <CustomerLayout>
-            <Head title="Velora Market — Curated Goods From Independent Boutiques" />
+            <Head title="Velora Market — Premium Multi-Vendor Commerce" />
 
-            {/* Editorial Hero Section */}
-            <div className="relative overflow-hidden bg-slate-950 text-white">
-                {/* Background glow and subtle grid */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(99,102,241,0.25),rgba(255,255,255,0))]" />
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#818cf8_1px,transparent_1px)] [background-size:24px_24px]" />
+            {/* Hero Section */}
+            <section className="relative overflow-hidden border-b border-[#E2E8F0] bg-[#FFFFFF] py-16 sm:py-24 dark:border-[#334155] dark:bg-[#0F172A]">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_-10%,rgba(37,99,235,0.08),transparent)]" />
 
-                <div className="relative mx-auto max-w-5xl px-4 py-20 text-center sm:px-6 lg:px-8 lg:py-28">
-                    {/* Pill Badge */}
-                    <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-semibold tracking-wide text-indigo-300 backdrop-blur-md">
-                        <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
-                        <span>SPRING / SUMMER 2026 EDITORIAL</span>
+                <div className="relative mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+                    {/* Eyebrow Chip */}
+                    <div className="inline-flex items-center gap-2 rounded-full border border-[#2563EB]/20 bg-[#EFF6FF] px-4 py-1.5 text-xs font-semibold text-[#2563EB] dark:bg-blue-950/60 dark:text-blue-300">
+                        <Sparkles className="h-3.5 w-3.5" />
+                        <span>Curated Multi-Vendor Marketplace • Spring 2026</span>
                     </div>
 
                     {/* Headline */}
-                    <h1 className="mt-8 font-serif text-4xl font-black tracking-tight sm:text-6xl lg:text-7xl">
-                        Exceptional Design, Direct From Independent Boutiques.
+                    <h1 className="mt-6 text-3xl font-black tracking-tight text-[#0F172A] sm:text-5xl lg:text-6xl dark:text-[#F8FAFC]">
+                        Modern Goods Direct From Independent Boutiques.
                     </h1>
 
                     {/* Subtitle */}
-                    <p className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
-                        Explore handpicked technology, wardrobe essentials, and acoustic instruments from verified independent merchants. Every product is backed by centralized quality and independent care.
+                    <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-[#64748B] sm:text-base dark:text-[#94A3B8]">
+                        Discover handcrafted wardrobe essentials, acoustic instruments, and cutting-edge electronics. Every product is backed by centralized inventory standards and boutique merchant care.
                     </p>
 
-                    {/* Interactive Search Bar */}
-                    <form onSubmit={handleSearch} className="mx-auto mt-10 max-w-2xl">
+                    {/* Action CTAs */}
+                    <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+                        <a
+                            href="#showcase"
+                            className="inline-flex items-center gap-2 rounded-xl bg-[#2563EB] px-6 py-3.5 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition hover:bg-[#1D4ED8]"
+                        >
+                            <ShoppingBag className="h-4 w-4" />
+                            <span>Browse Showcase Items</span>
+                        </a>
+                        <Link
+                            href="/shops"
+                            className="inline-flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-6 py-3.5 text-xs font-semibold text-[#0F172A] shadow-xs transition hover:bg-[#F8FAFC] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
+                        >
+                            <Store className="h-4 w-4 text-[#64748B]" />
+                            <span>Explore Boutiques Directory</span>
+                        </Link>
+                    </div>
+
+                    {/* Hero Search Box */}
+                    <form onSubmit={handleSearch} className="mx-auto mt-8 max-w-xl">
                         <div className="relative flex items-center">
-                            <Search className="absolute left-5 h-5 w-5 text-slate-400" />
+                            <Search className="absolute left-4 h-4 w-4 text-[#64748B]" />
                             <input
                                 type="text"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                placeholder="Search products, brands, or boutique collections..."
-                                className="w-full rounded-2xl border-0 bg-white/10 py-4 pl-14 pr-32 text-sm text-white placeholder-slate-400 backdrop-blur-md ring-1 ring-white/20 transition focus:bg-white focus:text-slate-950 focus:ring-2 focus:ring-indigo-500"
+                                placeholder="Search by product title, brand, or SKU..."
+                                className="w-full rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] py-3.5 pl-11 pr-28 text-xs text-[#0F172A] placeholder-[#64748B] focus:border-[#2563EB] focus:bg-[#FFFFFF] focus:ring-1 focus:ring-[#2563EB] transition dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
                             />
                             <button
                                 type="submit"
-                                className="absolute right-2.5 rounded-xl bg-indigo-600 px-5 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-indigo-500"
+                                className="absolute right-2 rounded-xl bg-[#2563EB] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#1D4ED8]"
                             >
                                 Search
                             </button>
                         </div>
                     </form>
-
-                    {/* Quick Category Chips */}
-                    <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-300">
-                        <span className="text-slate-400 font-medium">Popular:</span>
-                        {categories.slice(0, 4).map((cat) => (
-                            <button
-                                key={cat}
-                                type="button"
-                                onClick={() => handleFilterCategory(filters.category === cat ? null : cat)}
-                                className={`rounded-full px-3 py-1 text-xs font-medium transition ${
-                                    filters.category === cat
-                                        ? 'bg-white text-slate-950 font-bold'
-                                        : 'bg-white/10 hover:bg-white/20 text-slate-200'
-                                }`}
-                            >
-                                {cat}
-                            </button>
-                        ))}
-                    </div>
                 </div>
-            </div>
+            </section>
 
-            {/* Commercial Trust Pillars */}
-            <div className="border-b border-slate-200 bg-white py-6 dark:border-slate-800 dark:bg-slate-900">
+            {/* Trust Pillars */}
+            <section className="border-b border-[#E2E8F0] bg-[#FFFFFF] py-6 dark:border-[#334155] dark:bg-[#0F172A]">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:gap-8">
                         <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EFF6FF] text-[#2563EB] dark:bg-blue-950/50 dark:text-blue-400">
                                 <Truck className="h-5 w-5" />
                             </div>
                             <div>
-                                <h4 className="text-xs font-bold text-slate-900 dark:text-white">
+                                <h4 className="text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                                     Express Global Delivery
                                 </h4>
-                                <p className="text-[11px] text-slate-500">
-                                    Free on orders over $150
+                                <p className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">
+                                    Complimentary on orders $150+
                                 </p>
                             </div>
                         </div>
 
                         <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-[#16A34A] dark:bg-emerald-950/50 dark:text-emerald-400">
                                 <ShieldCheck className="h-5 w-5" />
                             </div>
                             <div>
-                                <h4 className="text-xs font-bold text-slate-900 dark:text-white">
-                                    100% Certified Authentic
+                                <h4 className="text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC]">
+                                    100% Authentic Products
                                 </h4>
-                                <p className="text-[11px] text-slate-500">
-                                    Direct from verified makers
+                                <p className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">
+                                    Direct from verified boutiques
                                 </p>
                             </div>
                         </div>
 
                         <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-[#F59E0B] dark:bg-amber-950/50 dark:text-amber-400">
                                 <Clock className="h-5 w-5" />
                             </div>
                             <div>
-                                <h4 className="text-xs font-bold text-slate-900 dark:text-white">
-                                    30-Day Easy Returns
+                                <h4 className="text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC]">
+                                    30-Day Simple Returns
                                 </h4>
-                                <p className="text-[11px] text-slate-500">
-                                    Hassle-free exchange policy
+                                <p className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">
+                                    Hassle-free refunds & exchanges
                                 </p>
                             </div>
                         </div>
 
                         <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-950/60 dark:text-violet-400">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EFF6FF] text-[#2563EB] dark:bg-blue-950/50 dark:text-blue-400">
                                 <CreditCard className="h-5 w-5" />
                             </div>
                             <div>
-                                <h4 className="text-xs font-bold text-slate-900 dark:text-white">
-                                    Encrypted Checkout
+                                <h4 className="text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC]">
+                                    Secure Encrypted Checkout
                                 </h4>
-                                <p className="text-[11px] text-slate-500">
-                                    256-bit bank-grade security
+                                <p className="text-[11px] text-[#64748B] dark:text-[#94A3B8]">
+                                    PCI-DSS 256-bit safe payments
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            {/* Featured Boutiques Showcase */}
+            {/* Featured Merchant Boutiques */}
             <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-                <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                     <div>
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-                            Independent Partners
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#2563EB]">
+                            Verified Storefronts
                         </span>
-                        <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
-                            Featured Boutiques & Flagships
+                        <h2 className="text-xl font-black tracking-tight text-[#0F172A] sm:text-2xl dark:text-[#F8FAFC]">
+                            Independent Merchant Boutiques
                         </h2>
+                        <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
+                            Browse independent shops that curate and customize items from the shared master catalog.
+                        </p>
                     </div>
+
                     <Link
                         href="/shops"
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 transition hover:text-indigo-500 dark:text-indigo-400"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-[#2563EB] hover:underline"
                     >
-                        <span>Explore All Boutiques</span>
+                        <span>View all {activeShops.length} boutiques</span>
                         <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
                 </div>
 
-                <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                    {activeShops.map((shop) => (
+                <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {activeShops.slice(0, 3).map((shop) => (
                         <div
                             key={shop.id}
-                            className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl border p-6 transition duration-300 ${
+                            className={`flex flex-col justify-between rounded-2xl border bg-[#FFFFFF] p-6 shadow-xs transition hover:shadow-md dark:bg-[#1E293B] ${
                                 filters.shop === shop.slug
-                                    ? 'border-indigo-600 bg-indigo-50/50 shadow-md ring-2 ring-indigo-500/20 dark:border-indigo-500 dark:bg-indigo-950/20'
-                                    : 'border-slate-200 bg-white hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900'
+                                    ? 'border-[#2563EB] ring-2 ring-[#2563EB]/20'
+                                    : 'border-[#E2E8F0] dark:border-[#334155]'
                             }`}
                         >
                             <div>
-                                <div className="flex items-start justify-between">
-                                    <div className="flex items-center gap-3.5">
+                                <div className="flex items-start justify-between gap-3">
+                                    <div className="flex items-center gap-3">
                                         {shop.logo ? (
                                             <img
                                                 src={shop.logo}
                                                 alt={shop.name}
-                                                className="h-12 w-12 rounded-2xl object-cover ring-1 ring-slate-200 dark:ring-slate-700"
+                                                className="h-12 w-12 rounded-xl object-cover ring-1 ring-[#E2E8F0] dark:ring-[#334155]"
                                             />
                                         ) : (
-                                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600 text-white font-bold">
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#2563EB] text-white font-bold">
                                                 <Store className="h-6 w-6" />
                                             </div>
                                         )}
                                         <div>
-                                            <h3 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400">
+                                            <h3 className="font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                                                 {shop.name}
                                             </h3>
-                                            <div className="mt-0.5 flex items-center gap-1.5 text-xs text-amber-500">
-                                                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                                                <span className="font-bold text-slate-800 dark:text-slate-200">
-                                                    4.9
-                                                </span>
-                                                <span className="text-slate-400">
-                                                    ({(shop.shop_products_count || 1) * 24}+ reviews)
-                                                </span>
-                                            </div>
+                                            <span className="font-mono text-[11px] text-[#2563EB]">
+                                                /shops/{shop.slug}
+                                            </span>
                                         </div>
                                     </div>
 
-                                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-[#16A34A] dark:bg-emerald-950 dark:text-emerald-300">
                                         <CheckCircle2 className="h-3 w-3" />
                                         Verified
                                     </span>
                                 </div>
 
-                                <p className="mt-4 text-xs leading-relaxed text-slate-600 line-clamp-2 dark:text-slate-400">
-                                    {shop.description || 'Curated storefront offering customized products from the catalog.'}
+                                <p className="mt-3 text-xs leading-relaxed text-[#64748B] line-clamp-2 dark:text-[#94A3B8]">
+                                    {shop.description || 'Specialty boutique offering customized products from the catalog.'}
                                 </p>
                             </div>
 
-                            <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800">
-                                <span className="text-xs font-semibold text-slate-500">
-                                    {shop.shop_products_count ?? 0} Curated Items
+                            <div className="mt-5 flex items-center justify-between border-t border-[#E2E8F0] pt-4 dark:border-[#334155]">
+                                <span className="text-xs font-semibold text-[#64748B] dark:text-[#94A3B8]">
+                                    {shop.shop_products_count ?? 0} Listed Items
                                 </span>
 
                                 <div className="flex items-center gap-2">
@@ -327,15 +318,15 @@ export default function CustomerHome({
                                         }
                                         className={`rounded-xl px-3 py-1.5 text-xs font-bold transition ${
                                             filters.shop === shop.slug
-                                                ? 'bg-indigo-600 text-white'
-                                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
+                                                ? 'bg-[#2563EB] text-white'
+                                                : 'bg-[#F1F5F9] text-[#0F172A] hover:bg-[#E2E8F0] dark:bg-[#334155] dark:text-[#F8FAFC]'
                                         }`}
                                     >
                                         {filters.shop === shop.slug ? 'Filter Active' : 'Filter by Shop'}
                                     </button>
                                     <Link
                                         href={`/shops/${shop.slug}`}
-                                        className="rounded-xl border border-slate-200 p-1.5 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:hover:bg-slate-800"
+                                        className="rounded-xl border border-[#E2E8F0] p-1.5 text-[#64748B] transition hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:border-[#334155] dark:hover:bg-[#334155]"
                                         title="Visit Storefront"
                                     >
                                         <ArrowRight className="h-4 w-4" />
@@ -347,19 +338,19 @@ export default function CustomerHome({
                 </div>
             </section>
 
-            {/* Curated Product Showcase */}
-            <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-                {/* Header & Filter Controls */}
-                <div className="border-b border-slate-200 pb-5 dark:border-slate-800">
+            {/* Product Catalog Showcase */}
+            <section id="showcase" className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+                {/* Header & Category Filter Controls */}
+                <div className="border-b border-[#E2E8F0] pb-5 dark:border-[#334155]">
                     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                         <div>
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-                                Available Inventory
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-[#2563EB]">
+                                Active Inventory
                             </span>
-                            <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+                            <h2 className="text-2xl font-black tracking-tight text-[#0F172A] dark:text-[#F8FAFC]">
                                 Curated Boutique Products
                             </h2>
-                            <p className="mt-1 text-xs text-slate-500">
+                            <p className="mt-1 text-xs text-[#64748B] dark:text-[#94A3B8]">
                                 Showing {shopProducts.total} items assigned to independent shops with store-specific pricing.
                             </p>
                         </div>
@@ -371,8 +362,8 @@ export default function CustomerHome({
                                 onClick={() => handleFilterCategory(null)}
                                 className={`rounded-xl px-3.5 py-2 text-xs font-bold transition ${
                                     !filters.category
-                                        ? 'bg-slate-950 text-white dark:bg-indigo-600'
-                                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
+                                        ? 'bg-[#2563EB] text-white shadow-xs'
+                                        : 'bg-[#FFFFFF] text-[#64748B] border border-[#E2E8F0] hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#94A3B8]'
                                 }`}
                             >
                                 All Categories
@@ -384,8 +375,8 @@ export default function CustomerHome({
                                     onClick={() => handleFilterCategory(cat)}
                                     className={`rounded-xl px-3.5 py-2 text-xs font-bold transition ${
                                         filters.category === cat
-                                            ? 'bg-slate-950 text-white dark:bg-indigo-600'
-                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
+                                            ? 'bg-[#2563EB] text-white shadow-xs'
+                                            : 'bg-[#FFFFFF] text-[#64748B] border border-[#E2E8F0] hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#94A3B8]'
                                     }`}
                                 >
                                     {cat}
@@ -396,32 +387,32 @@ export default function CustomerHome({
 
                     {/* Active Filter Strip */}
                     {hasActiveFilters && (
-                        <div className="mt-4 flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100 dark:border-slate-800/80">
-                            <span className="text-xs font-medium text-slate-500">Active Filters:</span>
+                        <div className="mt-4 flex flex-wrap items-center gap-2 pt-3 border-t border-[#E2E8F0] dark:border-[#334155]">
+                            <span className="text-xs font-medium text-[#64748B]">Active Filters:</span>
                             {filters.search && (
-                                <span className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                                <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#EFF6FF] px-2.5 py-1 text-xs font-semibold text-[#2563EB]">
                                     Search: "{filters.search}"
                                 </span>
                             )}
                             {filters.shop && (
-                                <span className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                                <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#EFF6FF] px-2.5 py-1 text-xs font-semibold text-[#2563EB]">
                                     Shop: {filters.shop}
                                     <button
                                         type="button"
                                         onClick={() => handleFilterShop(null)}
-                                        className="text-indigo-400 hover:text-indigo-600"
+                                        className="text-[#2563EB] hover:opacity-75"
                                     >
                                         <X className="h-3 w-3" />
                                     </button>
                                 </span>
                             )}
                             {filters.category && (
-                                <span className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                                <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#EFF6FF] px-2.5 py-1 text-xs font-semibold text-[#2563EB]">
                                     Category: {filters.category}
                                     <button
                                         type="button"
                                         onClick={() => handleFilterCategory(null)}
-                                        className="text-indigo-400 hover:text-indigo-600"
+                                        className="text-[#2563EB] hover:opacity-75"
                                     >
                                         <X className="h-3 w-3" />
                                     </button>
@@ -430,7 +421,7 @@ export default function CustomerHome({
                             <button
                                 type="button"
                                 onClick={clearFilters}
-                                className="text-xs font-bold text-rose-600 hover:underline"
+                                className="text-xs font-bold text-[#DC2626] hover:underline"
                             >
                                 Clear All
                             </button>
@@ -440,18 +431,18 @@ export default function CustomerHome({
 
                 {/* Product Grid */}
                 {shopProducts.data.length === 0 ? (
-                    <div className="mt-8 rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center dark:border-slate-800 dark:bg-slate-900">
-                        <Package className="mx-auto h-12 w-12 text-slate-400" />
-                        <h3 className="mt-3 text-base font-bold text-slate-900 dark:text-white">
+                    <div className="mt-8 rounded-2xl border border-dashed border-[#E2E8F0] bg-[#FFFFFF] p-12 text-center dark:border-[#334155] dark:bg-[#1E293B]">
+                        <Package className="mx-auto h-12 w-12 text-[#64748B]" />
+                        <h3 className="mt-3 text-base font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                             No boutique products match your filter
                         </h3>
-                        <p className="mt-1 text-xs text-slate-500">
+                        <p className="mt-1 text-xs text-[#64748B] dark:text-[#94A3B8]">
                             Try resetting your search query or selecting a different category.
                         </p>
                         <button
                             type="button"
                             onClick={clearFilters}
-                            className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-indigo-500"
+                            className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-[#2563EB] px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#1D4ED8]"
                         >
                             Reset All Filters
                         </button>
@@ -475,12 +466,12 @@ export default function CustomerHome({
                             return (
                                 <div
                                     key={sp.id}
-                                    className="group flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/90 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900"
+                                    className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-[#2563EB]/40 hover:shadow-lg dark:border-[#334155] dark:bg-[#1E293B]"
                                 >
                                     {/* Thumbnail container */}
                                     <Link
                                         href={`/shops/${sp.shop?.slug}/products/${sp.id}`}
-                                        className="relative aspect-square w-full overflow-hidden bg-slate-100 dark:bg-slate-800"
+                                        className="relative aspect-square w-full overflow-hidden bg-[#F8FAFC] dark:bg-[#0F172A]"
                                     >
                                         {thumbnail ? (
                                             <img
@@ -489,15 +480,15 @@ export default function CustomerHome({
                                                 className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                                             />
                                         ) : (
-                                            <div className="flex h-full w-full items-center justify-center text-slate-400">
+                                            <div className="flex h-full w-full items-center justify-center text-[#64748B]">
                                                 <Package className="h-12 w-12" />
                                             </div>
                                         )}
 
                                         {/* Boutique badge tag */}
                                         <div className="absolute top-3 left-3">
-                                            <span className="inline-flex items-center gap-1 rounded-lg bg-slate-950/85 px-2.5 py-1 text-[10px] font-bold tracking-wide uppercase text-white shadow-md backdrop-blur-md">
-                                                <Store className="h-3 w-3 text-indigo-400" />
+                                            <span className="inline-flex items-center gap-1 rounded-lg bg-white/95 px-2.5 py-1 text-[10px] font-bold text-[#0F172A] border border-[#E2E8F0] shadow-xs backdrop-blur-sm dark:bg-[#0F172A]/90 dark:text-[#F8FAFC] dark:border-[#334155]">
+                                                <Store className="h-3 w-3 text-[#2563EB]" />
                                                 {sp.shop?.name}
                                             </span>
                                         </div>
@@ -505,7 +496,7 @@ export default function CustomerHome({
                                         {/* Discount badge if customized */}
                                         {discountPercent && discountPercent > 0 && (
                                             <div className="absolute top-3 right-3">
-                                                <span className="rounded-lg bg-rose-600 px-2 py-1 text-[10px] font-black text-white shadow-md">
+                                                <span className="rounded-lg bg-[#DC2626] px-2 py-1 text-[10px] font-black text-white shadow-xs">
                                                     -{discountPercent}% OFF
                                                 </span>
                                             </div>
@@ -514,13 +505,13 @@ export default function CustomerHome({
 
                                     {/* Card Content */}
                                     <div className="flex flex-1 flex-col p-5">
-                                        <div className="flex items-center justify-between text-[11px] text-slate-500">
-                                            <span className="font-semibold text-indigo-600 dark:text-indigo-400">
+                                        <div className="flex items-center justify-between text-[11px] text-[#64748B]">
+                                            <span className="font-semibold text-[#2563EB]">
                                                 {sp.product?.category || 'General'}
                                             </span>
-                                            <div className="flex items-center gap-1 text-amber-500">
-                                                <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                                                <span className="font-bold text-slate-700 dark:text-slate-300">
+                                            <div className="flex items-center gap-1 text-[#F59E0B]">
+                                                <Star className="h-3 w-3 fill-[#F59E0B]" />
+                                                <span className="font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                                                     4.9
                                                 </span>
                                             </div>
@@ -531,7 +522,7 @@ export default function CustomerHome({
                                             href={`/shops/${sp.shop?.slug}/products/${sp.id}`}
                                             className="mt-2 block"
                                         >
-                                            <h3 className="text-sm font-bold text-slate-900 line-clamp-2 group-hover:text-indigo-600 transition dark:text-white dark:group-hover:text-indigo-400">
+                                            <h3 className="text-sm font-bold text-[#0F172A] line-clamp-2 transition hover:text-[#2563EB] dark:text-[#F8FAFC] dark:hover:text-[#3B82F6]">
                                                 {title}
                                             </h3>
                                         </Link>
@@ -539,17 +530,17 @@ export default function CustomerHome({
                                         {/* Price & Stock info */}
                                         <div className="mt-4 flex items-baseline justify-between">
                                             <div className="flex items-baseline gap-2">
-                                                <span className="text-lg font-black text-slate-950 dark:text-white">
+                                                <span className="text-lg font-black text-[#0F172A] dark:text-[#F8FAFC]">
                                                     ${Number(sp.price).toFixed(2)}
                                                 </span>
                                                 {isCustomPrice && sp.product && (
-                                                    <span className="text-xs text-slate-400 line-through">
+                                                    <span className="text-xs text-[#64748B] line-through">
                                                         ${Number(sp.product.base_price).toFixed(2)}
                                                     </span>
                                                 )}
                                             </div>
-                                            <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
-                                                {sp.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                                            <span className="text-[11px] font-semibold text-[#16A34A]">
+                                                {sp.stock > 0 ? '● In Stock' : 'Out of Stock'}
                                             </span>
                                         </div>
 
@@ -561,14 +552,14 @@ export default function CustomerHome({
                                                 disabled={sp.stock <= 0}
                                                 className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-bold transition shadow-xs ${
                                                     addedId === sp.id
-                                                        ? 'bg-emerald-600 text-white'
-                                                        : 'bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-40'
+                                                        ? 'bg-[#16A34A] text-white'
+                                                        : 'bg-[#2563EB] text-white hover:bg-[#1D4ED8] disabled:opacity-40'
                                                 }`}
                                             >
                                                 {addedId === sp.id ? (
                                                     <>
                                                         <Check className="h-3.5 w-3.5" />
-                                                        <span>Added to Bag!</span>
+                                                        <span>Added!</span>
                                                     </>
                                                 ) : (
                                                     <>
@@ -580,7 +571,7 @@ export default function CustomerHome({
 
                                             <Link
                                                 href={`/shops/${sp.shop?.slug}/products/${sp.id}`}
-                                                className="rounded-xl border border-slate-200 p-2.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800"
+                                                className="rounded-xl border border-[#E2E8F0] p-2.5 text-[#64748B] transition hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:border-[#334155] dark:hover:bg-[#334155]"
                                                 title="View Details"
                                             >
                                                 <Eye className="h-4 w-4" />
@@ -596,59 +587,26 @@ export default function CustomerHome({
                 {/* Pagination */}
                 {shopProducts.links && shopProducts.links.length > 3 && (
                     <div className="mt-12 flex justify-center">
-                        <nav className="flex items-center gap-1 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+                        <nav className="flex items-center gap-1 rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] p-1.5 shadow-xs dark:border-[#334155] dark:bg-[#1E293B]">
                             {shopProducts.links.map((link, idx) => {
-                                const isCurrent = link.active;
                                 return (
                                     <Link
                                         key={idx}
                                         href={link.url || '#'}
-                                        preserveScroll
-                                        className={`rounded-xl px-3.5 py-1.5 text-xs font-semibold transition ${
-                                            isCurrent
-                                                ? 'bg-indigo-600 text-white shadow-sm'
-                                                : link.url
-                                                  ? 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
-                                                  : 'cursor-not-allowed text-slate-300 dark:text-slate-700'
-                                        }`}
                                         dangerouslySetInnerHTML={{ __html: link.label }}
+                                        className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition ${
+                                            link.active
+                                                ? 'bg-[#2563EB] text-white shadow-xs'
+                                                : !link.url
+                                                  ? 'cursor-not-allowed text-[#64748B]/40'
+                                                  : 'text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:hover:bg-[#334155]'
+                                        }`}
                                     />
                                 );
                             })}
                         </nav>
                     </div>
                 )}
-            </section>
-
-            {/* Merchant Network Banner */}
-            <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 p-8 text-white shadow-2xl sm:p-12">
-                    <div className="relative z-10 max-w-2xl">
-                        <span className="rounded-full bg-indigo-500/20 px-3 py-1 text-xs font-bold text-indigo-300">
-                            Velora Merchant Collective
-                        </span>
-                        <h3 className="mt-4 font-serif text-3xl font-black tracking-tight sm:text-4xl">
-                            Are you an independent boutique or artisan creator?
-                        </h3>
-                        <p className="mt-3 text-xs leading-relaxed text-slate-300 sm:text-sm">
-                            Join our shared product catalog platform. Distribute your flagship inventions across vetted boutiques or list curated catalog items with your own custom prices, branding, and localized inventory.
-                        </p>
-                        <div className="mt-6 flex flex-wrap items-center gap-3">
-                            <Link
-                                href="/login"
-                                className="rounded-xl bg-white px-5 py-2.5 text-xs font-bold text-slate-950 shadow-md transition hover:bg-slate-100"
-                            >
-                                Open Merchant Account
-                            </Link>
-                            <Link
-                                href="/shops"
-                                className="rounded-xl border border-white/20 px-5 py-2.5 text-xs font-bold text-white transition hover:bg-white/10"
-                            >
-                                Browse Partner Boutiques
-                            </Link>
-                        </div>
-                    </div>
-                </div>
             </section>
         </CustomerLayout>
     );

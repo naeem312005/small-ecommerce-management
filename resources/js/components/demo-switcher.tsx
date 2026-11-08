@@ -37,18 +37,18 @@ export default function DemoSwitcher() {
     return (
         <>
             {/* Floating Action Pill in Bottom Right */}
-            <div className="fixed bottom-5 right-5 z-40">
+            {/* <div className="fixed bottom-5 right-5 z-40">
                 <button
                     type="button"
                     onClick={() => setIsOpen(true)}
-                    className="group flex items-center gap-2 rounded-full border border-slate-700/80 bg-slate-900/95 px-4 py-2.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md transition hover:scale-105 hover:bg-slate-800 hover:ring-2 hover:ring-indigo-500/40"
+                    className="group flex items-center gap-2 rounded-full border border-border bg-[#0F172A] px-4 py-2.5 text-xs font-semibold text-white shadow-2xl backdrop-blur-md transition hover:scale-105 hover:bg-slate-800 hover:ring-2 hover:ring-primary/40"
                     title="Quick Role Switcher for Evaluation"
                 >
                     <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
                     <Key className="h-3.5 w-3.5 text-amber-400" />
                     <span>Role Switcher</span>
                     {currentUser && (
-                        <span className="rounded-full bg-indigo-600/60 px-2 py-0.5 text-[10px] font-bold text-indigo-200">
+                        <span className="rounded-full bg-primary/60 px-2 py-0.5 text-[10px] font-bold text-white">
                             {currentUser.role === 'admin'
                                 ? 'Admin'
                                 : currentUser.role === 'shop_owner'
@@ -57,28 +57,28 @@ export default function DemoSwitcher() {
                         </span>
                     )}
                 </button>
-            </div>
+            </div> */}
 
             {/* Modal */}
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div
                         onClick={() => setIsOpen(false)}
-                        className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs"
+                        className="fixed inset-0 bg-[#0F172A]/70 backdrop-blur-xs"
                     />
 
-                    <div className="relative w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+                    <div className="relative w-full max-w-lg rounded-3xl border border-border bg-card p-6 shadow-2xl">
                         {/* Header */}
-                        <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
+                        <div className="flex items-center justify-between border-b border-border pb-4">
                             <div className="flex items-center gap-2.5">
-                                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 text-white shadow-md">
+                                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white shadow-md">
                                     <Key className="h-4 w-4" />
                                 </div>
                                 <div>
-                                    <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                                    <h3 className="text-base font-bold text-foreground">
                                         Evaluation Role Switcher
                                     </h3>
-                                    <p className="text-[11px] text-slate-500">
+                                    <p className="text-[11px] text-muted-foreground">
                                         Instant 1-click login into any pre-seeded persona
                                     </p>
                                 </div>
@@ -86,7 +86,7 @@ export default function DemoSwitcher() {
                             <button
                                 type="button"
                                 onClick={() => setIsOpen(false)}
-                                className="rounded-xl p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                                className="rounded-xl p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                             >
                                 <X className="h-5 w-5" />
                             </button>
@@ -94,7 +94,7 @@ export default function DemoSwitcher() {
 
                         {/* Current Status */}
                         {currentUser && (
-                            <div className="mt-4 flex items-center justify-between rounded-2xl bg-indigo-50/70 px-4 py-2.5 text-xs text-indigo-900 dark:bg-indigo-950/40 dark:text-indigo-200">
+                            <div className="mt-4 flex items-center justify-between rounded-2xl bg-secondary px-4 py-2.5 text-xs text-foreground">
                                 <div className="flex items-center gap-2">
                                     <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                                     <span>
@@ -115,24 +115,24 @@ export default function DemoSwitcher() {
                         {/* Role Cards */}
                         <div className="mt-4 space-y-2.5">
                             {/* Administrator */}
-                            <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50/60 p-3.5 transition hover:border-indigo-300 dark:border-slate-800 dark:bg-slate-800/40">
+                            <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-3.5 transition hover:border-primary">
                                 <div className="flex items-start gap-3">
-                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-sm">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
                                         <Shield className="h-4 w-4" />
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2">
-                                            <h4 className="text-xs font-bold text-slate-900 dark:text-white">
+                                            <h4 className="text-xs font-bold text-foreground">
                                                 Platform Administrator
                                             </h4>
-                                            <span className="rounded bg-indigo-100 px-1.5 py-0.5 text-[9px] font-bold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                                            <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[9px] font-bold text-primary">
                                                 admin
                                             </span>
                                         </div>
-                                        <p className="mt-0.5 font-mono text-[11px] text-slate-500">
+                                        <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
                                             admin@ecommerce.com
                                         </p>
-                                        <p className="mt-1 text-[11px] text-slate-600 dark:text-slate-400">
+                                        <p className="mt-1 text-[11px] text-muted-foreground">
                                             Shop CRUD, Master Product Catalog CRUD, Shop Owner management.
                                         </p>
                                     </div>
@@ -141,31 +141,31 @@ export default function DemoSwitcher() {
                                     type="button"
                                     onClick={() => switchAccount('admin@ecommerce.com')}
                                     disabled={switching !== null}
-                                    className="ml-3 shrink-0 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-indigo-500 disabled:opacity-50"
+                                    className="ml-3 shrink-0 rounded-xl bg-primary px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
                                 >
                                     {switching === 'admin@ecommerce.com' ? 'Switching...' : 'Switch Role'}
                                 </button>
                             </div>
 
                             {/* Shop Owner 1 */}
-                            <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50/60 p-3.5 transition hover:border-emerald-300 dark:border-slate-800 dark:bg-slate-800/40">
+                            <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-3.5 transition hover:border-emerald-500">
                                 <div className="flex items-start gap-3">
                                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-sm">
                                         <Store className="h-4 w-4" />
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2">
-                                            <h4 className="text-xs font-bold text-slate-900 dark:text-white">
+                                            <h4 className="text-xs font-bold text-foreground">
                                                 TechNova Gadgets (Owner)
                                             </h4>
                                             <span className="rounded bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
                                                 shop_owner
                                             </span>
                                         </div>
-                                        <p className="mt-0.5 font-mono text-[11px] text-slate-500">
+                                        <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
                                             tech@ecommerce.com
                                         </p>
-                                        <p className="mt-1 text-[11px] text-slate-600 dark:text-slate-400">
+                                        <p className="mt-1 text-[11px] text-muted-foreground">
                                             Lists electronics from shared catalog; custom prices & thumbnails.
                                         </p>
                                     </div>
@@ -181,24 +181,24 @@ export default function DemoSwitcher() {
                             </div>
 
                             {/* Shop Owner 2 */}
-                            <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50/60 p-3.5 transition hover:border-violet-300 dark:border-slate-800 dark:bg-slate-800/40">
+                            <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-3.5 transition hover:border-primary">
                                 <div className="flex items-start gap-3">
-                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-600 text-white shadow-sm">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
                                         <Store className="h-4 w-4" />
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2">
-                                            <h4 className="text-xs font-bold text-slate-900 dark:text-white">
+                                            <h4 className="text-xs font-bold text-foreground">
                                                 Aura Apparel & Co. (Owner)
                                             </h4>
-                                            <span className="rounded bg-violet-100 px-1.5 py-0.5 text-[9px] font-bold text-violet-700 dark:bg-violet-950 dark:text-violet-300">
+                                            <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[9px] font-bold text-primary">
                                                 shop_owner
                                             </span>
                                         </div>
-                                        <p className="mt-0.5 font-mono text-[11px] text-slate-500">
+                                        <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
                                             fashion@ecommerce.com
                                         </p>
-                                        <p className="mt-1 text-[11px] text-slate-600 dark:text-slate-400">
+                                        <p className="mt-1 text-[11px] text-muted-foreground">
                                             Fashion & luxury lifestyle; also shared catalog products with custom markup.
                                         </p>
                                     </div>
@@ -207,31 +207,31 @@ export default function DemoSwitcher() {
                                     type="button"
                                     onClick={() => switchAccount('fashion@ecommerce.com')}
                                     disabled={switching !== null}
-                                    className="ml-3 shrink-0 rounded-xl bg-violet-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-violet-500 disabled:opacity-50"
+                                    className="ml-3 shrink-0 rounded-xl bg-primary px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-primary/90 disabled:opacity-50"
                                 >
                                     {switching === 'fashion@ecommerce.com' ? 'Switching...' : 'Switch Role'}
                                 </button>
                             </div>
 
                             {/* Customer */}
-                            <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50/60 p-3.5 transition hover:border-slate-400 dark:border-slate-800 dark:bg-slate-800/40">
+                            <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-3.5 transition hover:border-secondary">
                                 <div className="flex items-start gap-3">
                                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-700 text-white shadow-sm">
                                         <UserIcon className="h-4 w-4" />
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2">
-                                            <h4 className="text-xs font-bold text-slate-900 dark:text-white">
+                                            <h4 className="text-xs font-bold text-foreground">
                                                 Registered Customer
                                             </h4>
-                                            <span className="rounded bg-slate-200 px-1.5 py-0.5 text-[9px] font-bold text-slate-700 dark:bg-slate-700 dark:text-slate-200">
+                                            <span className="rounded bg-secondary px-1.5 py-0.5 text-[9px] font-bold text-secondary-foreground">
                                                 customer
                                             </span>
                                         </div>
-                                        <p className="mt-0.5 font-mono text-[11px] text-slate-500">
+                                        <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
                                             customer@ecommerce.com
                                         </p>
-                                        <p className="mt-1 text-[11px] text-slate-600 dark:text-slate-400">
+                                        <p className="mt-1 text-[11px] text-muted-foreground">
                                             Public customer view; only sees shop-assigned products.
                                         </p>
                                     </div>
@@ -248,9 +248,9 @@ export default function DemoSwitcher() {
                         </div>
 
                         {/* Footer note */}
-                        <div className="mt-5 border-t border-slate-100 pt-3 text-center text-[11px] text-slate-500 dark:border-slate-800">
+                        <div className="mt-5 border-t border-border pt-3 text-center text-[11px] text-muted-foreground">
                             Default password for all accounts:{' '}
-                            <code className="font-mono font-bold text-slate-700 dark:text-slate-300">
+                            <code className="font-mono font-bold text-foreground">
                                 password123
                             </code>
                         </div>

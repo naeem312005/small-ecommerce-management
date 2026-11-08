@@ -141,15 +141,15 @@ export default function AdminShopsIndex({ shops, filters }: Props) {
                 {/* Modern Table Card with Robust Widths */}
                 <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left text-xs min-w-[980px]">
+                        <table className="w-full table-fixed text-left text-xs min-w-[700px]">
                             <thead className="border-b border-border bg-muted/50 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
                                 <tr>
-                                    <th className="w-[300px] py-3.5 px-5">Shop Profile</th>
-                                    <th className="w-[230px] py-3.5 px-5">Merchant Owner</th>
-                                    <th className="w-[220px] py-3.5 px-5">Contact & Location</th>
-                                    <th className="w-[140px] py-3.5 px-5 text-center">Assigned Items</th>
-                                    <th className="w-[110px] py-3.5 px-5 text-center">Status</th>
-                                    <th className="w-[120px] py-3.5 px-5 text-right">Actions</th>
+                                    <th className="w-[26%] py-3.5 px-4">Shop Profile</th>
+                                    <th className="w-[19%] py-3.5 px-4">Merchant Owner</th>
+                                    <th className="w-[20%] py-3.5 px-4">Contact & Location</th>
+                                    <th className="w-[12%] py-3.5 px-4 text-center">Assigned Items</th>
+                                    <th className="w-[10%] py-3.5 px-4 text-center">Status</th>
+                                    <th className="w-[13%] py-3.5 px-4 text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border/60">
@@ -172,28 +172,28 @@ export default function AdminShopsIndex({ shops, filters }: Props) {
                                             className="transition-colors hover:bg-muted/40"
                                         >
                                             {/* Shop Profile */}
-                                            <td className="py-4 px-5">
-                                                <div className="flex items-center gap-3.5">
+                                            <td className="py-4 px-4">
+                                                <div className="flex items-center gap-3">
                                                     {shop.logo ? (
                                                         <img
                                                             src={shop.logo}
                                                             alt={shop.name}
-                                                            className="h-11 w-11 shrink-0 rounded-2xl object-cover ring-1 ring-border shadow-2xs"
+                                                            className="h-10 w-10 shrink-0 rounded-xl object-cover ring-1 ring-border shadow-2xs"
                                                         />
                                                     ) : (
-                                                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-indigo-600 font-bold text-white shadow-2xs">
+                                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary font-bold text-white shadow-2xs">
                                                             <Store className="h-5 w-5" />
                                                         </div>
                                                     )}
                                                     <div className="min-w-0">
-                                                        <div className="font-bold text-foreground text-sm truncate max-w-[200px]">
+                                                        <div className="font-bold text-foreground text-sm truncate max-w-[180px]">
                                                             {shop.name}
                                                         </div>
                                                         <a
                                                             href={`/shops/${shop.slug}`}
                                                             target="_blank"
                                                             rel="noreferrer"
-                                                            className="mt-0.5 inline-flex items-center gap-1 font-mono text-[11px] text-indigo-600 hover:underline dark:text-indigo-400 whitespace-nowrap"
+                                                            className="mt-0.5 inline-flex items-center gap-1 font-mono text-[11px] text-primary hover:underline whitespace-nowrap"
                                                         >
                                                             <span>/shops/{shop.slug}</span>
                                                             <ArrowUpRight className="h-3 w-3 shrink-0 opacity-70" />
@@ -203,17 +203,17 @@ export default function AdminShopsIndex({ shops, filters }: Props) {
                                             </td>
 
                                             {/* Owner */}
-                                            <td className="py-4 px-5">
+                                            <td className="py-4 px-4">
                                                 {shop.owner ? (
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 font-bold text-xs text-primary ring-1 ring-primary/20">
+                                                    <div className="flex items-center gap-2.5">
+                                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-bold text-xs text-primary ring-1 ring-primary/20">
                                                             {shop.owner.name.substring(0, 2).toUpperCase()}
                                                         </div>
                                                         <div className="min-w-0">
-                                                            <div className="font-semibold text-foreground whitespace-nowrap truncate max-w-[150px]">
+                                                            <div className="font-semibold text-foreground whitespace-nowrap truncate max-w-[140px]">
                                                                 {shop.owner.name}
                                                             </div>
-                                                            <div className="text-[11px] text-muted-foreground whitespace-nowrap truncate max-w-[150px]">
+                                                            <div className="text-[11px] text-muted-foreground whitespace-nowrap truncate max-w-[140px]">
                                                                 {shop.owner.email}
                                                             </div>
                                                         </div>
@@ -226,10 +226,10 @@ export default function AdminShopsIndex({ shops, filters }: Props) {
                                             </td>
 
                                             {/* Location & Contact */}
-                                            <td className="py-4 px-5">
-                                                <div className="min-w-0">
+                                            <td className="py-4 px-4">
+                                                <div className="min-w-0 max-w-[200px]">
                                                     {shop.address ? (
-                                                        <div className="flex items-center gap-1.5 text-foreground/80 truncate max-w-[210px]">
+                                                        <div className="flex items-center gap-1.5 text-foreground/80 truncate">
                                                             <MapPin className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                                                             <span className="truncate">{shop.address}</span>
                                                         </div>
@@ -246,22 +246,22 @@ export default function AdminShopsIndex({ shops, filters }: Props) {
                                             </td>
 
                                             {/* Assigned Items */}
-                                            <td className="py-4 px-5 text-center">
-                                                <span className="whitespace-nowrap inline-flex items-center gap-1.5 rounded-full bg-secondary/80 px-3 py-1 text-xs font-semibold text-secondary-foreground border border-border/60 shadow-2xs">
+                                            <td className="py-4 px-4 text-center">
+                                                <span className="whitespace-nowrap inline-flex items-center gap-1.5 rounded-full bg-secondary/80 px-2.5 py-1 text-xs font-semibold text-secondary-foreground border border-border/60 shadow-2xs">
                                                     <Package className="h-3.5 w-3.5 text-primary shrink-0" />
                                                     <span>{shop.shop_products_count ?? 0} Listed</span>
                                                 </span>
                                             </td>
 
                                             {/* Status */}
-                                            <td className="py-4 px-5 text-center">
+                                            <td className="py-4 px-4 text-center">
                                                 {shop.is_active ? (
-                                                    <span className="whitespace-nowrap inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                                                    <span className="whitespace-nowrap inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                                                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                                                         Active
                                                     </span>
                                                 ) : (
-                                                    <span className="whitespace-nowrap inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-[11px] font-bold text-muted-foreground border border-border">
+                                                    <span className="whitespace-nowrap inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-[11px] font-bold text-muted-foreground border border-border">
                                                         <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground" />
                                                         Inactive
                                                     </span>

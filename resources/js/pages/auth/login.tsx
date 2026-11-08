@@ -52,21 +52,21 @@ export default function Login({ status, canResetPassword }: Props) {
                     <button
                         type="button"
                         onClick={() => fillCredentials('admin@ecommerce.com', 'password123')}
-                        className="rounded-xl border border-slate-200 bg-white py-1.5 px-2 text-[11px] font-bold text-slate-800 shadow-xs hover:border-indigo-400 hover:text-indigo-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200"
+                        className="rounded-xl border border-border bg-card py-1.5 px-2 text-[11px] font-bold text-foreground shadow-2xs hover:border-primary hover:text-primary transition-colors"
                     >
                         Admin
                     </button>
                     <button
                         type="button"
                         onClick={() => fillCredentials('tech@ecommerce.com', 'password123')}
-                        className="rounded-xl border border-slate-200 bg-white py-1.5 px-2 text-[11px] font-bold text-slate-800 shadow-xs hover:border-indigo-400 hover:text-indigo-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200"
+                        className="rounded-xl border border-border bg-card py-1.5 px-2 text-[11px] font-bold text-foreground shadow-2xs hover:border-primary hover:text-primary transition-colors"
                     >
                         TechNova
                     </button>
                     <button
                         type="button"
                         onClick={() => fillCredentials('fashion@ecommerce.com', 'password123')}
-                        className="rounded-xl border border-slate-200 bg-white py-1.5 px-2 text-[11px] font-bold text-slate-800 shadow-xs hover:border-indigo-400 hover:text-indigo-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200"
+                        className="rounded-xl border border-border bg-card py-1.5 px-2 text-[11px] font-bold text-foreground shadow-2xs hover:border-primary hover:text-primary transition-colors"
                     >
                         Aura Apparel
                     </button>

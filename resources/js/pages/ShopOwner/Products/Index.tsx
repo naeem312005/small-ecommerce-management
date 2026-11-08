@@ -142,16 +142,16 @@ export default function ShopOwnerProductsIndex({
                 {/* Table */}
                 <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left text-xs min-w-[950px]">
+                        <table className="w-full table-fixed text-left text-xs min-w-[760px]">
                             <thead className="border-b border-border bg-muted/50 font-semibold uppercase tracking-wider text-muted-foreground text-[11px]">
                                 <tr>
-                                    <th className="w-[300px] py-3.5 px-4">Listed Product</th>
-                                    <th className="w-[140px] py-3.5 px-4">Catalog SKU</th>
-                                    <th className="w-[120px] py-3.5 px-4 text-right">Shop Price</th>
-                                    <th className="w-[120px] py-3.5 px-4 text-right">Catalog Base</th>
-                                    <th className="w-[90px] py-3.5 px-4 text-center">Stock</th>
-                                    <th className="w-[130px] py-3.5 px-4 text-center">Store Status</th>
-                                    <th className="w-[120px] py-3.5 px-4 text-right">Actions</th>
+                                    <th className="w-[30%] py-3.5 px-4">Listed Product</th>
+                                    <th className="w-[14%] py-3.5 px-4">Catalog SKU</th>
+                                    <th className="w-[12%] py-3.5 px-4 text-right">Shop Price</th>
+                                    <th className="w-[12%] py-3.5 px-4 text-right">Catalog Base</th>
+                                    <th className="w-[9%] py-3.5 px-4 text-center">Stock</th>
+                                    <th className="w-[11%] py-3.5 px-4 text-center">Store Status</th>
+                                    <th className="w-[12%] py-3.5 px-4 text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border/60">

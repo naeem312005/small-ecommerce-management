@@ -119,14 +119,14 @@ export default function AdminShopOwnersIndex({ shopOwners, filters }: Props) {
                 {/* Table Card */}
                 <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left text-xs min-w-[900px]">
+                        <table className="w-full table-fixed text-left text-xs min-w-[700px]">
                             <thead className="border-b border-border bg-muted/50 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
                                 <tr>
-                                    <th className="w-[260px] py-3.5 px-5">Merchant Profile</th>
-                                    <th className="w-[240px] py-3.5 px-5">Contact Details</th>
-                                    <th className="w-[230px] py-3.5 px-5">Assigned Storefront</th>
-                                    <th className="w-[140px] py-3.5 px-5">Registered Date</th>
-                                    <th className="w-[110px] py-3.5 px-5 text-right">Actions</th>
+                                    <th className="w-[27%] py-3.5 px-4">Merchant Profile</th>
+                                    <th className="w-[24%] py-3.5 px-4">Contact Details</th>
+                                    <th className="w-[24%] py-3.5 px-4">Assigned Storefront</th>
+                                    <th className="w-[13%] py-3.5 px-4">Registered Date</th>
+                                    <th className="w-[12%] py-3.5 px-4 text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border/60">

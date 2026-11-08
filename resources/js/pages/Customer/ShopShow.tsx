@@ -12,7 +12,6 @@ import {
     ShoppingBag,
     Star,
     Store,
-    X,
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { useCart } from '@/context/cart-context';
@@ -93,28 +92,28 @@ export default function CustomerShopShow({
             <Head title={`${shop.name} — Verified Boutique Storefront | Velora`} />
 
             {/* Shop Header Banner */}
-            <div className="relative overflow-hidden bg-slate-950 text-white">
-                <div className="h-56 w-full sm:h-72">
+            <div className="relative overflow-hidden bg-[#0F172A] text-white">
+                <div className="h-48 w-full sm:h-64">
                     {shop.banner ? (
                         <img
                             src={shop.banner}
                             alt={shop.name}
-                            className="h-full w-full object-cover opacity-60"
+                            className="h-full w-full object-cover opacity-75"
                         />
                     ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 opacity-80">
-                            <Store className="h-24 w-24 text-white/20" />
+                        <div className="flex h-full w-full items-center justify-center bg-[#0F172A] opacity-90">
+                            <Store className="h-20 w-20 text-white/20" />
                         </div>
                     )}
                 </div>
 
                 {/* Profile Floating Strip */}
-                <div className="border-b border-slate-200 bg-white/95 px-4 py-6 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/95 sm:px-6 lg:px-8">
+                <div className="border-b border-[#E2E8F0] bg-white px-4 py-6 dark:border-[#334155] dark:bg-[#1E293B] sm:px-6 lg:px-8">
                     <div className="mx-auto max-w-7xl">
                         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
                             <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
                                 {/* Logo Avatar */}
-                                <div className="-mt-20 h-28 w-28 shrink-0 overflow-hidden rounded-3xl border-4 border-white bg-white shadow-2xl dark:border-slate-900 dark:bg-slate-800">
+                                <div className="-mt-16 h-24 w-24 shrink-0 overflow-hidden rounded-2xl border-4 border-white bg-white shadow-xl dark:border-[#1E293B] dark:bg-[#0F172A]">
                                     {shop.logo ? (
                                         <img
                                             src={shop.logo}
@@ -122,7 +121,7 @@ export default function CustomerShopShow({
                                             className="h-full w-full object-cover"
                                         />
                                     ) : (
-                                        <div className="flex h-full w-full items-center justify-center bg-indigo-600 text-white font-bold">
+                                        <div className="flex h-full w-full items-center justify-center bg-[#2563EB] text-white font-bold">
                                             <Store className="h-10 w-10" />
                                         </div>
                                     )}
@@ -130,18 +129,18 @@ export default function CustomerShopShow({
 
                                 <div>
                                     <div className="flex items-center gap-2.5">
-                                        <h1 className="font-serif text-2xl font-black tracking-tight text-slate-950 sm:text-3xl dark:text-white">
+                                        <h1 className="font-serif text-2xl font-black tracking-tight text-[#0F172A] sm:text-3xl dark:text-white">
                                             {shop.name}
                                         </h1>
-                                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                                        <span className="inline-flex items-center gap-1 rounded-full bg-[#16A34A]/10 px-2.5 py-0.5 text-xs font-bold text-[#16A34A] border border-[#16A34A]/20">
                                             <CheckCircle2 className="h-3.5 w-3.5" />
                                             Verified Boutique
                                         </span>
                                     </div>
-                                    <div className="mt-1 flex items-center gap-2 text-xs text-slate-500">
-                                        <div className="flex items-center text-amber-500">
-                                            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                                            <span className="ml-1 font-bold text-slate-800 dark:text-slate-200">
+                                    <div className="mt-1 flex items-center gap-2 text-xs text-[#64748B]">
+                                        <div className="flex items-center text-[#F59E0B]">
+                                            <Star className="h-3.5 w-3.5 fill-[#F59E0B] text-[#F59E0B]" />
+                                            <span className="ml-1 font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                                                 4.9
                                             </span>
                                         </div>
@@ -154,29 +153,29 @@ export default function CustomerShopShow({
                                             </>
                                         )}
                                     </div>
-                                    <p className="mt-2 max-w-2xl text-xs text-slate-600 dark:text-slate-400">
+                                    <p className="mt-2 max-w-2xl text-xs text-[#64748B] dark:text-[#94A3B8]">
                                         {shop.description || 'Welcome to our verified boutique storefront.'}
                                     </p>
                                 </div>
                             </div>
 
                             {/* Contact Badges */}
-                            <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
+                            <div className="flex flex-wrap items-center gap-2 text-xs text-[#64748B] dark:text-[#94A3B8]">
                                 {shop.phone && (
-                                    <span className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 shadow-xs dark:border-slate-800 dark:bg-slate-800">
-                                        <Phone className="h-3.5 w-3.5 text-indigo-600" />
+                                    <span className="inline-flex items-center gap-1.5 rounded-xl border border-[#E2E8F0] bg-white px-3 py-1.5 shadow-2xs dark:border-[#334155] dark:bg-[#0F172A]">
+                                        <Phone className="h-3.5 w-3.5 text-[#2563EB]" />
                                         {shop.phone}
                                     </span>
                                 )}
                                 {shop.email && (
-                                    <span className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 shadow-xs dark:border-slate-800 dark:bg-slate-800">
-                                        <Mail className="h-3.5 w-3.5 text-indigo-600" />
+                                    <span className="inline-flex items-center gap-1.5 rounded-xl border border-[#E2E8F0] bg-white px-3 py-1.5 shadow-2xs dark:border-[#334155] dark:bg-[#0F172A]">
+                                        <Mail className="h-3.5 w-3.5 text-[#2563EB]" />
                                         {shop.email}
                                     </span>
                                 )}
                                 {shop.address && (
-                                    <span className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 shadow-xs dark:border-slate-800 dark:bg-slate-800">
-                                        <MapPin className="h-3.5 w-3.5 text-indigo-600" />
+                                    <span className="inline-flex items-center gap-1.5 rounded-xl border border-[#E2E8F0] bg-white px-3 py-1.5 shadow-2xs dark:border-[#334155] dark:bg-[#0F172A]">
+                                        <MapPin className="h-3.5 w-3.5 text-[#2563EB]" />
                                         {shop.address}
                                     </span>
                                 )}
@@ -187,22 +186,22 @@ export default function CustomerShopShow({
             </div>
 
             {/* Breadcrumb Navigation */}
-            <div className="border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-950">
-                <div className="mx-auto flex max-w-7xl items-center justify-between text-xs text-slate-500">
+            <div className="border-b border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3 dark:border-[#334155] dark:bg-[#0F172A]">
+                <div className="mx-auto flex max-w-7xl items-center justify-between text-xs text-[#64748B]">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-1.5 font-semibold text-slate-600 hover:text-indigo-600 dark:text-slate-400"
+                        className="inline-flex items-center gap-1.5 font-semibold text-[#0F172A] hover:text-[#2563EB] dark:text-[#F8FAFC] dark:hover:text-[#3B82F6] transition-colors"
                     >
                         <ArrowLeft className="h-3.5 w-3.5" />
                         <span>All Boutique Products</span>
                     </Link>
 
                     <div className="flex items-center gap-2">
-                        <Link href="/shops" className="hover:text-indigo-600">
+                        <Link href="/shops" className="hover:text-[#2563EB] transition-colors">
                             Boutiques Directory
                         </Link>
                         <span>/</span>
-                        <span className="font-semibold text-slate-800 dark:text-slate-200">
+                        <span className="font-semibold text-[#0F172A] dark:text-[#F8FAFC]">
                             {shop.name}
                         </span>
                     </div>
@@ -212,7 +211,7 @@ export default function CustomerShopShow({
             {/* Store Products Section */}
             <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
                 {/* Search & Filter Strip */}
-                <div className="flex flex-col gap-4 border-b border-slate-200 pb-6 md:flex-row md:items-center md:justify-between dark:border-slate-800">
+                <div className="flex flex-col gap-4 border-b border-[#E2E8F0] pb-6 md:flex-row md:items-center md:justify-between dark:border-[#334155]">
                     {/* Category tabs */}
                     <div className="flex flex-wrap items-center gap-1.5">
                         <button
@@ -220,8 +219,8 @@ export default function CustomerShopShow({
                             onClick={() => handleCategory(null)}
                             className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition ${
                                 !filters.category
-                                    ? 'bg-slate-950 text-white dark:bg-indigo-600'
-                                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
+                                    ? 'bg-[#2563EB] text-white shadow-xs'
+                                    : 'bg-white border border-[#E2E8F0] text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:bg-[#1E293B] dark:border-[#334155] dark:text-[#94A3B8]'
                             }`}
                         >
                             All Products ({shopProducts.total})
@@ -233,8 +232,8 @@ export default function CustomerShopShow({
                                 onClick={() => handleCategory(cat)}
                                 className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition ${
                                     filters.category === cat
-                                        ? 'bg-slate-950 text-white dark:bg-indigo-600'
-                                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
+                                        ? 'bg-[#2563EB] text-white shadow-xs'
+                                        : 'bg-white border border-[#E2E8F0] text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:bg-[#1E293B] dark:border-[#334155] dark:text-[#94A3B8]'
                                 }`}
                             >
                                 {cat}
@@ -244,17 +243,17 @@ export default function CustomerShopShow({
 
                     {/* Search inside shop */}
                     <form onSubmit={handleSearch} className="relative w-full max-w-xs">
-                        <Search className="absolute left-3.5 h-4 w-4 text-slate-400" />
+                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#64748B]" />
                         <input
                             type="text"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder={`Search ${shop.name}...`}
-                            className="w-full rounded-xl border border-slate-300 py-2 pl-9 pr-16 text-xs focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                            className="w-full rounded-xl border border-[#E2E8F0] bg-white py-2 pl-9 pr-16 text-xs text-[#0F172A] placeholder-[#64748B] focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] focus:outline-none dark:border-[#334155] dark:bg-[#1E293B] dark:text-white"
                         />
                         <button
                             type="submit"
-                            className="absolute right-1.5 rounded-lg bg-indigo-600 px-3 py-1 text-xs font-bold text-white hover:bg-indigo-500"
+                            className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg bg-[#2563EB] px-3 py-1 text-xs font-bold text-white hover:bg-[#1D4ED8] transition"
                         >
                             Find
                         </button>
@@ -263,12 +262,12 @@ export default function CustomerShopShow({
 
                 {/* Products Grid */}
                 {shopProducts.data.length === 0 ? (
-                    <div className="mt-8 rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center dark:border-slate-800 dark:bg-slate-900">
-                        <Package className="mx-auto h-12 w-12 text-slate-400" />
-                        <h3 className="mt-3 text-base font-bold text-slate-900 dark:text-white">
+                    <div className="mt-8 rounded-3xl border border-dashed border-[#E2E8F0] bg-white p-12 text-center dark:border-[#334155] dark:bg-[#1E293B]">
+                        <Package className="mx-auto h-12 w-12 text-[#64748B]" />
+                        <h3 className="mt-3 text-base font-bold text-[#0F172A] dark:text-white">
                             No products found in {shop.name}
                         </h3>
-                        <p className="mt-1 text-xs text-slate-500">
+                        <p className="mt-1 text-xs text-[#64748B]">
                             Try clearing your search filters to see all available inventory.
                         </p>
                     </div>
@@ -283,11 +282,11 @@ export default function CustomerShopShow({
                             return (
                                 <div
                                     key={sp.id}
-                                    className="group flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/90 bg-white shadow-xs transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900"
+                                    className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white shadow-xs transition duration-300 hover:-translate-y-1 hover:border-[#2563EB]/40 hover:shadow-xl dark:border-[#334155] dark:bg-[#1E293B]"
                                 >
                                     <Link
                                         href={`/shops/${shop.slug}/products/${sp.id}`}
-                                        className="relative aspect-square w-full overflow-hidden bg-slate-100 dark:bg-slate-800"
+                                        className="relative aspect-square w-full overflow-hidden bg-[#F8FAFC] dark:bg-[#0F172A]"
                                     >
                                         {thumbnail ? (
                                             <img
@@ -296,18 +295,18 @@ export default function CustomerShopShow({
                                                 className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                                             />
                                         ) : (
-                                            <div className="flex h-full w-full items-center justify-center text-slate-400">
+                                            <div className="flex h-full w-full items-center justify-center text-[#64748B]">
                                                 <Package className="h-12 w-12" />
                                             </div>
                                         )}
                                     </Link>
 
                                     <div className="flex flex-1 flex-col p-5">
-                                        <div className="flex items-center justify-between text-[11px] text-slate-500">
-                                            <span className="font-semibold text-indigo-600 dark:text-indigo-400">
+                                        <div className="flex items-center justify-between text-[11px] text-[#64748B]">
+                                            <span className="font-semibold text-[#2563EB] dark:text-blue-400">
                                                 {sp.product?.category || 'Specialty'}
                                             </span>
-                                            <span className="text-emerald-600 font-semibold">
+                                            <span className="text-[#16A34A] font-semibold">
                                                 {sp.stock > 0 ? `${sp.stock} in stock` : 'Out of stock'}
                                             </span>
                                         </div>
@@ -316,18 +315,18 @@ export default function CustomerShopShow({
                                             href={`/shops/${shop.slug}/products/${sp.id}`}
                                             className="mt-2 block"
                                         >
-                                            <h3 className="text-sm font-bold text-slate-900 line-clamp-2 group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400">
+                                            <h3 className="text-sm font-bold text-[#0F172A] line-clamp-2 group-hover:text-[#2563EB] dark:text-white dark:group-hover:text-blue-400 transition-colors">
                                                 {title}
                                             </h3>
                                         </Link>
 
                                         <div className="mt-4 flex items-baseline justify-between">
                                             <div className="flex items-baseline gap-2">
-                                                <span className="text-lg font-black text-slate-950 dark:text-white">
+                                                <span className="text-lg font-black text-[#0F172A] dark:text-white">
                                                     ${Number(sp.price).toFixed(2)}
                                                 </span>
                                                 {isCustomPrice && sp.product && (
-                                                    <span className="text-xs text-slate-400 line-through">
+                                                    <span className="text-xs text-[#64748B] line-through">
                                                         ${Number(sp.product.base_price).toFixed(2)}
                                                     </span>
                                                 )}
@@ -342,8 +341,8 @@ export default function CustomerShopShow({
                                                 disabled={sp.stock <= 0}
                                                 className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-bold transition shadow-xs ${
                                                     addedId === sp.id
-                                                        ? 'bg-emerald-600 text-white'
-                                                        : 'bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-40'
+                                                        ? 'bg-[#16A34A] text-white'
+                                                        : 'bg-[#2563EB] text-white hover:bg-[#1D4ED8] disabled:opacity-40'
                                                 }`}
                                             >
                                                 {addedId === sp.id ? (
@@ -361,7 +360,7 @@ export default function CustomerShopShow({
 
                                             <Link
                                                 href={`/shops/${shop.slug}/products/${sp.id}`}
-                                                className="rounded-xl border border-slate-200 p-2.5 text-slate-600 hover:bg-slate-100 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800"
+                                                className="rounded-xl border border-[#E2E8F0] p-2.5 text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:border-[#334155] dark:text-[#94A3B8] dark:hover:bg-[#0F172A] transition-colors"
                                             >
                                                 <Eye className="h-4 w-4" />
                                             </Link>
@@ -376,7 +375,7 @@ export default function CustomerShopShow({
                 {/* Pagination */}
                 {shopProducts.links && shopProducts.links.length > 3 && (
                     <div className="mt-12 flex justify-center">
-                        <nav className="flex items-center gap-1 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+                        <nav className="flex items-center gap-1 rounded-2xl border border-[#E2E8F0] bg-white p-1.5 shadow-xs dark:border-[#334155] dark:bg-[#1E293B]">
                             {shopProducts.links.map((link, idx) => (
                                 <Link
                                     key={idx}
@@ -384,10 +383,10 @@ export default function CustomerShopShow({
                                     preserveScroll
                                     className={`rounded-xl px-3.5 py-1.5 text-xs font-semibold transition ${
                                         link.active
-                                            ? 'bg-indigo-600 text-white shadow-sm'
+                                            ? 'bg-[#2563EB] text-white shadow-xs'
                                             : link.url
-                                              ? 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
-                                              : 'cursor-not-allowed text-slate-300 dark:text-slate-700'
+                                              ? 'text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A] dark:text-[#94A3B8] dark:hover:bg-[#0F172A]'
+                                              : 'cursor-not-allowed text-[#CBD5E1] dark:text-[#475569]'
                                     }`}
                                     dangerouslySetInnerHTML={{ __html: link.label }}
                                 />

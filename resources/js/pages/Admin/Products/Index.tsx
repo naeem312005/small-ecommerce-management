@@ -156,16 +156,16 @@ export default function AdminProductsIndex({ products, categories, filters }: Pr
                 {/* Table Card */}
                 <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xs">
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left text-xs min-w-[1000px]">
+                        <table className="w-full table-fixed text-left text-xs min-w-[700px]">
                             <thead className="border-b border-border bg-muted/50 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
                                 <tr>
-                                    <th className="w-[320px] py-3.5 px-5">Product Details</th>
-                                    <th className="w-[200px] py-3.5 px-5">Author / Origin</th>
-                                    <th className="w-[140px] py-3.5 px-5">Category</th>
-                                    <th className="w-[120px] py-3.5 px-5 text-right">Base MSRP</th>
-                                    <th className="w-[180px] py-3.5 px-5 text-center">Store Distribution</th>
-                                    <th className="w-[120px] py-3.5 px-5 text-center">Catalog Status</th>
-                                    <th className="w-[110px] py-3.5 px-5 text-right">Actions</th>
+                                    <th className="w-[26%] py-3.5 px-4">Product Details</th>
+                                    <th className="w-[17%] py-3.5 px-4">Author / Origin</th>
+                                    <th className="w-[13%] py-3.5 px-4">Category</th>
+                                    <th className="w-[11%] py-3.5 px-4 text-right">Base MSRP</th>
+                                    <th className="w-[12%] py-3.5 px-4 text-center">Store Distribution</th>
+                                    <th className="w-[9%] py-3.5 px-4 text-center">Catalog Status</th>
+                                    <th className="w-[12%] py-3.5 px-4 text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border/60">
