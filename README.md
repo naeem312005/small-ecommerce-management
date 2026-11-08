@@ -35,7 +35,7 @@ The platform is designed around a **Central Shared Product Catalog** paradigm:
 | **Shop-Specific Customizations** | Shop owners can override and customize product prices, marketing descriptions, stock inventory, and upload shop-specific thumbnails. | ✅ Complete |
 | **Customer Storefront Isolation** | Customers only see products assigned to active shops. Unassigned products (e.g. `PRD-UNASSIGNED-01`) are strictly excluded from customer views. | ✅ Complete |
 | **Commercial Shopping Cart Drawer** | Client-side interactive shopping bag with slide-over drawer, quantity controls, free express shipping progress bar, and instant checkout simulation. | ✅ Complete |
-| **Instant Evaluation Role Switcher** | Floating bottom-right 1-click persona switcher to seamlessly test Admin, TechNova Shop Owner, Aura Apparel Shop Owner, and Customer roles. | ✅ Complete |
+| **Demo Persona Quick Autofill** | One-click pre-filled test credentials on login page to test Admin, TechNova Shop Owner, Aura Apparel Shop Owner, and Customer roles. | ✅ Complete |
 | **Automated Testing & Code Quality** | **48 Automated PHPUnit Feature Tests (206 assertions)**, **PHPStan Level 7 (0 errors)**, **TypeScript `tsc` Check (0 errors)**, **Laravel Pint** PSR-12 code style. | ✅ Complete |
 | **Database Export Included** | Standalone SQL dump included at project root (`ecommerce.sql`) and `database/ecommerce.sql` for instant manual import. | ✅ Complete |
 

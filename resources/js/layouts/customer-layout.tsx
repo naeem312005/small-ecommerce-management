@@ -16,7 +16,6 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 import CartDrawer from '@/components/cart-drawer';
-import DemoSwitcher from '@/components/demo-switcher';
 import { useCart } from '@/context/cart-context';
 import { useAppearance } from '@/hooks/use-appearance';
 import type { User } from '@/types';
@@ -359,9 +358,6 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
 
             {/* Slide-over Cart Drawer */}
             <CartDrawer />
-
-            {/* Floating Demo Persona Switcher */}
-            <DemoSwitcher />
         </div>
     );
 }
