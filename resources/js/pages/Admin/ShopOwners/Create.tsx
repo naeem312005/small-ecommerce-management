@@ -5,9 +5,9 @@ import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Admin', href: '/admin/dashboard' },
-    { title: 'Shop Owners', href: '/admin/shop-owners' },
-    { title: 'Create Shop Owner', href: '/admin/shop-owners/create' },
+    { title: 'Admin Console', href: '/admin/dashboard' },
+    { title: 'Merchant Accounts', href: '/admin/shop-owners' },
+    { title: 'Register Merchant', href: '/admin/shop-owners/create' },
 ];
 
 export default function AdminShopOwnersCreate() {

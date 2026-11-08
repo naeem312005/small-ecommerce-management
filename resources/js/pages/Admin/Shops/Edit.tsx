@@ -10,6 +10,11 @@ type Props = {
 };
 
 export default function AdminShopsEdit({ shop, shopOwners }: Props) {
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Admin Console', href: '/admin/dashboard' },
+        { title: 'Merchant Shops', href: '/admin/shops' },
+        { title: `Edit ${shop.name}`, href: `/admin/shops/${shop.id}/edit` },
+    ];
     const { data, setData, processing, errors } = useForm({
         user_id: String(shop.user_id),
         name: shop.name,
@@ -48,12 +53,6 @@ export default function AdminShopsEdit({ shop, shopOwners }: Props) {
             ...data,
         });
     };
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'Admin', href: '/admin/dashboard' },
-        { title: 'Shops Management', href: '/admin/shops' },
-        { title: `Edit ${shop.name}`, href: `/admin/shops/${shop.id}/edit` },
-    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

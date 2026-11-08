@@ -9,6 +9,11 @@ type Props = {
 };
 
 export default function AdminProductsEdit({ product }: Props) {
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Admin Console', href: '/admin/dashboard' },
+        { title: 'Master Catalog', href: '/admin/products' },
+        { title: `Edit ${product.name}`, href: `/admin/products/${product.id}/edit` },
+    ];
     const { data, setData, processing, errors } = useForm({
         name: product.name,
         sku: product.sku,
@@ -36,12 +41,6 @@ export default function AdminProductsEdit({ product }: Props) {
             ...data,
         });
     };
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'Admin', href: '/admin/dashboard' },
-        { title: 'Master Catalog', href: '/admin/products' },
-        { title: `Edit ${product.name}`, href: `/admin/products/${product.id}/edit` },
-    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

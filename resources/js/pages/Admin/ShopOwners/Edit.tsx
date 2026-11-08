@@ -22,8 +22,8 @@ export default function AdminShopOwnersEdit({ shopOwner }: Props) {
     };
 
     const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'Admin', href: '/admin/dashboard' },
-        { title: 'Shop Owners', href: '/admin/shop-owners' },
+        { title: 'Admin Console', href: '/admin/dashboard' },
+        { title: 'Merchant Accounts', href: '/admin/shop-owners' },
         { title: `Edit ${shopOwner.name}`, href: `/admin/shop-owners/${shopOwner.id}/edit` },
     ];
 

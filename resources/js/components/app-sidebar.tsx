@@ -36,12 +36,12 @@ export function AppSidebar() {
 
     const adminNavItems: NavItem[] = [
         {
-            title: 'Admin Dashboard',
+            title: 'Overview',
             href: '/admin/dashboard',
             icon: LayoutGrid,
         },
         {
-            title: 'Shops Management',
+            title: 'Merchant Shops',
             href: '/admin/shops',
             icon: Store,
         },
@@ -51,7 +51,7 @@ export function AppSidebar() {
             icon: Package,
         },
         {
-            title: 'Shop Owners',
+            title: 'Merchant Accounts',
             href: '/admin/shop-owners',
             icon: Users,
         },
@@ -64,7 +64,7 @@ export function AppSidebar() {
             icon: LayoutGrid,
         },
         {
-            title: 'My Shop Products',
+            title: 'Storefront Inventory',
             href: '/shop-owner/products',
             icon: PackageCheck,
         },
@@ -74,7 +74,7 @@ export function AppSidebar() {
             icon: Layers,
         },
         {
-            title: 'New Catalog Product',
+            title: 'Contribute Product',
             href: '/shop-owner/catalog/create',
             icon: PackagePlus,
         },

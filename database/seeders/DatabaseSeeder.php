@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $admin = User::firstOrCreate(
             ['email' => 'admin@ecommerce.com'],
             [
-                'name' => 'Platform Administrator',
+                'name' => 'System Admin',
                 'password' => Hash::make('password123'),
                 'role' => 'admin',
                 'phone' => '+1 (555) 019-2831',

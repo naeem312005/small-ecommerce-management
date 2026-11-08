@@ -9,8 +9,8 @@ type Props = {
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Admin', href: '/admin/dashboard' },
-    { title: 'Shops Management', href: '/admin/shops' },
+    { title: 'Admin Console', href: '/admin/dashboard' },
+    { title: 'Merchant Shops', href: '/admin/shops' },
     { title: 'Create Shop', href: '/admin/shops/create' },
 ];
 
