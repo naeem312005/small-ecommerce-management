@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreShopRequest;
+use App\Http\Requests\Admin\UpdateShopRequest;
 use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -63,48 +67,49 @@ class ShopController extends Controller
     /**
      * Store a newly created shop.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreShopRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'email' => ['nullable', 'email', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:50'],
-            'address' => ['nullable', 'string', 'max:255'],
-            'is_active' => ['boolean'],
-            'logo' => ['nullable', 'image', 'max:2048'],
-            'banner' => ['nullable', 'image', 'max:3072'],
-        ]);
+        $validated = $request->validated();
 
-        $logoPath = null;
-        if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('shops/logos', 'public');
-            $logoPath = '/storage/'.$logoPath;
+        try {
+            DB::beginTransaction();
+
+            $logoPath = null;
+            if ($request->hasFile('logo')) {
+                $path = $request->file('logo')->store('shops/logos', 'public');
+                $logoPath = '/storage/'.$path;
+            }
+
+            $bannerPath = null;
+            if ($request->hasFile('banner')) {
+                $path = $request->file('banner')->store('shops/banners', 'public');
+                $bannerPath = '/storage/'.$path;
+            }
+
+            $slug = Shop::generateUniqueSlug($validated['name']);
+
+            Shop::create([
+                'user_id' => $validated['user_id'],
+                'name' => $validated['name'],
+                'slug' => $slug,
+                'description' => $validated['description'] ?? null,
+                'email' => $validated['email'] ?? null,
+                'phone' => $validated['phone'] ?? null,
+                'address' => $validated['address'] ?? null,
+                'is_active' => $validated['is_active'] ?? true,
+                'logo' => $logoPath,
+                'banner' => $bannerPath,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('admin.shops.index')->with('success', 'Shop created successfully!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('Admin store shop failed: '.$e->getMessage(), ['exception' => $e]);
+
+            return back()->withInput()->with('error', 'Unable to create shop. Please check your inputs and try again.');
         }
-
-        $bannerPath = null;
-        if ($request->hasFile('banner')) {
-            $bannerPath = $request->file('banner')->store('shops/banners', 'public');
-            $bannerPath = '/storage/'.$bannerPath;
-        }
-
-        $slug = Shop::generateUniqueSlug($validated['name']);
-
-        Shop::create([
-            'user_id' => $validated['user_id'],
-            'name' => $validated['name'],
-            'slug' => $slug,
-            'description' => $validated['description'] ?? null,
-            'email' => $validated['email'] ?? null,
-            'phone' => $validated['phone'] ?? null,
-            'address' => $validated['address'] ?? null,
-            'is_active' => $validated['is_active'] ?? true,
-            'logo' => $logoPath,
-            'banner' => $bannerPath,
-        ]);
-
-        return redirect()->route('admin.shops.index')->with('success', 'Shop created successfully!');
     }
 
     /**
@@ -125,50 +130,51 @@ class ShopController extends Controller
     /**
      * Update the specified shop.
      */
-    public function update(Request $request, Shop $shop): RedirectResponse
+    public function update(UpdateShopRequest $request, Shop $shop): RedirectResponse
     {
-        $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'email' => ['nullable', 'email', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:50'],
-            'address' => ['nullable', 'string', 'max:255'],
-            'is_active' => ['boolean'],
-            'logo' => ['nullable', 'image', 'max:2048'],
-            'banner' => ['nullable', 'image', 'max:3072'],
-        ]);
+        $validated = $request->validated();
 
-        if ($request->hasFile('logo')) {
-            if ($shop->logo && str_starts_with($shop->logo, '/storage/')) {
-                Storage::disk('public')->delete(str_replace('/storage/', '', $shop->logo));
+        try {
+            DB::beginTransaction();
+
+            if ($request->hasFile('logo')) {
+                if ($shop->logo && str_starts_with($shop->logo, '/storage/')) {
+                    Storage::disk('public')->delete(str_replace('/storage/', '', $shop->logo));
+                }
+                $path = $request->file('logo')->store('shops/logos', 'public');
+                $shop->logo = '/storage/'.$path;
             }
-            $logoPath = $request->file('logo')->store('shops/logos', 'public');
-            $shop->logo = '/storage/'.$logoPath;
-        }
 
-        if ($request->hasFile('banner')) {
-            if ($shop->banner && str_starts_with($shop->banner, '/storage/')) {
-                Storage::disk('public')->delete(str_replace('/storage/', '', $shop->banner));
+            if ($request->hasFile('banner')) {
+                if ($shop->banner && str_starts_with($shop->banner, '/storage/')) {
+                    Storage::disk('public')->delete(str_replace('/storage/', '', $shop->banner));
+                }
+                $path = $request->file('banner')->store('shops/banners', 'public');
+                $shop->banner = '/storage/'.$path;
             }
-            $bannerPath = $request->file('banner')->store('shops/banners', 'public');
-            $shop->banner = '/storage/'.$bannerPath;
+
+            if ($shop->name !== $validated['name']) {
+                $shop->slug = Shop::generateUniqueSlug($validated['name'], $shop->id);
+            }
+
+            $shop->user_id = $validated['user_id'];
+            $shop->name = $validated['name'];
+            $shop->description = $validated['description'] ?? null;
+            $shop->email = $validated['email'] ?? null;
+            $shop->phone = $validated['phone'] ?? null;
+            $shop->address = $validated['address'] ?? null;
+            $shop->is_active = $validated['is_active'] ?? $shop->is_active;
+            $shop->save();
+
+            DB::commit();
+
+            return redirect()->route('admin.shops.index')->with('success', 'Shop updated successfully!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('Admin update shop failed: '.$e->getMessage(), ['exception' => $e, 'shop_id' => $shop->id]);
+
+            return back()->withInput()->with('error', 'Unable to update shop. Please try again.');
         }
-
-        if ($shop->name !== $validated['name']) {
-            $shop->slug = Shop::generateUniqueSlug($validated['name'], $shop->id);
-        }
-
-        $shop->user_id = $validated['user_id'];
-        $shop->name = $validated['name'];
-        $shop->description = $validated['description'] ?? null;
-        $shop->email = $validated['email'] ?? null;
-        $shop->phone = $validated['phone'] ?? null;
-        $shop->address = $validated['address'] ?? null;
-        $shop->is_active = $validated['is_active'] ?? $shop->is_active;
-        $shop->save();
-
-        return redirect()->route('admin.shops.index')->with('success', 'Shop updated successfully!');
     }
 
     /**
@@ -176,15 +182,26 @@ class ShopController extends Controller
      */
     public function destroy(Shop $shop): RedirectResponse
     {
-        if ($shop->logo && str_starts_with($shop->logo, '/storage/')) {
-            Storage::disk('public')->delete(str_replace('/storage/', '', $shop->logo));
-        }
-        if ($shop->banner && str_starts_with($shop->banner, '/storage/')) {
-            Storage::disk('public')->delete(str_replace('/storage/', '', $shop->banner));
-        }
+        try {
+            DB::beginTransaction();
 
-        $shop->delete();
+            if ($shop->logo && str_starts_with($shop->logo, '/storage/')) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $shop->logo));
+            }
+            if ($shop->banner && str_starts_with($shop->banner, '/storage/')) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $shop->banner));
+            }
 
-        return redirect()->route('admin.shops.index')->with('success', 'Shop deleted successfully!');
+            $shop->delete();
+
+            DB::commit();
+
+            return redirect()->route('admin.shops.index')->with('success', 'Shop deleted successfully!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('Admin delete shop failed: '.$e->getMessage(), ['exception' => $e, 'shop_id' => $shop->id]);
+
+            return back()->with('error', 'Unable to delete shop. Please try again.');
+        }
     }
 }

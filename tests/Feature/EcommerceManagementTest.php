@@ -356,4 +356,47 @@ class EcommerceManagementTest extends TestCase
             ->where('shopProduct.display_title', 'Alpha Ambient Smart Light')
         );
     }
+
+    /**
+     * Test FormRequest validation for Admin Product Store & Update.
+     */
+    public function test_admin_product_form_request_validation(): void
+    {
+        $this->actingAs($this->admin);
+
+        // Required fields validation
+        $response = $this->post(route('admin.products.store'), []);
+        $response->assertSessionHasErrors(['name', 'sku', 'category', 'base_price']);
+
+        // Negative price validation
+        $response = $this->post(route('admin.products.store'), [
+            'name' => 'Invalid Product',
+            'sku' => 'PRD-INV-01',
+            'category' => 'Electronics',
+            'base_price' => -10,
+        ]);
+        $response->assertSessionHasErrors(['base_price']);
+    }
+
+    /**
+     * Test FormRequest validation for Admin Shop Store.
+     */
+    public function test_admin_shop_form_request_validation(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->post(route('admin.shops.store'), []);
+        $response->assertSessionHasErrors(['name', 'user_id']);
+    }
+
+    /**
+     * Test FormRequest validation for Shop Owner Catalog Product.
+     */
+    public function test_shop_owner_catalog_form_request_validation(): void
+    {
+        $this->actingAs($this->shopOwner1);
+
+        $response = $this->post(route('shop-owner.catalog.store'), []);
+        $response->assertSessionHasErrors(['name', 'sku', 'category', 'base_price']);
+    }
 }

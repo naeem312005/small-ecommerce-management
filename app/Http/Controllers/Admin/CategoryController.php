@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreCategoryRequest;
+use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of product categories.
+     * Display a listing of categories with product counts.
      */
     public function index(Request $request): Response
     {
@@ -23,29 +26,30 @@ class CategoryController extends Controller
 
         $categories = Category::query()
             ->when($search, function ($q) use ($search) {
-                $q->where(function ($sub) use ($search) {
-                    $sub->where('name', 'like', "%{$search}%")
-                        ->orWhere('slug', 'like', "%{$search}%")
-                        ->orWhere('description', 'like', "%{$search}%");
-                });
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%");
             })
             ->when($status !== null && $status !== '', function ($q) use ($status) {
                 $q->where('is_active', $status === '1' || $status === 'active');
             })
             ->withCount('products')
-            ->latest('id')
+            ->orderBy('name')
             ->paginate(10)
             ->withQueryString();
 
-        $metrics = [
-            'total' => Category::count(),
-            'active' => Category::where('is_active', true)->count(),
-            'productsCount' => Product::whereNotNull('category_id')->count(),
-        ];
+        $totalCategories = Category::count();
+        $activeCategories = Category::where('is_active', true)->count();
+        $totalCategorizedProducts = Product::whereNotNull('category_id')->count();
 
         return Inertia::render('Admin/Categories/Index', [
             'categories' => $categories,
-            'metrics' => $metrics,
+            'metrics' => [
+                'total' => $totalCategories,
+                'active' => $activeCategories,
+                'inactive' => $totalCategories - $activeCategories,
+                'assignedProducts' => $totalCategorizedProducts,
+            ],
             'filters' => [
                 'search' => $search,
                 'status' => $status,
@@ -54,7 +58,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show form to create a new category.
+     * Show the form for creating a new category.
      */
     public function create(): Response
     {
@@ -64,29 +68,34 @@ class CategoryController extends Controller
     /**
      * Store a newly created category.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreCategoryRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:100', 'unique:categories,name'],
-            'slug' => ['nullable', 'string', 'max:120', 'unique:categories,slug'],
-            'description' => ['nullable', 'string', 'max:1000'],
-            'icon' => ['nullable', 'string', 'max:50'],
-            'is_active' => ['boolean'],
-        ]);
+        $validated = $request->validated();
 
-        $slug = ! empty($validated['slug'])
-            ? Category::generateUniqueSlug($validated['slug'])
-            : Category::generateUniqueSlug($validated['name']);
+        try {
+            DB::beginTransaction();
 
-        Category::create([
-            'name' => $validated['name'],
-            'slug' => $slug,
-            'description' => $validated['description'] ?? null,
-            'icon' => $validated['icon'] ?? 'Tag',
-            'is_active' => $validated['is_active'] ?? true,
-        ]);
+            $slug = ! empty($validated['slug'])
+                ? Category::generateUniqueSlug($validated['slug'])
+                : Category::generateUniqueSlug($validated['name']);
 
-        return redirect()->route('admin.categories.index')->with('success', "Category '{$validated['name']}' created successfully.");
+            Category::create([
+                'name' => $validated['name'],
+                'slug' => $slug,
+                'description' => $validated['description'] ?? null,
+                'icon' => $validated['icon'] ?? 'Tag',
+                'is_active' => $validated['is_active'] ?? true,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('admin.categories.index')->with('success', "Category '{$validated['name']}' created successfully.");
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('Admin store category failed: '.$e->getMessage(), ['exception' => $e]);
+
+            return back()->withInput()->with('error', 'Unable to create category. Please check your inputs and try again.');
+        }
     }
 
     /**
@@ -104,38 +113,43 @@ class CategoryController extends Controller
     /**
      * Update the specified category in storage.
      */
-    public function update(Request $request, Category $category): RedirectResponse
+    public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:100', Rule::unique('categories', 'name')->ignore($category->id)],
-            'slug' => ['nullable', 'string', 'max:120', Rule::unique('categories', 'slug')->ignore($category->id)],
-            'description' => ['nullable', 'string', 'max:1000'],
-            'icon' => ['nullable', 'string', 'max:50'],
-            'is_active' => ['boolean'],
-        ]);
+        $validated = $request->validated();
 
-        $slug = ! empty($validated['slug'])
-            ? Category::generateUniqueSlug($validated['slug'], $category->id)
-            : Category::generateUniqueSlug($validated['name'], $category->id);
+        try {
+            DB::beginTransaction();
 
-        $oldName = $category->name;
+            $slug = ! empty($validated['slug'])
+                ? Category::generateUniqueSlug($validated['slug'], $category->id)
+                : Category::generateUniqueSlug($validated['name'], $category->id);
 
-        $category->update([
-            'name' => $validated['name'],
-            'slug' => $slug,
-            'description' => $validated['description'] ?? null,
-            'icon' => $validated['icon'] ?? $category->icon ?? 'Tag',
-            'is_active' => $validated['is_active'] ?? true,
-        ]);
+            $oldName = $category->name;
 
-        // Keep product category strings in sync if category name was updated
-        if ($oldName !== $validated['name']) {
-            Product::where('category_id', $category->id)
-                ->orWhere('category', $oldName)
-                ->update(['category' => $validated['name']]);
+            $category->update([
+                'name' => $validated['name'],
+                'slug' => $slug,
+                'description' => $validated['description'] ?? null,
+                'icon' => $validated['icon'] ?? $category->icon ?? 'Tag',
+                'is_active' => $validated['is_active'] ?? true,
+            ]);
+
+            // Keep product category strings in sync if category name was updated
+            if ($oldName !== $validated['name']) {
+                Product::where('category_id', $category->id)
+                    ->orWhere('category', $oldName)
+                    ->update(['category' => $validated['name']]);
+            }
+
+            DB::commit();
+
+            return redirect()->route('admin.categories.index')->with('success', "Category '{$category->name}' updated successfully.");
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('Admin update category failed: '.$e->getMessage(), ['exception' => $e, 'category_id' => $category->id]);
+
+            return back()->withInput()->with('error', 'Unable to update category. Please try again.');
         }
-
-        return redirect()->route('admin.categories.index')->with('success', "Category '{$category->name}' updated successfully.");
     }
 
     /**
@@ -143,18 +157,29 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category): RedirectResponse
     {
-        $name = $category->name;
-        $productsCount = $category->products()->count();
+        try {
+            DB::beginTransaction();
 
-        // Safely detach category_id from linked products so products are preserved
-        Product::where('category_id', $category->id)->update(['category_id' => null]);
+            $name = $category->name;
+            $productsCount = $category->products()->count();
 
-        $category->delete();
+            // Safely detach category_id from linked products so products are preserved
+            Product::where('category_id', $category->id)->update(['category_id' => null]);
 
-        $message = $productsCount > 0
-            ? "Category '{$name}' deleted. {$productsCount} linked product(s) were unassigned."
-            : "Category '{$name}' deleted successfully.";
+            $category->delete();
 
-        return redirect()->route('admin.categories.index')->with('success', $message);
+            DB::commit();
+
+            $message = $productsCount > 0
+                ? "Category '{$name}' deleted. {$productsCount} linked product(s) were unassigned."
+                : "Category '{$name}' deleted successfully.";
+
+            return redirect()->route('admin.categories.index')->with('success', $message);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('Admin delete category failed: '.$e->getMessage(), ['exception' => $e, 'category_id' => $category->id]);
+
+            return back()->with('error', 'Unable to delete category. Please try again.');
+        }
     }
 }

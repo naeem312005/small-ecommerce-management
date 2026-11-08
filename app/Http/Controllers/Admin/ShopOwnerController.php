@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreShopOwnerRequest;
+use App\Http\Requests\Admin\UpdateShopOwnerRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ShopOwnerController extends Controller
 {
     /**
-     * List all shop owner accounts.
+     * Display listing of all shop owner accounts.
      */
     public function index(Request $request): Response
     {
@@ -22,9 +25,11 @@ class ShopOwnerController extends Controller
 
         $shopOwners = User::where('role', 'shop_owner')
             ->when($search, function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('phone', 'like', "%{$search}%");
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%");
+                });
             })
             ->with(['shops:id,user_id,name,slug,is_active'])
             ->withCount('shops')
@@ -41,7 +46,7 @@ class ShopOwnerController extends Controller
     }
 
     /**
-     * Show form to create new shop owner account.
+     * Show form to create a new shop owner account.
      */
     public function create(): Response
     {
@@ -49,27 +54,33 @@ class ShopOwnerController extends Controller
     }
 
     /**
-     * Store new shop owner account.
+     * Store newly created shop owner account.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreShopOwnerRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'phone' => ['nullable', 'string', 'max:50'],
-            'password' => ['required', 'string', Password::default()],
-        ]);
+        $validated = $request->validated();
 
-        User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? null,
-            'password' => Hash::make($validated['password']),
-            'role' => 'shop_owner',
-            'email_verified_at' => now(),
-        ]);
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('admin.shop-owners.index')->with('success', 'Shop owner account created successfully!');
+            User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'] ?? null,
+                'password' => Hash::make($validated['password']),
+                'role' => 'shop_owner',
+                'email_verified_at' => now(),
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('admin.shop-owners.index')->with('success', 'Shop owner account created successfully!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('Admin store shop owner failed: '.$e->getMessage(), ['exception' => $e]);
+
+            return back()->withInput()->with('error', 'Unable to create shop owner account. Please check your inputs and try again.');
+        }
     }
 
     /**
@@ -89,30 +100,36 @@ class ShopOwnerController extends Controller
     /**
      * Update shop owner account.
      */
-    public function update(Request $request, User $shopOwner): RedirectResponse
+    public function update(UpdateShopOwnerRequest $request, User $shopOwner): RedirectResponse
     {
         if ($shopOwner->role !== 'shop_owner') {
             abort(404);
         }
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$shopOwner->id],
-            'phone' => ['nullable', 'string', 'max:50'],
-            'password' => ['nullable', 'string', Password::default()],
-        ]);
+        $validated = $request->validated();
 
-        $shopOwner->name = $validated['name'];
-        $shopOwner->email = $validated['email'];
-        $shopOwner->phone = $validated['phone'] ?? null;
+        try {
+            DB::beginTransaction();
 
-        if (! empty($validated['password'])) {
-            $shopOwner->password = Hash::make($validated['password']);
+            $shopOwner->name = $validated['name'];
+            $shopOwner->email = $validated['email'];
+            $shopOwner->phone = $validated['phone'] ?? null;
+
+            if (! empty($validated['password'])) {
+                $shopOwner->password = Hash::make($validated['password']);
+            }
+
+            $shopOwner->save();
+
+            DB::commit();
+
+            return redirect()->route('admin.shop-owners.index')->with('success', 'Shop owner updated successfully!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('Admin update shop owner failed: '.$e->getMessage(), ['exception' => $e, 'shop_owner_id' => $shopOwner->id]);
+
+            return back()->withInput()->with('error', 'Unable to update shop owner account. Please try again.');
         }
-
-        $shopOwner->save();
-
-        return redirect()->route('admin.shop-owners.index')->with('success', 'Shop owner updated successfully!');
     }
 
     /**
@@ -124,8 +141,19 @@ class ShopOwnerController extends Controller
             abort(404);
         }
 
-        $shopOwner->delete();
+        try {
+            DB::beginTransaction();
 
-        return redirect()->route('admin.shop-owners.index')->with('success', 'Shop owner account deleted!');
+            $shopOwner->delete();
+
+            DB::commit();
+
+            return redirect()->route('admin.shop-owners.index')->with('success', 'Shop owner account deleted!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('Admin delete shop owner failed: '.$e->getMessage(), ['exception' => $e, 'shop_owner_id' => $shopOwner->id]);
+
+            return back()->with('error', 'Unable to delete shop owner account. Please try again.');
+        }
     }
 }
