@@ -443,14 +443,23 @@ export default function CartDrawer() {
                                     </div>
                                 </div>
 
-                                <button
-                                    type="button"
-                                    onClick={handleProceedToCheckout}
-                                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#2563EB] py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-blue-500/20 transition hover:bg-[#1D4ED8]"
-                                >
-                                    <ShieldCheck className="h-4 w-4" />
-                                    <span>Proceed to Express Checkout</span>
-                                </button>
+                                <div className="mt-4 flex items-center gap-2">
+                                    <Link
+                                        href="/cart"
+                                        onClick={handleClose}
+                                        className="flex-1 rounded-xl border border-[#E2E8F0] bg-white py-3 text-center text-xs font-semibold text-[#0F172A] hover:bg-[#F8FAFC] transition dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
+                                    >
+                                        View Full Bag
+                                    </Link>
+                                    <button
+                                        type="button"
+                                        onClick={handleProceedToCheckout}
+                                        className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-[#2563EB] py-3 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition hover:bg-[#1D4ED8]"
+                                    >
+                                        <span>Checkout</span>
+                                        <ArrowRight className="h-3.5 w-3.5" />
+                                    </button>
+                                </div>
 
                                 <div className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-[#64748B]">
                                     <ShieldCheck className="h-3.5 w-3.5 text-[#16A34A]" />

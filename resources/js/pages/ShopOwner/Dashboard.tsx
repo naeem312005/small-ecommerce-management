@@ -66,55 +66,56 @@ export default function ShopOwnerDashboard({
 
             <div className="flex flex-1 flex-col gap-6 p-6">
                 {/* Header Banner */}
-                <div className="rounded-2xl bg-gradient-to-r from-emerald-950 via-teal-900 to-slate-900 p-6 text-white shadow-lg">
+                <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex items-center gap-4">
                             {currentShop.logo ? (
                                 <img
                                     src={currentShop.logo}
                                     alt={currentShop.name}
-                                    className="h-14 w-14 rounded-2xl object-cover ring-2 ring-white/20"
+                                    className="h-14 w-14 rounded-2xl object-cover ring-1 ring-border"
                                 />
                             ) : (
-                                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-600 text-white">
+                                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                                     <Store className="h-7 w-7" />
                                 </div>
                             )}
                             <div>
-                                <div className="flex items-center gap-2">
-                                    <h1 className="text-xl font-black tracking-tight sm:text-2xl">
+                                <div className="flex items-center gap-2.5">
+                                    <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
                                         {currentShop.name}
                                     </h1>
-                                    <span className="rounded-full bg-emerald-500/30 px-2.5 py-0.5 text-[10px] font-bold text-emerald-200">
+                                    <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-[#16A34A] dark:border-emerald-800 dark:bg-emerald-950/50">
+                                        <span className="h-1.5 w-1.5 rounded-full bg-[#16A34A]"></span>
                                         Active Store
                                     </span>
                                 </div>
-                                <p className="mt-1 text-xs text-emerald-200">
+                                <p className="mt-1 text-xs text-muted-foreground">
                                     Manage your shop-specific pricing, custom descriptions, and catalog selections.
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2.5">
                             <a
                                 href={`/shops/${currentShop.slug}`}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="inline-flex items-center gap-1.5 rounded-xl bg-white/10 px-3.5 py-2 text-xs font-bold text-white backdrop-blur-sm transition hover:bg-white/20"
+                                className="inline-flex items-center gap-1.5 rounded-xl border border-input bg-card px-3.5 py-2 text-xs font-semibold text-foreground hover:bg-muted transition-colors"
                             >
                                 <ExternalLink className="h-3.5 w-3.5" />
                                 <span>Visit Public Store</span>
                             </a>
                             <Link
                                 href="/shop-owner/catalog"
-                                className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-500 px-3.5 py-2 text-xs font-bold text-slate-950 shadow-sm transition hover:bg-emerald-400"
+                                className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-sm hover:bg-[#1D4ED8] transition-colors"
                             >
                                 <Layers className="h-3.5 w-3.5" />
                                 <span>Browse Shared Catalog</span>
                             </Link>
                             <Link
                                 href="/shop-owner/catalog/create"
-                                className="inline-flex items-center gap-1.5 rounded-xl bg-white px-3.5 py-2 text-xs font-bold text-slate-950 shadow-sm transition hover:bg-slate-100"
+                                className="inline-flex items-center gap-1.5 rounded-xl border border-primary/20 bg-blue-50 px-3.5 py-2 text-xs font-semibold text-primary hover:bg-blue-100 dark:bg-blue-950/40 dark:text-blue-300 transition-colors"
                             >
                                 <Plus className="h-3.5 w-3.5" />
                                 <span>Contribute New Product</span>
@@ -126,76 +127,76 @@ export default function ShopOwnerDashboard({
                 {/* Metrics */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     {/* Listed in Shop */}
-                    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold text-slate-500">Products in My Shop</span>
-                            <div className="rounded-xl bg-emerald-50 p-2 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+                            <span className="text-xs font-semibold text-muted-foreground">Products in My Shop</span>
+                            <div className="rounded-xl bg-blue-50 p-2 text-primary dark:bg-blue-950/40">
                                 <PackageCheck className="h-5 w-5" />
                             </div>
                         </div>
-                        <p className="mt-2 text-3xl font-black text-slate-900 dark:text-white">
+                        <p className="mt-2 text-3xl font-extrabold tracking-tight text-foreground">
                             {shopStats?.total_products ?? 0}
                         </p>
-                        <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
+                        <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
                             <span>{shopStats?.active_products ?? 0} Active</span>
-                            <Link href="/shop-owner/products" className="font-semibold text-emerald-600 hover:underline">
+                            <Link href="/shop-owner/products" className="font-semibold text-primary hover:underline">
                                 View listings →
                             </Link>
                         </div>
                     </div>
 
                     {/* Shared Catalog available */}
-                    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold text-slate-500">Available to Add</span>
-                            <div className="rounded-xl bg-indigo-50 p-2 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400">
+                            <span className="text-xs font-semibold text-muted-foreground">Available to Add</span>
+                            <div className="rounded-xl bg-blue-50 p-2 text-primary dark:bg-blue-950/40">
                                 <Layers className="h-5 w-5" />
                             </div>
                         </div>
-                        <p className="mt-2 text-3xl font-black text-slate-900 dark:text-white">
+                        <p className="mt-2 text-3xl font-extrabold tracking-tight text-foreground">
                             {availableCatalogCount}
                         </p>
-                        <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
+                        <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
                             <span>From shared catalog</span>
-                            <Link href="/shop-owner/catalog?filter=not_added" className="font-semibold text-indigo-600 hover:underline">
+                            <Link href="/shop-owner/catalog?filter=not_added" className="font-semibold text-primary hover:underline">
                                 Browse & Add →
                             </Link>
                         </div>
                     </div>
 
                     {/* Products Created by Me */}
-                    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold text-slate-500">Contributed to Catalog</span>
-                            <div className="rounded-xl bg-violet-50 p-2 text-violet-600 dark:bg-violet-950 dark:text-violet-400">
+                            <span className="text-xs font-semibold text-muted-foreground">Contributed to Catalog</span>
+                            <div className="rounded-xl bg-amber-50 p-2 text-[#F59E0B] dark:bg-amber-950/40">
                                 <PackagePlus className="h-5 w-5" />
                             </div>
                         </div>
-                        <p className="mt-2 text-3xl font-black text-slate-900 dark:text-white">
+                        <p className="mt-2 text-3xl font-extrabold tracking-tight text-foreground">
                             {myCreatedCatalogProductsCount}
                         </p>
-                        <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
+                        <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
                             <span>Authored by you</span>
-                            <Link href="/shop-owner/catalog/create" className="font-semibold text-violet-600 hover:underline">
+                            <Link href="/shop-owner/catalog/create" className="font-semibold text-[#F59E0B] hover:underline">
                                 Create more →
                             </Link>
                         </div>
                     </div>
 
                     {/* Out of Stock */}
-                    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold text-slate-500">Out of Stock Alerts</span>
-                            <div className="rounded-xl bg-rose-50 p-2 text-rose-600 dark:bg-rose-950 dark:text-rose-400">
+                            <span className="text-xs font-semibold text-muted-foreground">Out of Stock Alerts</span>
+                            <div className="rounded-xl bg-red-50 p-2 text-[#DC2626] dark:bg-red-950/40">
                                 <Package className="h-5 w-5" />
                             </div>
                         </div>
-                        <p className="mt-2 text-3xl font-black text-slate-900 dark:text-white">
+                        <p className="mt-2 text-3xl font-extrabold tracking-tight text-foreground">
                             {shopStats?.out_of_stock ?? 0}
                         </p>
-                        <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
+                        <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
                             <span>Needs restock</span>
-                            <Link href="/shop-owner/products" className="font-semibold text-rose-600 hover:underline">
+                            <Link href="/shop-owner/products" className="font-semibold text-[#DC2626] hover:underline">
                                 Manage inventory →
                             </Link>
                         </div>
@@ -203,31 +204,31 @@ export default function ShopOwnerDashboard({
                 </div>
 
                 {/* Recent Products in this shop */}
-                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
+                <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <div className="flex items-center justify-between border-b border-border pb-4">
                         <div>
-                            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                            <h3 className="text-sm font-bold tracking-tight text-foreground">
                                 Recently Added Shop Listings
                             </h3>
-                            <p className="text-xs text-slate-500">
+                            <p className="text-xs text-muted-foreground">
                                 These products are currently listed in {currentShop.name} with your shop-specific pricing.
                             </p>
                         </div>
 
                         <Link
                             href="/shop-owner/products"
-                            className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 hover:underline"
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
                         >
                             <span>View all ({shopStats?.total_products ?? 0})</span>
                             <ArrowRight className="h-3.5 w-3.5" />
                         </Link>
                     </div>
 
-                    <div className="mt-4 divide-y divide-slate-100 dark:divide-slate-800">
+                    <div className="mt-4 divide-y divide-border">
                         {recentListings.length === 0 ? (
-                            <div className="py-8 text-center text-xs text-slate-500">
+                            <div className="py-8 text-center text-xs text-muted-foreground">
                                 You haven't added any products to your shop yet.{' '}
-                                <Link href="/shop-owner/catalog" className="font-semibold text-emerald-600 hover:underline">
+                                <Link href="/shop-owner/catalog" className="font-semibold text-primary hover:underline">
                                     Browse the shared catalog
                                 </Link>{' '}
                                 to get started!
@@ -246,23 +247,23 @@ export default function ShopOwnerDashboard({
                                                 <img
                                                     src={thumbnail}
                                                     alt={title}
-                                                    className="h-11 w-11 rounded-xl object-cover ring-1 ring-slate-200"
+                                                    className="h-11 w-11 rounded-xl object-cover ring-1 ring-border"
                                                 />
                                             ) : (
-                                                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-400">
+                                                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-muted text-muted-foreground">
                                                     <Package className="h-5 w-5" />
                                                 </div>
                                             )}
                                             <div>
-                                                <h4 className="text-xs font-bold text-slate-900 dark:text-white line-clamp-1">
+                                                <h4 className="text-xs font-bold text-foreground line-clamp-1">
                                                     {title}
                                                 </h4>
-                                                <div className="flex items-center gap-2 text-[11px] text-slate-400">
+                                                <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                                                     <span>SKU: {item.product?.sku}</span>
                                                     <span>•</span>
                                                     <span>Stock: {item.stock}</span>
                                                     {item.custom_thumbnail && (
-                                                        <span className="rounded bg-indigo-50 px-1.5 py-0.2 font-semibold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                                                        <span className="rounded bg-blue-50 px-1.5 py-0.5 font-semibold text-primary border border-blue-200 dark:bg-blue-950 dark:border-blue-900">
                                                             Custom Image
                                                         </span>
                                                     )}
@@ -272,11 +273,11 @@ export default function ShopOwnerDashboard({
 
                                         <div className="flex items-center gap-4">
                                             <div className="text-right">
-                                                <span className="block text-xs font-black text-slate-900 dark:text-white">
+                                                <span className="block text-xs font-bold text-foreground">
                                                     ${Number(item.price).toFixed(2)}
                                                 </span>
                                                 {isCustomPrice && item.product && (
-                                                    <span className="text-[10px] line-through text-slate-400">
+                                                    <span className="text-[10px] line-through text-muted-foreground">
                                                         Base: ${Number(item.product.base_price).toFixed(2)}
                                                     </span>
                                                 )}
@@ -284,7 +285,7 @@ export default function ShopOwnerDashboard({
 
                                             <Link
                                                 href={`/shop-owner/products/${item.id}/edit`}
-                                                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                                                className="inline-flex items-center gap-1 rounded-xl border border-input bg-card px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-muted transition-colors"
                                             >
                                                 <Edit2 className="h-3 w-3" />
                                                 <span>Customize</span>

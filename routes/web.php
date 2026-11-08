@@ -23,6 +23,8 @@ Route::get('/', [CustomerController::class, 'index'])->name('home');
 Route::get('/shops', [CustomerController::class, 'shops'])->name('customer.shops');
 Route::get('/shops/{slug}', [CustomerController::class, 'shopShow'])->name('customer.shop.show');
 Route::get('/shops/{slug}/products/{productId}', [CustomerController::class, 'productShow'])->name('customer.product.show');
+Route::get('/cart', [CustomerController::class, 'cart'])->name('customer.cart');
+Route::get('/checkout', [CustomerController::class, 'checkout'])->name('customer.checkout');
 
 /*
 |--------------------------------------------------------------------------

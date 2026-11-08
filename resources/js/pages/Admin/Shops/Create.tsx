@@ -53,13 +53,13 @@ export default function AdminShopsCreate({ shopOwners }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Create New Shop - Admin Panel" />
+            <Head title="Create New Shop — Admin Console" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center gap-3">
                     <Link
                         href="/admin/shops"
-                        className="rounded-xl border border-border bg-card p-2 text-muted-foreground hover:bg-muted hover:text-foreground shadow-2xs"
+                        className="rounded-xl border border-border bg-card p-2 text-muted-foreground hover:bg-muted hover:text-foreground shadow-2xs transition-colors"
                     >
                         <ArrowLeft className="h-4 w-4" />
                     </Link>
@@ -120,7 +120,7 @@ export default function AdminShopsCreate({ shopOwners }: Props) {
 
                         {/* Description */}
                         <div>
-                            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                            <label className="block text-xs font-bold text-foreground">
                                 Storefront Description
                             </label>
                             <textarea
@@ -128,17 +128,17 @@ export default function AdminShopsCreate({ shopOwners }: Props) {
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
                                 placeholder="Describe the shop's brand and offerings..."
-                                className="mt-1.5 w-full rounded-xl border border-slate-300 py-2 px-3 text-xs dark:border-slate-700 dark:bg-slate-800"
+                                className="mt-1.5 w-full rounded-xl border border-input bg-background py-2 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                             />
                             {errors.description && (
-                                <p className="mt-1 text-xs text-rose-500">{errors.description}</p>
+                                <p className="mt-1 text-xs text-destructive">{errors.description}</p>
                             )}
                         </div>
 
                         {/* Contact details */}
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                                <label className="block text-xs font-bold text-foreground">
                                     Shop Contact Email
                                 </label>
                                 <input
@@ -146,15 +146,15 @@ export default function AdminShopsCreate({ shopOwners }: Props) {
                                     value={data.email}
                                     onChange={(e) => setData('email', e.target.value)}
                                     placeholder="contact@shop.com"
-                                    className="mt-1.5 w-full rounded-xl border border-slate-300 py-2 px-3 text-xs dark:border-slate-700 dark:bg-slate-800"
+                                    className="mt-1.5 w-full rounded-xl border border-input bg-background py-2 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                                 />
                                 {errors.email && (
-                                    <p className="mt-1 text-xs text-rose-500">{errors.email}</p>
+                                    <p className="mt-1 text-xs text-destructive">{errors.email}</p>
                                 )}
                             </div>
 
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                                <label className="block text-xs font-bold text-foreground">
                                     Shop Contact Phone
                                 </label>
                                 <input
@@ -162,17 +162,17 @@ export default function AdminShopsCreate({ shopOwners }: Props) {
                                     value={data.phone}
                                     onChange={(e) => setData('phone', e.target.value)}
                                     placeholder="+1 (555) 000-0000"
-                                    className="mt-1.5 w-full rounded-xl border border-slate-300 py-2 px-3 text-xs dark:border-slate-700 dark:bg-slate-800"
+                                    className="mt-1.5 w-full rounded-xl border border-input bg-background py-2 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                                 />
                                 {errors.phone && (
-                                    <p className="mt-1 text-xs text-rose-500">{errors.phone}</p>
+                                    <p className="mt-1 text-xs text-destructive">{errors.phone}</p>
                                 )}
                             </div>
                         </div>
 
                         {/* Address */}
                         <div>
-                            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                            <label className="block text-xs font-bold text-foreground">
                                 Physical Address / City
                             </label>
                             <input
@@ -180,10 +180,10 @@ export default function AdminShopsCreate({ shopOwners }: Props) {
                                 value={data.address}
                                 onChange={(e) => setData('address', e.target.value)}
                                 placeholder="123 Commerce St, New York, NY"
-                                className="mt-1.5 w-full rounded-xl border border-slate-300 py-2 px-3 text-xs dark:border-slate-700 dark:bg-slate-800"
+                                className="mt-1.5 w-full rounded-xl border border-input bg-background py-2 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                             />
                             {errors.address && (
-                                <p className="mt-1 text-xs text-rose-500">{errors.address}</p>
+                                <p className="mt-1 text-xs text-destructive">{errors.address}</p>
                             )}
                         </div>
 
@@ -191,7 +191,7 @@ export default function AdminShopsCreate({ shopOwners }: Props) {
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             {/* Logo */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                                <label className="block text-xs font-bold text-foreground">
                                     Shop Logo
                                 </label>
                                 <div className="mt-1.5 flex items-center gap-4">
@@ -199,10 +199,10 @@ export default function AdminShopsCreate({ shopOwners }: Props) {
                                         <img
                                             src={logoPreview}
                                             alt="Preview"
-                                            className="h-14 w-14 rounded-2xl object-cover ring-1 ring-slate-300"
+                                            className="h-14 w-14 rounded-2xl object-cover ring-1 ring-border shadow-2xs"
                                         />
                                     ) : (
-                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-400 dark:bg-slate-800">
+                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
                                             <Store className="h-6 w-6" />
                                         </div>
                                     )}
@@ -210,36 +210,40 @@ export default function AdminShopsCreate({ shopOwners }: Props) {
                                         type="file"
                                         accept="image/*"
                                         onChange={handleLogoChange}
-                                        className="text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-indigo-50 file:py-1.5 file:px-3 file:text-xs file:font-semibold file:text-indigo-700 hover:file:bg-indigo-100"
+                                        className="text-xs file:mr-2 file:rounded-xl file:border-0 file:bg-primary/10 file:py-1.5 file:px-3 file:text-xs file:font-semibold file:text-primary hover:file:bg-primary/20 transition"
                                     />
                                 </div>
                                 {errors.logo && (
-                                    <p className="mt-1 text-xs text-rose-500">{errors.logo}</p>
+                                    <p className="mt-1 text-xs text-destructive">{errors.logo}</p>
                                 )}
                             </div>
 
                             {/* Banner */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                                <label className="block text-xs font-bold text-foreground">
                                     Storefront Banner
                                 </label>
                                 <div className="mt-1.5 flex items-center gap-4">
-                                    {bannerPreview && (
+                                    {bannerPreview ? (
                                         <img
                                             src={bannerPreview}
                                             alt="Banner Preview"
-                                            className="h-14 w-24 rounded-xl object-cover ring-1 ring-slate-300"
+                                            className="h-14 w-24 rounded-xl object-cover ring-1 ring-border shadow-2xs"
                                         />
+                                    ) : (
+                                        <div className="flex h-14 w-24 items-center justify-center rounded-xl bg-muted text-muted-foreground">
+                                            <Upload className="h-6 w-6" />
+                                        </div>
                                     )}
                                     <input
                                         type="file"
                                         accept="image/*"
                                         onChange={handleBannerChange}
-                                        className="text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-indigo-50 file:py-1.5 file:px-3 file:text-xs file:font-semibold file:text-indigo-700 hover:file:bg-indigo-100"
+                                        className="text-xs file:mr-2 file:rounded-xl file:border-0 file:bg-primary/10 file:py-1.5 file:px-3 file:text-xs file:font-semibold file:text-primary hover:file:bg-primary/20 transition"
                                     />
                                 </div>
                                 {errors.banner && (
-                                    <p className="mt-1 text-xs text-rose-500">{errors.banner}</p>
+                                    <p className="mt-1 text-xs text-destructive">{errors.banner}</p>
                                 )}
                             </div>
                         </div>
@@ -251,25 +255,25 @@ export default function AdminShopsCreate({ shopOwners }: Props) {
                                 id="is_active"
                                 checked={data.is_active}
                                 onChange={(e) => setData('is_active', e.target.checked)}
-                                className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                                className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
                             />
-                            <label htmlFor="is_active" className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                            <label htmlFor="is_active" className="text-xs font-semibold text-foreground">
                                 Active Shop (Visible to customers on storefront)
                             </label>
                         </div>
 
                         {/* Submit Button */}
-                        <div className="flex justify-end gap-3 border-t border-slate-100 pt-5 dark:border-slate-800">
+                        <div className="flex justify-end gap-3 border-t border-border pt-5">
                             <Link
                                 href="/admin/shops"
-                                className="rounded-xl border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300"
+                                className="rounded-xl border border-border px-4 py-2 text-xs font-semibold text-foreground hover:bg-muted transition"
                             >
                                 Cancel
                             </Link>
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-5 py-2 text-xs font-bold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
+                                className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-5 py-2 text-xs font-bold text-primary-foreground shadow-xs hover:bg-primary/90 disabled:opacity-50 transition"
                             >
                                 <Save className="h-3.5 w-3.5" />
                                 <span>{processing ? 'Creating...' : 'Create Shop'}</span>
@@ -281,4 +285,3 @@ export default function AdminShopsCreate({ shopOwners }: Props) {
         </AppLayout>
     );
 }
-

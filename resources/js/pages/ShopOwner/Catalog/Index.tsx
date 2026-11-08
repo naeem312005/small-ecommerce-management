@@ -317,44 +317,44 @@ export default function ShopOwnerCatalogIndex({
 
             {/* Modal to Add Product to Shop */}
             {selectedProduct && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
-                    <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl dark:bg-slate-900">
-                        <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+                    <div className="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-2xl">
+                        <div className="flex items-center justify-between border-b border-border pb-3">
                             <div>
-                                <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                                <h3 className="text-base font-bold tracking-tight text-foreground">
                                     Add to {shop?.name ?? 'My Shop'}
                                 </h3>
-                                <p className="text-xs text-slate-500">
+                                <p className="text-xs text-muted-foreground">
                                     Set your shop's initial price and stock for this catalog product.
                                 </p>
                             </div>
                             <button
                                 type="button"
                                 onClick={closeAddModal}
-                                className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                className="rounded-lg p-1 text-muted-foreground hover:bg-muted"
                             >
                                 <X className="h-5 w-5" />
                             </button>
                         </div>
 
                         {/* Selected Product Summary */}
-                        <div className="mt-4 flex items-center gap-3 rounded-xl bg-slate-50 p-3 dark:bg-slate-800">
+                        <div className="mt-4 flex items-center gap-3 rounded-xl border border-border bg-muted/40 p-3">
                             {selectedProduct.thumbnail ? (
                                 <img
                                     src={selectedProduct.thumbnail}
                                     alt={selectedProduct.name}
-                                    className="h-12 w-12 rounded-lg object-cover"
+                                    className="h-12 w-12 rounded-lg object-cover ring-1 ring-border"
                                 />
                             ) : (
-                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-slate-200 text-slate-500">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted text-muted-foreground">
                                     <Package className="h-6 w-6" />
                                 </div>
                             )}
                             <div>
-                                <h4 className="text-xs font-bold text-slate-900 dark:text-white">
+                                <h4 className="text-xs font-bold text-foreground">
                                     {selectedProduct.name}
                                 </h4>
-                                <span className="text-[11px] text-slate-500 font-mono">
+                                <span className="text-[11px] text-muted-foreground font-mono">
                                     Catalog Base MSRP: ${Number(selectedProduct.base_price).toFixed(2)}
                                 </span>
                             </div>
@@ -364,7 +364,7 @@ export default function ShopOwnerCatalogIndex({
                             {/* Price & Stock */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                                    <label className="block text-xs font-semibold text-foreground">
                                         Your Shop Price ($) *
                                     </label>
                                     <input
@@ -373,16 +373,16 @@ export default function ShopOwnerCatalogIndex({
                                         min="0"
                                         value={data.price}
                                         onChange={(e) => setData('price', e.target.value)}
-                                        className="mt-1 w-full rounded-xl border border-slate-300 py-2 px-3 text-xs dark:border-slate-700 dark:bg-slate-800"
+                                        className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                                         required
                                     />
                                     {errors.price && (
-                                        <p className="mt-1 text-xs text-rose-500">{errors.price}</p>
+                                        <p className="mt-1 text-xs text-destructive">{errors.price}</p>
                                     )}
                                 </div>
 
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                                    <label className="block text-xs font-semibold text-foreground">
                                         Initial Inventory Stock *
                                     </label>
                                     <input
@@ -390,18 +390,18 @@ export default function ShopOwnerCatalogIndex({
                                         min="0"
                                         value={data.stock}
                                         onChange={(e) => setData('stock', parseInt(e.target.value) || 0)}
-                                        className="mt-1 w-full rounded-xl border border-slate-300 py-2 px-3 text-xs dark:border-slate-700 dark:bg-slate-800"
+                                        className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                                         required
                                     />
                                     {errors.stock && (
-                                        <p className="mt-1 text-xs text-rose-500">{errors.stock}</p>
+                                        <p className="mt-1 text-xs text-destructive">{errors.stock}</p>
                                     )}
                                 </div>
                             </div>
 
                             {/* Custom Title Override */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                                <label className="block text-xs font-semibold text-foreground">
                                     Custom Title (Optional)
                                 </label>
                                 <input
@@ -409,13 +409,13 @@ export default function ShopOwnerCatalogIndex({
                                     value={data.custom_title}
                                     onChange={(e) => setData('custom_title', e.target.value)}
                                     placeholder={selectedProduct.name}
-                                    className="mt-1 w-full rounded-xl border border-slate-300 py-2 px-3 text-xs dark:border-slate-700 dark:bg-slate-800"
+                                    className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                                 />
                             </div>
 
                             {/* Custom Description Override */}
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                                <label className="block text-xs font-semibold text-foreground">
                                     Custom Details / Description (Optional)
                                 </label>
                                 <textarea
@@ -423,23 +423,23 @@ export default function ShopOwnerCatalogIndex({
                                     value={data.custom_description}
                                     onChange={(e) => setData('custom_description', e.target.value)}
                                     placeholder="Enter custom description or leave default..."
-                                    className="mt-1 w-full rounded-xl border border-slate-300 py-2 px-3 text-xs dark:border-slate-700 dark:bg-slate-800"
+                                    className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                                 />
                             </div>
 
                             {/* Submit */}
-                            <div className="flex justify-end gap-2 border-t border-slate-100 pt-4 dark:border-slate-800">
+                            <div className="flex justify-end gap-2 border-t border-border pt-4">
                                 <button
                                     type="button"
                                     onClick={closeAddModal}
-                                    className="rounded-xl border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300"
+                                    className="rounded-xl border border-input bg-card px-4 py-2 text-xs font-semibold text-foreground hover:bg-muted"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="rounded-xl bg-primary px-4 py-2 text-xs font-bold text-primary-foreground hover:opacity-90 disabled:opacity-50 shadow-xs"
+                                    className="rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:bg-[#1D4ED8] disabled:opacity-50 shadow-xs transition-colors"
                                 >
                                     {processing ? 'Adding...' : 'Confirm & Add to Shop'}
                                 </button>

@@ -42,31 +42,31 @@ export default function AdminProductsCreate({ suggestedSku }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Add Catalog Product - Admin Panel" />
+            <Head title="Add Catalog Product — Admin Console" />
 
             <div className="flex flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center gap-3">
                     <Link
                         href="/admin/products"
-                        className="rounded-xl border border-slate-200 p-2 text-slate-500 hover:bg-slate-100 dark:border-slate-800 dark:hover:bg-slate-800"
+                        className="rounded-xl border border-border bg-card p-2 text-muted-foreground hover:bg-muted hover:text-foreground shadow-2xs transition-colors"
                     >
                         <ArrowLeft className="h-4 w-4" />
                     </Link>
                     <div>
-                        <h1 className="text-xl font-bold text-slate-900 dark:text-white">
+                        <h1 className="text-xl font-bold text-foreground">
                             Add Master Product to Shared Catalog
                         </h1>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-muted-foreground">
                             Products added here will become immediately available for all shop owners to list in their shops.
                         </p>
                     </div>
                 </div>
 
-                <div className="max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                <div className="max-w-3xl rounded-2xl border border-border bg-card p-6 shadow-xs">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Name */}
                         <div>
-                            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                            <label className="block text-xs font-bold text-foreground">
                                 Product Name *
                             </label>
                             <input
@@ -74,18 +74,18 @@ export default function AdminProductsCreate({ suggestedSku }: Props) {
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
                                 placeholder="e.g. Ergonomic Aluminum Laptop Stand"
-                                className="mt-1.5 w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs dark:border-slate-700 dark:bg-slate-800"
+                                className="mt-1.5 w-full rounded-xl border border-input bg-background py-2.5 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                                 required
                             />
                             {errors.name && (
-                                <p className="mt-1 text-xs text-rose-500">{errors.name}</p>
+                                <p className="mt-1 text-xs text-destructive">{errors.name}</p>
                             )}
                         </div>
 
                         {/* SKU & Category */}
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                                <label className="block text-xs font-bold text-foreground">
                                     Product SKU (Stock Keeping Unit) *
                                 </label>
                                 <input
@@ -93,22 +93,22 @@ export default function AdminProductsCreate({ suggestedSku }: Props) {
                                     value={data.sku}
                                     onChange={(e) => setData('sku', e.target.value.toUpperCase())}
                                     placeholder="PRD-XXXX"
-                                    className="mt-1.5 w-full rounded-xl border border-slate-300 py-2.5 px-3 font-mono text-xs dark:border-slate-700 dark:bg-slate-800"
+                                    className="mt-1.5 w-full rounded-xl border border-input bg-background py-2.5 px-3 font-mono text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                                     required
                                 />
                                 {errors.sku && (
-                                    <p className="mt-1 text-xs text-rose-500">{errors.sku}</p>
+                                    <p className="mt-1 text-xs text-destructive">{errors.sku}</p>
                                 )}
                             </div>
 
                             <div>
-                                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                                <label className="block text-xs font-bold text-foreground">
                                     Category *
                                 </label>
                                 <select
                                     value={data.category}
                                     onChange={(e) => setData('category', e.target.value)}
-                                    className="mt-1.5 w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs dark:border-slate-700 dark:bg-slate-800"
+                                    className="mt-1.5 w-full rounded-xl border border-input bg-background py-2.5 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                                     required
                                 >
                                     <option value="Electronics">Electronics</option>
@@ -119,14 +119,14 @@ export default function AdminProductsCreate({ suggestedSku }: Props) {
                                     <option value="Sports & Outdoors">Sports & Outdoors</option>
                                 </select>
                                 {errors.category && (
-                                    <p className="mt-1 text-xs text-rose-500">{errors.category}</p>
+                                    <p className="mt-1 text-xs text-destructive">{errors.category}</p>
                                 )}
                             </div>
                         </div>
 
                         {/* Base Price */}
                         <div>
-                            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                            <label className="block text-xs font-bold text-foreground">
                                 Master Catalog Base Price ($) *
                             </label>
                             <input
@@ -136,20 +136,20 @@ export default function AdminProductsCreate({ suggestedSku }: Props) {
                                 value={data.base_price}
                                 onChange={(e) => setData('base_price', e.target.value)}
                                 placeholder="0.00"
-                                className="mt-1.5 w-full rounded-xl border border-slate-300 py-2.5 px-3 text-xs dark:border-slate-700 dark:bg-slate-800"
+                                className="mt-1.5 w-full rounded-xl border border-input bg-background py-2.5 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                                 required
                             />
-                            <p className="mt-1 text-[11px] text-slate-400">
+                            <p className="mt-1 text-[11px] text-muted-foreground">
                                 Suggested MSRP. Individual shop owners can set their own shop-specific prices when listing this item.
                             </p>
                             {errors.base_price && (
-                                <p className="mt-1 text-xs text-rose-500">{errors.base_price}</p>
+                                <p className="mt-1 text-xs text-destructive">{errors.base_price}</p>
                             )}
                         </div>
 
                         {/* Description */}
                         <div>
-                            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                            <label className="block text-xs font-bold text-foreground">
                                 Default Description & Specifications
                             </label>
                             <textarea
@@ -157,16 +157,16 @@ export default function AdminProductsCreate({ suggestedSku }: Props) {
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
                                 placeholder="Enter detailed master product description..."
-                                className="mt-1.5 w-full rounded-xl border border-slate-300 py-2 px-3 text-xs dark:border-slate-700 dark:bg-slate-800"
+                                className="mt-1.5 w-full rounded-xl border border-input bg-background py-2 px-3 text-xs text-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                             />
                             {errors.description && (
-                                <p className="mt-1 text-xs text-rose-500">{errors.description}</p>
+                                <p className="mt-1 text-xs text-destructive">{errors.description}</p>
                             )}
                         </div>
 
                         {/* Thumbnail */}
                         <div>
-                            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                            <label className="block text-xs font-bold text-foreground">
                                 Master Product Thumbnail Image
                             </label>
                             <div className="mt-1.5 flex items-center gap-4">
@@ -174,10 +174,10 @@ export default function AdminProductsCreate({ suggestedSku }: Props) {
                                     <img
                                         src={preview}
                                         alt="Preview"
-                                        className="h-16 w-16 rounded-2xl object-cover ring-1 ring-slate-300"
+                                        className="h-16 w-16 rounded-2xl object-cover ring-1 ring-border shadow-2xs"
                                     />
                                 ) : (
-                                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 text-slate-400 dark:bg-slate-800">
+                                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-muted text-muted-foreground">
                                         <Package className="h-8 w-8" />
                                     </div>
                                 )}
@@ -185,11 +185,11 @@ export default function AdminProductsCreate({ suggestedSku }: Props) {
                                     type="file"
                                     accept="image/*"
                                     onChange={handleFile}
-                                    className="text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-indigo-50 file:py-1.5 file:px-3 file:text-xs file:font-semibold file:text-indigo-700 hover:file:bg-indigo-100"
+                                    className="text-xs file:mr-2 file:rounded-xl file:border-0 file:bg-primary/10 file:py-1.5 file:px-3 file:text-xs file:font-semibold file:text-primary hover:file:bg-primary/20 transition"
                                 />
                             </div>
                             {errors.thumbnail && (
-                                <p className="mt-1 text-xs text-rose-500">{errors.thumbnail}</p>
+                                <p className="mt-1 text-xs text-destructive">{errors.thumbnail}</p>
                             )}
                         </div>
 
@@ -200,25 +200,25 @@ export default function AdminProductsCreate({ suggestedSku }: Props) {
                                 id="is_active"
                                 checked={data.is_active}
                                 onChange={(e) => setData('is_active', e.target.checked)}
-                                className="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                                className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
                             />
-                            <label htmlFor="is_active" className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                            <label htmlFor="is_active" className="text-xs font-semibold text-foreground">
                                 Active in Shared Catalog (Available for shop owners to browse and add)
                             </label>
                         </div>
 
                         {/* Submit Button */}
-                        <div className="flex justify-end gap-3 border-t border-slate-100 pt-5 dark:border-slate-800">
+                        <div className="flex justify-end gap-3 border-t border-border pt-5">
                             <Link
                                 href="/admin/products"
-                                className="rounded-xl border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300"
+                                className="rounded-xl border border-border px-4 py-2 text-xs font-semibold text-foreground hover:bg-muted transition"
                             >
                                 Cancel
                             </Link>
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-5 py-2 text-xs font-bold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
+                                className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-5 py-2 text-xs font-bold text-primary-foreground shadow-xs hover:bg-primary/90 disabled:opacity-50 transition"
                             >
                                 <Save className="h-3.5 w-3.5" />
                                 <span>{processing ? 'Publishing...' : 'Publish to Catalog'}</span>
@@ -230,4 +230,3 @@ export default function AdminProductsCreate({ suggestedSku }: Props) {
         </AppLayout>
     );
 }
-

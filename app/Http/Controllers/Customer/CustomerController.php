@@ -188,4 +188,20 @@ class CustomerController extends Controller
             'relatedProducts' => $relatedProducts,
         ]);
     }
+
+    /**
+     * Display shopping bag page.
+     */
+    public function cart(): Response
+    {
+        return Inertia::render('Customer/Cart');
+    }
+
+    /**
+     * Display checkout page.
+     */
+    public function checkout(): Response
+    {
+        return Inertia::render('Customer/Checkout');
+    }
 }
