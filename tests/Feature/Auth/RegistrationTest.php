@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
@@ -36,6 +37,14 @@ class RegistrationTest extends TestCase
 
         $this->assertAuthenticated();
         $response->assertRedirect(route('dashboard', absolute: false));
+
+        $user = User::where('email', 'test@example.com')->first();
+        $this->assertNotNull($user);
+        $this->assertTrue($user->hasVerifiedEmail());
+
+        // Ensure user can access dashboard without being blocked by verified middleware
+        $dashboardResponse = $this->get(route('dashboard'));
+        $dashboardResponse->assertRedirect(route('home'));
     }
 
     public function test_registration_requires_otp(): void

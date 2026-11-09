@@ -33,4 +33,13 @@ class DashboardTest extends TestCase
         $response = $this->get(route('dashboard'));
         $response->assertRedirect(route('shop-owner.dashboard'));
     }
+
+    public function test_customer_is_redirected_to_home(): void
+    {
+        $customer = User::factory()->create(['role' => 'customer']);
+        $this->actingAs($customer);
+
+        $response = $this->get(route('dashboard'));
+        $response->assertRedirect(route('home'));
+    }
 }

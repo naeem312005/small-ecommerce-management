@@ -3,14 +3,19 @@ import {
     ArrowUpRight,
     ChevronDown,
     CreditCard,
+    FileText,
+    Heart,
     LayoutDashboard,
     LogIn,
     LogOut,
+    MapPin,
     Menu,
     Moon,
+    Package,
     Search,
     ShieldCheck,
     ShoppingBag,
+    Sparkles,
     Store,
     Sun,
     Truck,
@@ -27,10 +32,12 @@ function NavbarContent({
     user,
     mobileMenuOpen,
     setMobileMenuOpen,
+    onOpenUpcoming,
 }: {
     user: User | null;
     mobileMenuOpen: boolean;
     setMobileMenuOpen: (open: boolean) => void;
+    onOpenUpcoming: () => void;
 }) {
     const { totalCount, setIsOpen } = useCart();
     const { resolvedAppearance, updateAppearance } = useAppearance();
@@ -100,25 +107,7 @@ function NavbarContent({
                     </nav>
                 </div>
 
-                {/* Center Search Bar */}
-                <form onSubmit={handleNavSearch} className="hidden md:flex flex-1 max-w-lg mx-4">
-                    <div className="relative w-full flex items-center">
-                        <Search className="absolute left-3.5 h-4 w-4 text-[#64748B]" />
-                        <input
-                            type="text"
-                            value={navSearch}
-                            onChange={(e) => setNavSearch(e.target.value)}
-                            placeholder="Search products, brands, or boutiques..."
-                            className="w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] py-2 pl-9 pr-20 text-xs text-[#0F172A] placeholder-[#64748B] transition focus:border-[#2563EB] focus:bg-[#FFFFFF] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC]"
-                        />
-                        <button
-                            type="submit"
-                            className="absolute right-1.5 rounded-lg bg-[#2563EB] px-3 py-1 text-xs font-semibold text-white transition hover:bg-[#1D4ED8]"
-                        >
-                            Search
-                        </button>
-                    </div>
-                </form>
+               
 
                 {/* Right Side Actions */}
                 <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
@@ -190,20 +179,36 @@ function NavbarContent({
                                     </div>
 
                                     <div className="py-1">
-                                        <Link
-                                            href="/dashboard"
-                                            onClick={() => setUserMenuOpen(false)}
-                                            className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-[#0F172A] hover:bg-[#EFF6FF] hover:text-[#2563EB] transition dark:text-[#F8FAFC] dark:hover:bg-blue-950/50"
-                                        >
-                                            <LayoutDashboard className="h-4 w-4 text-[#2563EB]" />
-                                            <span>
-                                                {user.role === 'admin'
-                                                    ? 'Admin Console'
-                                                    : user.role === 'shop_owner'
-                                                      ? 'Merchant Hub'
-                                                      : 'My Dashboard'}
-                                            </span>
-                                        </Link>
+                                        {user.role === 'customer' ? (
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setUserMenuOpen(false);
+                                                    onOpenUpcoming();
+                                                }}
+                                                className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-[#0F172A] hover:bg-[#EFF6FF] hover:text-[#2563EB] transition dark:text-[#F8FAFC] dark:hover:bg-blue-950/50"
+                                            >
+                                                <LayoutDashboard className="h-4 w-4 text-[#2563EB]" />
+                                                <span>My Dashboard</span>
+                                            </button>
+                                        ) : (
+                                            <Link
+                                                href={
+                                                    user.role === 'admin'
+                                                        ? '/admin/dashboard'
+                                                        : '/shop-owner/dashboard'
+                                                }
+                                                onClick={() => setUserMenuOpen(false)}
+                                                className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-[#0F172A] hover:bg-[#EFF6FF] hover:text-[#2563EB] transition dark:text-[#F8FAFC] dark:hover:bg-blue-950/50"
+                                            >
+                                                <LayoutDashboard className="h-4 w-4 text-[#2563EB]" />
+                                                <span>
+                                                    {user.role === 'admin'
+                                                        ? 'Admin Console'
+                                                        : 'Merchant Hub'}
+                                                </span>
+                                            </Link>
+                                        )}
                                     </div>
 
                                     <div className="border-t border-[#E2E8F0] pt-1 dark:border-[#334155]">
@@ -230,12 +235,7 @@ function NavbarContent({
                                 <LogIn className="h-3.5 w-3.5 text-[#64748B]" />
                                 <span>Sign In</span>
                             </Link>
-                            <Link
-                                href="/login"
-                                className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-[#2563EB] px-3.5 py-2 text-xs font-bold text-white shadow-2xs transition hover:bg-[#1D4ED8]"
-                            >
-                                <span>Merchant Portal</span>
-                            </Link>
+                            
                         </div>
                     )}
 
@@ -297,17 +297,32 @@ function NavbarContent({
                             Shopping Bag ({totalCount})
                         </Link>
                         {user ? (
-                            <Link
-                                href="/dashboard"
-                                className="block rounded-xl bg-[#EFF6FF] px-3 py-2 text-sm font-bold text-[#2563EB] hover:bg-blue-100 dark:bg-blue-950/60 dark:text-blue-300"
-                                onClick={() => setMobileMenuOpen(false)}
-                            >
-                                {user.role === 'admin'
-                                    ? 'Admin Console'
-                                    : user.role === 'shop_owner'
-                                      ? 'Merchant Hub'
-                                      : 'My Dashboard'}
-                            </Link>
+                            user.role === 'customer' ? (
+                                <button
+                                    type="button"
+                                    className="block w-full text-left rounded-xl bg-[#EFF6FF] px-3 py-2 text-sm font-bold text-[#2563EB] hover:bg-blue-100 dark:bg-blue-950/60 dark:text-blue-300"
+                                    onClick={() => {
+                                        setMobileMenuOpen(false);
+                                        onOpenUpcoming();
+                                    }}
+                                >
+                                    My Dashboard
+                                </button>
+                            ) : (
+                                <Link
+                                    href={
+                                        user.role === 'admin'
+                                            ? '/admin/dashboard'
+                                            : '/shop-owner/dashboard'
+                                    }
+                                    className="block rounded-xl bg-[#EFF6FF] px-3 py-2 text-sm font-bold text-[#2563EB] hover:bg-blue-100 dark:bg-blue-950/60 dark:text-blue-300"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                >
+                                    {user.role === 'admin'
+                                        ? 'Admin Console'
+                                        : 'Merchant Hub'}
+                                </Link>
+                            )
                         ) : (
                             <Link
                                 href="/login"
@@ -330,6 +345,7 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
     }>().props;
     const user = auth?.user;
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [upcomingModalOpen, setUpcomingModalOpen] = useState(false);
 
     return (
         <div className="flex min-h-screen flex-col bg-[#F8FAFC] font-sans text-[#0F172A] antialiased selection:bg-[#2563EB] selection:text-white dark:bg-[#0F172A] dark:text-[#F8FAFC]">
@@ -360,9 +376,108 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
                 user={user}
                 mobileMenuOpen={mobileMenuOpen}
                 setMobileMenuOpen={setMobileMenuOpen}
+                onOpenUpcoming={() => setUpcomingModalOpen(true)}
             />
 
             {/* Main Page Content */}
+            <main className="flex-1">{children}</main>
+
+            {/* Upcoming Customer Dashboard Popup Modal */}
+            {upcomingModalOpen && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs transition-opacity"
+                    onClick={() => setUpcomingModalOpen(false)}
+                >
+                    <div
+                        className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-[#E2E8F0] bg-white p-6 sm:p-7 shadow-2xl transition-all dark:border-[#334155] dark:bg-[#1E293B]"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Ambient Background Glow */}
+                        <div className="absolute -top-16 -right-16 h-40 w-40 rounded-full bg-blue-500/15 blur-2xl pointer-events-none" />
+                        <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-indigo-500/15 blur-2xl pointer-events-none" />
+
+                        {/* Close Button */}
+                        <button
+                            type="button"
+                            onClick={() => setUpcomingModalOpen(false)}
+                            className="absolute top-4 right-4 rounded-xl p-2 text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#0F172A] transition dark:text-[#94A3B8] dark:hover:bg-[#334155] dark:hover:text-white"
+                            aria-label="Close dialog"
+                        >
+                            <X className="h-5 w-5" />
+                        </button>
+
+                        {/* Header with Icon */}
+                        <div className="flex items-start gap-4">
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-[#2563EB] dark:bg-blue-950/70 shadow-sm border border-blue-100 dark:border-blue-900/50">
+                                <Sparkles className="h-6 w-6 text-[#2563EB] animate-pulse" />
+                            </div>
+                            <div className="min-w-0 flex-1 pr-6">
+                                <div className="flex items-center gap-2">
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-[#2563EB] uppercase border border-blue-200/60 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-900">
+                                        Upcoming Feature
+                                    </span>
+                                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
+                                        In Progress
+                                    </span>
+                                </div>
+                                <h3 className="mt-1.5 text-lg font-black tracking-tight text-[#0F172A] dark:text-[#F8FAFC]">
+                                    Customer Dashboard Coming Soon!
+                                </h3>
+                            </div>
+                        </div>
+
+                        <p className="mt-4 text-xs text-[#64748B] dark:text-[#94A3B8] leading-relaxed">
+                            {user ? `Hello ${user.name}! ` : ''}
+                            We are actively engineering your personal customer dashboard command center.
+                            Very soon, you will be able to track live multi-boutique orders, download VAT invoices, manage saved delivery addresses, and enjoy boutique rewards right from here!
+                        </p>
+
+                        {/* Upcoming Roadmap Previews */}
+                        <div className="mt-5 space-y-2 rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] p-3.5 dark:border-[#334155] dark:bg-[#0F172A]/70">
+                            <p className="text-[11px] font-bold text-[#0F172A] dark:text-[#F8FAFC] uppercase tracking-wider">
+                                Upcoming Modules:
+                            </p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                <div className="flex items-center gap-2 text-[#475569] dark:text-[#CBD5E1]">
+                                    <Package className="h-4 w-4 text-[#2563EB] shrink-0" />
+                                    <span>Live Order Tracking</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-[#475569] dark:text-[#CBD5E1]">
+                                    <FileText className="h-4 w-4 text-[#2563EB] shrink-0" />
+                                    <span>PDF Invoice Downloads</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-[#475569] dark:text-[#CBD5E1]">
+                                    <Heart className="h-4 w-4 text-purple-500 shrink-0" />
+                                    <span>Wishlist & Boutiques</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-[#475569] dark:text-[#CBD5E1]">
+                                    <MapPin className="h-4 w-4 text-emerald-500 shrink-0" />
+                                    <span>Saved Addresses</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="mt-6 flex items-center justify-end gap-3 pt-2">
+                            <button
+                                type="button"
+                                onClick={() => setUpcomingModalOpen(false)}
+                                className="rounded-xl border border-[#E2E8F0] bg-white px-4 py-2.5 text-xs font-bold text-[#0F172A] shadow-2xs transition hover:bg-[#F8FAFC] dark:border-[#334155] dark:bg-[#1E293B] dark:text-[#F8FAFC] dark:hover:bg-[#334155]"
+                            >
+                                Close
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setUpcomingModalOpen(false)}
+                                className="inline-flex items-center gap-1.5 rounded-xl bg-[#2563EB] px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition hover:bg-[#1D4ED8]"
+                            >
+                                <ShoppingBag className="h-4 w-4" />
+                                <span>Continue Shopping</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             <main className="flex-1">{children}</main>
 
             {/* Footer */}
