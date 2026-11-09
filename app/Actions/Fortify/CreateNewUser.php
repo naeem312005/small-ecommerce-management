@@ -44,6 +44,8 @@ class CreateNewUser implements CreatesNewUsers
                 'email_verified_at' => now(),
             ]);
 
+            $user->markEmailAsVerified();
+
             DB::commit();
 
             session()->forget(['registration_otp', 'registration_otp_email', 'registration_otp_time']);
